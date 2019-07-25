@@ -38,8 +38,8 @@ public class Shipweapon : TravellerBehaviour {
 			return Attacklogic (Target);
 		}
 
-		//Debug.LogError ("trying to attack twice in the same round!!");
-		return "Cannot fire twice during the same turn!";
+		Debug.LogWarning (this.MyShip + " trying to attack twice in the same round!!");
+		return " Barrels hot - Cannot fire twice during the same turn!";
 	}
 
 

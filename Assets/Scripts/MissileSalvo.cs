@@ -106,7 +106,9 @@ public class MissileSalvo : SpaceObject {
 
 			Target.Damage(Damage,this.name);
 			Debug.Log (this.name + " hit " + Target);
-			source.UpdateBattleLog( " " + this.Type  + " hit " + Target.name +" for " + Damage + " Damage!");
+
+			if (source.gameObject.activeSelf)
+				source.UpdateBattleLog( " " + this.Type  + " hit " + Target.name +" for " + Damage + " Damage!");
 
 		}
 		else if (finalEffect > 0) {
@@ -116,7 +118,8 @@ public class MissileSalvo : SpaceObject {
 
 			int Damage = ( d6(DamageDice) - Target.Armour) * finalEffect;
 
-			source.UpdateBattleLog( " " + this.Type  + " salvo hit " + Target.name +" for " + Damage + " Damage!");
+			if (source.gameObject.activeSelf)
+				source.UpdateBattleLog( " " + this.Type  + " salvo hit " + Target.name +" for " + Damage + " Damage!");
 
 			Target.Damage(Damage, (this.name));
 			//Debug.Log (this.name + " hit " + Target +" for " + Damage + " Damage!");

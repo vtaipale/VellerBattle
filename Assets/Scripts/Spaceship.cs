@@ -9,6 +9,7 @@ public class Spaceship : SpaceObject {
 	public int HullpointsOrig = 160;
 	public int Armour = 4;
 	public int Sensors = 0; 	//standard mil sensors
+	public int Stealth = 0;		//for stealth ships...
 	public string Side; //more complex?
 	public string Status = "OK";
 
@@ -109,6 +110,13 @@ public class Spaceship : SpaceObject {
 			}
 			else
 				this.Hullpoints -= d6(2);
+		}	
+		else if ((Hullpoints < HullpointsOrig / 10)) {
+			this.Armour = 3;
+			//Debug.Log (this.name + " DANGER DANGER DA DAMAGED!");
+			UpdateBattleLog ("  DANGER DANGER DANGER!");
+
+			this.Status = "DANGER";
 		}	
 
 
@@ -242,6 +250,7 @@ public class Spaceship : SpaceObject {
 			int Effect = Check - 9;
 
 			problem.ReduceMissiles (Effect);
+			this.IncomingMissiles -= Effect;
 
 			return (" Successfully countermeasured against " + problem.name +"!");
 
@@ -252,15 +261,16 @@ public class Spaceship : SpaceObject {
 
 	public void TargetLockCheck( Spaceship potentialtarget)
 	{
-		int Check = d6 (2) + Skill_Electronics + Sensors; 
+		if (Targetlock != this | Targetlock == potentialtarget) {	//do nothing if already has target lock!
+			int Check = d6 (2) + Skill_Electronics + Sensors - potentialtarget.Stealth; 
 
-		if (Check >= 8)
-		{
-			this.Targetlock = potentialtarget;
+			if (Check >= 8) {
+				this.Targetlock = potentialtarget;
 
-			UpdateBattleLog (" Sensor Locked " + potentialtarget.name +"!");
-			potentialtarget.UpdateBattleLog ( " " + this.name + " got a sensor lock on us!");	//nothing more for nooow??
+				UpdateBattleLog (" Sensor Locked " + potentialtarget.name + "!");
+				potentialtarget.UpdateBattleLog (" " + this.name + " got a sensor lock on us!");	//nothing more for nooow??
 
+			}
 		}
 
 

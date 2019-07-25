@@ -10,8 +10,9 @@ public class Turret_Missile : Shipweapon {
 
 	public override string Attacklogic(Spaceship target)
 	{
-		if (MissileRack > 0)
+		if (MissileRack > 0) {
 			return LaunchMissile (target);
+		}
 		
 		return " No missiles left in "+this.name +"!"; //reloading later
 	}
