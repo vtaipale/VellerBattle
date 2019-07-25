@@ -66,6 +66,9 @@ public class MissileSalvo : SpaceObject {
 		if (Distance > 44) {	//no launches futhrer!
 			LowOnFuel = true; //couldbechecked with fly but meh.
 		}
+
+		Enemy.MissileLaunchDetectCheck (this);
+
 		Fly();
 	}
 

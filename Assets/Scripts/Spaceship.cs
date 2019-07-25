@@ -8,6 +8,7 @@ public class Spaceship : SpaceObject {
 	public int Hullpoints = 160;
 	public int HullpointsOrig = 160;
 	public int Armour = 4;
+	public int Sensors = 0; 	//standard mil sensors
 	public string Side; //more complex?
 	public string Status = "OK";
 
@@ -21,6 +22,7 @@ public class Spaceship : SpaceObject {
 	public Shipweapon[] MyGuns;
 
 	public Spaceship Enemy;
+	public Spaceship Targetlock;	//if set to self it is nonexistant
 	public int IncomingMissiles = 0;
 
 	public string myBattleLog = "";
@@ -29,6 +31,7 @@ public class Spaceship : SpaceObject {
 	void Start () {
 
 		this.MyGuns = this.gameObject.GetComponentsInChildren<Shipweapon> ();
+		this.Targetlock = this;
 
 		this.Skill_Pilot = Mathf.RoundToInt (Random.Range (0f, 2f));
 		this.Skill_Electronics = Mathf.RoundToInt (Random.Range (0f, 2f));
@@ -44,6 +47,9 @@ public class Spaceship : SpaceObject {
 		//if (this.Hullpoints <= 0 && this.gameObject.activeSelf == true)
 		//this.Die();
 
+		if (HasLock() && Targetlock.gameObject.activeSelf == false)	//targetlock dies
+			this.Targetlock = this;
+	
 		if (Enemy == null) {
 			UpdateBattleLog (" Scanning for new target..");
 			this.SeekNewEnemy ();
@@ -57,6 +63,8 @@ public class Spaceship : SpaceObject {
 			this.SeekNewEnemy ();
 			this.Attack (Enemy);
 		}
+
+		this.PerformSensorAction ();
 	}
 
 
@@ -123,6 +131,13 @@ public class Spaceship : SpaceObject {
 
 	}
 
+	public bool HasLock()
+	{
+		if (this.Targetlock != this)
+			return true;
+		return false;
+	}
+
 	public void AngerEngagingSwitchCheck(string damagesource)
 		{
 		
@@ -138,6 +153,10 @@ public class Spaceship : SpaceObject {
 				}
 		
 			}
+		else if (this.HasLock() && Targetlock == Enemy && this.Targetlock.gameObject.activeSelf == true)
+		{			
+			//keep on shooting
+		}
 		else if ((d6(2)>8) && !damagesource.Contains(Enemy.name) ) //no jos ny vaihteeks
 		{			
 			foreach (Spaceship question in FindObjectsOfType<Spaceship>()) {
@@ -149,10 +168,19 @@ public class Spaceship : SpaceObject {
 		}
 	}
 
+	/// <summary>
+	/// find something to blast
+	/// </summary>
+	/// <returns>The new enemy.</returns>
 	public Spaceship SeekNewEnemy(){
 
 		//Debug.Log (this.name + " SEEKING NEW ENEMY ");
 
+
+		if (this.HasLock() && this.Targetlock.gameObject.activeSelf == true)	//like to target targetlock, duh
+		{	Engage(Targetlock);
+			return Targetlock;
+		}
 
 		foreach (Spaceship question in FindObjectsOfType<Spaceship>())
 		{
@@ -178,9 +206,81 @@ public class Spaceship : SpaceObject {
 
 	public void Engage(Spaceship Target)
 	{
-		this.Enemy = Target;
-		//Debug.Log (this.name + " ENGAGING " + question.name);
-		UpdateBattleLog (" ENGAGING " + Target.HullType + " "+ Target.name);
+		if (this.Enemy != Target) 
+		{
+			this.Enemy = Target;
+			//Debug.Log (this.name + " ENGAGING " + question.name);
+			UpdateBattleLog (" ENGAGING " + Target.HullType + " " + Target.name);
+		}
+	}
+
+	public void PerformSensorAction()
+	{
+		//SCAN SURROUNDINGS
+
+		//If Missiles incoming = countermeasures!
+
+
+		if (this.GetComponentsInChildren<MissileSalvo> ().Length > 0) {
+			UpdateBattleLog(ElectronicCountermeasure (this.GetComponentsInChildren<MissileSalvo> () [0]) ); //should priorize moreeee but not now
+		}		
+		else
+		{
+			if (Enemy != null && Enemy.gameObject.activeSelf == true)
+				this.TargetLockCheck (Enemy);
+		}
+
+
+	}
+
+	public string ElectronicCountermeasure( MissileSalvo problem)
+	{
+		int Check = d6 (2) + Skill_Electronics + Sensors; 
+
+		if (Check >= 10)
+		{
+			int Effect = Check - 9;
+
+			problem.ReduceMissiles (Effect);
+
+			return (" Successfully countermeasured against " + problem.name +"!");
+
+		}
+		return (" Failed countermeasure! ");
+
+	}
+
+	public void TargetLockCheck( Spaceship potentialtarget)
+	{
+		int Check = d6 (2) + Skill_Electronics + Sensors; 
+
+		if (Check >= 8)
+		{
+			this.Targetlock = potentialtarget;
+
+			UpdateBattleLog (" Sensor Locked " + potentialtarget.name +"!");
+			potentialtarget.UpdateBattleLog ( " " + this.name + " got a sensor lock on us!");	//nothing more for nooow??
+
+		}
+
+
+	}
+
+	/// <summary>
+	/// Does ship detect a missile launch towards itself??
+	/// </summary>
+	/// <param name="problem">incoming missile.</param>
+	public void MissileLaunchDetectCheck( MissileSalvo problem)
+	{
+		int Check = d6 (2) + Skill_Electronics + Sensors; 
+
+		if (Check >= 8) 
+		{
+			UpdateBattleLog(" Incoming missile from " + problem.source + "!");
+
+			// todo AI logic??
+		}
+
 	}
 
 	/// <summary>
