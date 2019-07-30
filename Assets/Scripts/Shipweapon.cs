@@ -22,13 +22,17 @@ public class Shipweapon : TravellerBehaviour {
 
 	/// <summary>
 	/// Attack the specified Target. 
-	/// if Target = self, dont fire aka safety
+	/// if Target == self, dont fire aka safety
 	/// </summary>
 	/// <param name="Target">Target.</param>
 	public string Attack (Spaceship Target) {
-		if (OkToFire == true && Target != this.MyShip)
+		if (OkToFire == true )
 		{
-			if (Target.gameObject.activeSelf == false) {
+			if (Target == this.MyShip) {
+				OkToFire = true;
+				return (" No target");
+			}
+			else if (Target.gameObject.activeSelf == false) {
 				MyShip.UpdateBattleLog (" Target is destroyed, seeking new target");
 				OkToFire = false;
 				return (this.Attacklogic(MyShip.SeekNewEnemy()));
@@ -38,7 +42,7 @@ public class Shipweapon : TravellerBehaviour {
 			return Attacklogic (Target);
 		}
 
-		Debug.LogWarning (this.MyShip + " trying to attack twice in the same round!!");
+		Debug.LogWarning (this.MyShip.name + " trying to attack twice in the same round!!");
 		return " Barrels hot - Cannot fire twice during the same turn!";
 	}
 

@@ -6,16 +6,24 @@ public class Fleet : TravellerBehaviour {
 
 	public Spaceship Leader;
 
-	public string team = "";
+	public string Side = "";
 
 	private float update = 0f;
+
+	public Spaceship[] MyShips;
+
+	public string Report = "";
 
 	// Use this for initialization
 	void Start () {
 
-		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>())
+		MyShips = GetComponentsInChildren<Spaceship> ();
+
+		foreach (Spaceship shippen in MyShips)
 		{
-			shippen.name = team + "-" + Mathf.RoundToInt (Random.Range (19f, 999f)) + " " + Shipnames [(Mathf.RoundToInt (Random.value * (Shipnames.GetLength (0) - 1)))];
+			shippen.name = Side + "-" + Mathf.RoundToInt (Random.Range (19f, 999f)) + " " + Shipnames [(Mathf.RoundToInt (Random.value * (Shipnames.GetLength (0) - 1)))];
+
+			shippen.Side = this.Side;
 
 			if (shippen.CaptainName == "Haddock") 
 				shippen.CaptainName = LastNames [(Mathf.RoundToInt (Random.value * (LastNames.GetLength (0) - 1)))];
@@ -35,6 +43,22 @@ public class Fleet : TravellerBehaviour {
 			update = 0.0f;
 			DefeatCheck ();
 		}	
+	}
+
+	public string StatusReport ()
+	{
+		Report = "";
+
+		foreach (Spaceship shippen in MyShips)
+		{
+			Report += "----- " + shippen.name
+			+ "\n CPT:     " + shippen.CaptainName
+			+ "\n TYPE:     " + shippen.HullType
+			+ "\n STATUS:  " + shippen.Status + "\n";
+		}
+
+		return Report;
+
 	}
 
 	public bool DefeatCheck()

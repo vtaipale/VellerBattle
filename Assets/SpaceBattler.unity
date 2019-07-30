@@ -148,52 +148,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
     type: 2}
   m_PrefabInternal: {fileID: 1163696732}
---- !u!1001 &58116343
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 433943914}
-    m_Modifications:
-    - target: {fileID: 4045160646499812, guid: 219b549cd6ff53a48bf0738789055ad1, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -6.3599997
-      objectReference: {fileID: 0}
-    - target: {fileID: 4045160646499812, guid: 219b549cd6ff53a48bf0738789055ad1, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -2.3999999
-      objectReference: {fileID: 0}
-    - target: {fileID: 4045160646499812, guid: 219b549cd6ff53a48bf0738789055ad1, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4045160646499812, guid: 219b549cd6ff53a48bf0738789055ad1, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4045160646499812, guid: 219b549cd6ff53a48bf0738789055ad1, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4045160646499812, guid: 219b549cd6ff53a48bf0738789055ad1, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4045160646499812, guid: 219b549cd6ff53a48bf0738789055ad1, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4045160646499812, guid: 219b549cd6ff53a48bf0738789055ad1, type: 2}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 1140462229231226, guid: 219b549cd6ff53a48bf0738789055ad1, type: 2}
-      propertyPath: m_Name
-      value: NU UNION FLEET (11)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
-  m_IsPrefabParent: 0
 --- !u!4 &63381991 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
@@ -328,7 +282,7 @@ MonoBehaviour:
   TL: 12
   Fleet1: {fileID: 1067297122}
   Fleet2: {fileID: 433943915}
-  Gamespeed: 0.25
+  Gamespeed: 1
   ContinueGame: 1
   AllShips: []
 --- !u!4 &93726270
@@ -397,7 +351,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -412,6 +366,37 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &104663684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 104663685}
+  m_Layer: 0
+  m_Name: NU UNION FLEET (11)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &104663685
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 104663684}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.3599997, y: -2.14, z: 0}
+  m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
+  m_Children:
+  - {fileID: 465858817}
+  - {fileID: 160738984}
+  - {fileID: 178468681}
+  m_Father: {fileID: 433943914}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &112563797 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
@@ -522,7 +507,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -542,6 +527,11 @@ Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
     type: 2}
   m_PrefabInternal: {fileID: 126264233}
+--- !u!4 &160738984 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
+    type: 2}
+  m_PrefabInternal: {fileID: 622617040}
 --- !u!1001 &161063335
 Prefab:
   m_ObjectHideFlags: 0
@@ -595,7 +585,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -663,7 +653,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -678,6 +668,11 @@ Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
     type: 2}
   m_PrefabInternal: {fileID: 173683221}
+--- !u!4 &178468681 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
+    type: 2}
+  m_PrefabInternal: {fileID: 1289252951}
 --- !u!1001 &193705309
 Prefab:
   m_ObjectHideFlags: 0
@@ -783,7 +778,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -846,7 +841,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -909,7 +904,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -1106,7 +1101,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -1236,7 +1231,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -1309,7 +1304,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -1319,57 +1314,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &412854097
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1323989447739500, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 412854098}
-  - component: {fileID: 412854099}
-  m_Layer: 0
-  m_Name: 'Triple Turret: Missile Rack - Port'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &412854098
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4261992055013784, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 412854097}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000005066395, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
-  m_Children: []
-  m_Father: {fileID: 1026748974}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &412854099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114187650885860348, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 412854097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e1aed6411418ab42b65fea20179d74a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 0}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  MissileRack: 12
-  MissileToShoot: {fileID: 1872258310347650, guid: deed8967ee792f347a37a891b8086f7b,
-    type: 2}
 --- !u!1 &424992569
 GameObject:
   m_ObjectHideFlags: 0
@@ -1438,7 +1382,7 @@ Transform:
   - {fileID: 2114084070}
   - {fileID: 1154284437}
   - {fileID: 424992570}
-  - {fileID: 2062152110}
+  - {fileID: 104663685}
   - {fileID: 1116824176}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -1455,8 +1399,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TL: 12
-  Leader: {fileID: 1308414943}
-  team: UAF
+  Leader: {fileID: 0}
+  Side: UAF
+  MyShips: []
+  Report: 
+--- !u!4 &465858817 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
+    type: 2}
+  m_PrefabInternal: {fileID: 850179625}
 --- !u!4 &477458689 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
@@ -1515,7 +1466,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -1583,7 +1534,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -1656,7 +1607,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -1676,57 +1627,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
     type: 2}
   m_PrefabInternal: {fileID: 587475254}
---- !u!1 &539795564
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1005064146807270, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 539795565}
-  - component: {fileID: 539795566}
-  m_Layer: 0
-  m_Name: 'Triple Turret: Missile Rack - Port'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &539795565
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4625868963591868, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 539795564}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000005066395, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
-  m_Children: []
-  m_Father: {fileID: 1065552370}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &539795566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114474146782671446, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 539795564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e1aed6411418ab42b65fea20179d74a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 0}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  MissileRack: 12
-  MissileToShoot: {fileID: 1872258310347650, guid: deed8967ee792f347a37a891b8086f7b,
-    type: 2}
 --- !u!1 &570399312
 GameObject:
   m_ObjectHideFlags: 0
@@ -1841,6 +1741,69 @@ Transform:
   m_Father: {fileID: 1067297121}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &622617040
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 104663685}
+    m_Modifications:
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 2.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_Name
+      value: Patrol Cruiser
+      objectReference: {fileID: 0}
+    - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
+        type: 2}
+      propertyPath: ShipName
+      value: 'UAS Gjuhian '
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &638973265
 Prefab:
   m_ObjectHideFlags: 0
@@ -1894,7 +1857,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -2142,12 +2105,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
     type: 2}
   m_PrefabInternal: {fileID: 114839529}
---- !u!114 &757104815 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
-    type: 2}
-  m_PrefabInternal: {fileID: 266968069}
-  m_Script: {fileID: 11500000, guid: d4c2416cfc7f30c449adba2125fd0b7a, type: 3}
 --- !u!4 &758337233 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
@@ -2209,57 +2166,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fb8ce593efce8874c80f6bf219bf0400, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &794499359
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1980986315107680, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 794499360}
-  - component: {fileID: 794499361}
-  m_Layer: 0
-  m_Name: 'Triple Turret: Missile Rack - Starboard'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &794499360
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4733307747539940, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 794499359}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000005066395, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
-  m_Children: []
-  m_Father: {fileID: 1026748974}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &794499361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114744107181273860, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 794499359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e1aed6411418ab42b65fea20179d74a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 0}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  MissileRack: 12
-  MissileToShoot: {fileID: 1872258310347650, guid: deed8967ee792f347a37a891b8086f7b,
-    type: 2}
 --- !u!1001 &804539866
 Prefab:
   m_ObjectHideFlags: 0
@@ -2313,7 +2219,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -2364,56 +2270,53 @@ Transform:
   m_Father: {fileID: 1067297121}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &860919033
-GameObject:
+--- !u!1001 &850179625
+Prefab:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1337234285462948, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 860919034}
-  - component: {fileID: 860919035}
-  m_Layer: 0
-  m_Name: Triple Turret:Beam - Starboard
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &860919034
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4417777560597610, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 860919033}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000005066395, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
-  m_Children: []
-  m_Father: {fileID: 2005497537}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &860919035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114584434402837394, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 860919033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00f333109c3ce764090d7a422dde70f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 2005497538}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  WeaponMod: 2
-  GunType: Beam Laser
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 104663685}
+    m_Modifications:
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 3.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
+        type: 2}
+      propertyPath: ShipName
+      value: 'UAS Agrippa '
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &875383123
 GameObject:
   m_ObjectHideFlags: 0
@@ -2498,7 +2401,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -2566,7 +2469,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -2581,218 +2484,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
     type: 2}
   m_PrefabInternal: {fileID: 1019963652}
---- !u!1 &1026748973
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1410818002865964, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1026748974}
-  - component: {fileID: 1026748975}
-  - component: {fileID: 1026748977}
-  - component: {fileID: 1026748976}
-  m_Layer: 0
-  m_Name: Patrol Corvette (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1026748974
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4467125986086616, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1026748973}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.62, y: -0.01, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1.25, z: 0.99999994}
-  m_Children:
-  - {fileID: 1255573898}
-  - {fileID: 1985339126}
-  - {fileID: 412854098}
-  - {fileID: 794499360}
-  m_Father: {fileID: 2062152110}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1026748975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114344153112481008, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1026748973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4c2416cfc7f30c449adba2125fd0b7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  HullType: Patrolship
-  Hullpoints: 160
-  HullpointsOrig: 160
-  Armour: 4
-  Side: UNION
-  Status: OK
-  CaptainName: Haddock
-  Skill_Pilot: 0
-  Skill_Electronics: 0
-  MyGuns: []
-  Enemy: {fileID: 0}
-  IncomingMissiles: 0
-  myBattleLog: 
---- !u!23 &1026748976
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 23519276138441396, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1026748973}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &1026748977
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 33572358461652110, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1026748973}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1065552369
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1385569117339264, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1065552370}
-  - component: {fileID: 1065552371}
-  - component: {fileID: 1065552373}
-  - component: {fileID: 1065552372}
-  m_Layer: 0
-  m_Name: Patrol Corvette
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1065552370
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4418038214943092, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1065552369}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.27, y: 3.24, z: 0}
-  m_LocalScale: {x: 1, y: 1.25, z: 1}
-  m_Children:
-  - {fileID: 1950473568}
-  - {fileID: 1581842210}
-  - {fileID: 539795565}
-  - {fileID: 2027322358}
-  m_Father: {fileID: 2062152110}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1065552371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114219750147308176, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1065552369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4c2416cfc7f30c449adba2125fd0b7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  HullType: Patrolship
-  Hullpoints: 160
-  HullpointsOrig: 160
-  Armour: 4
-  Side: UNION
-  Status: OK
-  CaptainName: Haddock
-  Skill_Pilot: 0
-  Skill_Electronics: 0
-  MyGuns: []
-  Enemy: {fileID: 0}
-  IncomingMissiles: 0
-  myBattleLog: 
---- !u!23 &1065552372
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 23487881110120914, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1065552369}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &1065552373
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 33310793495271626, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1065552369}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1067297120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2847,8 +2538,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TL: 12
-  Leader: {fileID: 757104815}
-  team: AFN
+  Leader: {fileID: 0}
+  Side: AFN
+  MyShips: []
+  Report: 
 --- !u!1001 &1090917771
 Prefab:
   m_ObjectHideFlags: 0
@@ -2902,7 +2595,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -2965,7 +2658,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -3175,7 +2868,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -3243,7 +2936,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -3399,7 +3092,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -3445,56 +3138,6 @@ Transform:
   m_Father: {fileID: 1067297121}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1255573897
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1590794420135100, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1255573898}
-  - component: {fileID: 1255573899}
-  m_Layer: 0
-  m_Name: Triple Turret:Beam - Port
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1255573898
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4195022279024336, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1255573897}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1026748974}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1255573899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114705227541207818, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1255573897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00f333109c3ce764090d7a422dde70f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 1026748975}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  WeaponMod: 2
-  GunType: Beam Laser
 --- !u!1001 &1272523940
 Prefab:
   m_ObjectHideFlags: 0
@@ -3548,7 +3191,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -3621,7 +3264,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -3641,6 +3284,69 @@ Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
     type: 2}
   m_PrefabInternal: {fileID: 1964366055}
+--- !u!1001 &1289252951
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 104663685}
+    m_Modifications:
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -3.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+      propertyPath: m_Name
+      value: Patrol Cruiser
+      objectReference: {fileID: 0}
+    - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
+        type: 2}
+      propertyPath: ShipName
+      value: 'UAS Lenovo '
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
+  m_IsPrefabParent: 0
 --- !u!4 &1298258861 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
@@ -3703,12 +3409,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
     type: 2}
   m_PrefabInternal: {fileID: 1787830099}
---- !u!114 &1308414943 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
-    type: 2}
-  m_PrefabInternal: {fileID: 1787830099}
-  m_Script: {fileID: 11500000, guid: d4c2416cfc7f30c449adba2125fd0b7a, type: 3}
 --- !u!1001 &1310982926
 Prefab:
   m_ObjectHideFlags: 0
@@ -3762,7 +3462,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -3835,7 +3535,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -3978,7 +3678,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -4145,7 +3845,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -4218,7 +3918,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -4291,7 +3991,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -4354,7 +4054,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -4422,7 +4122,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -4604,7 +4304,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -4755,7 +4455,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -4765,57 +4465,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1568385083
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1056702156249436, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1568385084}
-  - component: {fileID: 1568385085}
-  m_Layer: 0
-  m_Name: 'Triple Turret: Missile Rack - Starboard'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1568385084
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4708664136876114, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1568385083}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000005066395, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
-  m_Children: []
-  m_Father: {fileID: 2005497537}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1568385085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114926926187811350, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1568385083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e1aed6411418ab42b65fea20179d74a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 0}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  MissileRack: 12
-  MissileToShoot: {fileID: 1872258310347650, guid: deed8967ee792f347a37a891b8086f7b,
-    type: 2}
 --- !u!1 &1570296549
 GameObject:
   m_ObjectHideFlags: 0
@@ -4847,56 +4496,6 @@ Transform:
   m_Father: {fileID: 1067297121}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1581842209
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1638847432265906, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1581842210}
-  - component: {fileID: 1581842211}
-  m_Layer: 0
-  m_Name: Triple Turret:Beam - Starboard
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1581842210
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4057883594621200, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1581842209}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000005066395, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
-  m_Children: []
-  m_Father: {fileID: 1065552370}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1581842211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114543591772382918, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1581842209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00f333109c3ce764090d7a422dde70f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 1065552371}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  WeaponMod: 2
-  GunType: Beam Laser
 --- !u!1 &1584281468
 GameObject:
   m_ObjectHideFlags: 0
@@ -5175,7 +4774,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -5409,7 +5008,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -5524,7 +5123,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -5628,7 +5227,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -5758,7 +5357,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -5809,56 +5408,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
     type: 2}
   m_PrefabInternal: {fileID: 1449522301}
---- !u!1 &1950473567
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1965984543367650, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1950473568}
-  - component: {fileID: 1950473569}
-  m_Layer: 0
-  m_Name: Triple Turret:Beam - Port
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1950473568
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4906001543336122, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1950473567}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1065552370}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1950473569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114678664526246172, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1950473567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00f333109c3ce764090d7a422dde70f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 1065552371}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  WeaponMod: 2
-  GunType: Beam Laser
 --- !u!4 &1959742797 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
@@ -5922,7 +5471,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -5932,162 +5481,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1985339125
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1025446736909502, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1985339126}
-  - component: {fileID: 1985339127}
-  m_Layer: 0
-  m_Name: Triple Turret:Beam - Starboard
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1985339126
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4173219748132480, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1985339125}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000005066395, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
-  m_Children: []
-  m_Father: {fileID: 1026748974}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1985339127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114049235402006434, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 1985339125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00f333109c3ce764090d7a422dde70f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 1026748975}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  WeaponMod: 2
-  GunType: Beam Laser
---- !u!1 &2005497536
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1638723894869214, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2005497537}
-  - component: {fileID: 2005497538}
-  - component: {fileID: 2005497540}
-  - component: {fileID: 2005497539}
-  m_Layer: 0
-  m_Name: Patrol Corvette (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2005497537
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4247862122029850, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2005497536}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.21, y: -0.06, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1.25, z: 0.99999994}
-  m_Children:
-  - {fileID: 2008228478}
-  - {fileID: 860919034}
-  - {fileID: 2048152534}
-  - {fileID: 1568385084}
-  m_Father: {fileID: 2062152110}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2005497538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114062105536449546, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2005497536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4c2416cfc7f30c449adba2125fd0b7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  HullType: Patrolship
-  Hullpoints: 160
-  HullpointsOrig: 160
-  Armour: 4
-  Side: UNION
-  Status: OK
-  CaptainName: Haddock
-  Skill_Pilot: 0
-  Skill_Electronics: 0
-  MyGuns: []
-  Enemy: {fileID: 0}
-  IncomingMissiles: 0
-  myBattleLog: 
---- !u!23 &2005497539
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 23446962739932294, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2005497536}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &2005497540
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 33788727584287710, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2005497536}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &2007787056
 GameObject:
   m_ObjectHideFlags: 0
@@ -6119,56 +5512,6 @@ Transform:
   m_Father: {fileID: 1067297121}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2008228477
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1503909113628722, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2008228478}
-  - component: {fileID: 2008228479}
-  m_Layer: 0
-  m_Name: Triple Turret:Beam - Port
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2008228478
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4233634607758134, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2008228477}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2005497537}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2008228479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114952183310309868, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2008228477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00f333109c3ce764090d7a422dde70f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 2005497538}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  WeaponMod: 2
-  GunType: Beam Laser
 --- !u!1 &2019557805
 GameObject:
   m_ObjectHideFlags: 0
@@ -6200,57 +5543,6 @@ Transform:
   m_Father: {fileID: 433943914}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2027322357
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1738884879625636, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2027322358}
-  - component: {fileID: 2027322359}
-  m_Layer: 0
-  m_Name: 'Triple Turret: Missile Rack - Starboard'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2027322358
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4115115486774732, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2027322357}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000005066395, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
-  m_Children: []
-  m_Father: {fileID: 1065552370}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2027322359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114162664435637642, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2027322357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e1aed6411418ab42b65fea20179d74a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 0}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  MissileRack: 12
-  MissileToShoot: {fileID: 1872258310347650, guid: deed8967ee792f347a37a891b8086f7b,
-    type: 2}
 --- !u!1001 &2039512659
 Prefab:
   m_ObjectHideFlags: 0
@@ -6304,7 +5596,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -6319,90 +5611,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &2048152533
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1253312403105646, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2048152534}
-  - component: {fileID: 2048152535}
-  m_Layer: 0
-  m_Name: 'Triple Turret: Missile Rack - Port'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2048152534
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4996663506999606, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2048152533}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000005066395, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
-  m_Children: []
-  m_Father: {fileID: 2005497537}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2048152535
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114687495886589200, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2048152533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e1aed6411418ab42b65fea20179d74a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TL: 12
-  MyShip: {fileID: 0}
-  TurretAmount: 3
-  Skill_Gunnery: 0
-  OkToFire: 1
-  MissileRack: 12
-  MissileToShoot: {fileID: 1872258310347650, guid: deed8967ee792f347a37a891b8086f7b,
-    type: 2}
---- !u!1 &2062152109
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1140462229231226, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2062152110}
-  m_Layer: 0
-  m_Name: NU UNION FLEET (11)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2062152110
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4045160646499812, guid: 219b549cd6ff53a48bf0738789055ad1,
-    type: 2}
-  m_PrefabInternal: {fileID: 58116343}
-  m_GameObject: {fileID: 2062152109}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.3599997, y: -2.3999999, z: 0}
-  m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
-  m_Children:
-  - {fileID: 1065552370}
-  - {fileID: 1026748974}
-  - {fileID: 2005497537}
-  m_Father: {fileID: 433943914}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2078911074
 Prefab:
   m_ObjectHideFlags: 0
@@ -6456,7 +5664,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -6539,7 +5747,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (1)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -6638,7 +5846,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -6742,7 +5950,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}
@@ -6810,7 +6018,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1115538084980996, guid: 71472c96e5f10fd46837e6058c9a9354, type: 2}
       propertyPath: m_Name
-      value: Patrol Corvette (2)
+      value: Patrol Cruiser
       objectReference: {fileID: 0}
     - target: {fileID: 114470487078742188, guid: 71472c96e5f10fd46837e6058c9a9354,
         type: 2}

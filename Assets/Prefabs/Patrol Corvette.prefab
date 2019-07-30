@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 33447816825009806}
   - component: {fileID: 23744293598419370}
   m_Layer: 0
-  m_Name: Patrol Corvette
+  m_Name: Patrol Cruiser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -271,10 +271,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TL: 12
-  HullType: Patrolship
+  HullType: Patrol Cruiser
   Hullpoints: 160
   HullpointsOrig: 160
   Armour: 4
+  Sensors: 0
+  Stealth: 0
   Side: UNION
   Status: OK
   CaptainName: Haddock
@@ -282,6 +284,7 @@ MonoBehaviour:
   Skill_Electronics: 0
   MyGuns: []
   Enemy: {fileID: 0}
+  Targetlock: {fileID: 0}
   IncomingMissiles: 0
   myBattleLog: 
 --- !u!114 &114507986751158988

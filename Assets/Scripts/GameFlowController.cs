@@ -39,8 +39,11 @@ public class GameFlowController : TravellerBehaviour {
 			update = 0.0f;
 			NextRound ();
 
-			if (Fleet1.DefeatCheck () | Fleet2.DefeatCheck ())
+			if (Fleet1.DefeatCheck () | Fleet2.DefeatCheck ()) {
 				ContinueGame = false;
+				Fleet1.StatusReport ();
+				Fleet2.StatusReport ();
+			}
 		}
 	}
 
@@ -59,8 +62,11 @@ public class GameFlowController : TravellerBehaviour {
 	
 		foreach (SpaceObject objecten in FindObjectsOfType<SpaceObject>())
 		{
-			if (objecten.gameObject.activeSelf)
+			if (objecten.gameObject.activeSelf) {
 				objecten.GameTurn (this.roundNumber);
+
+				//this.Wait
+			}
 		}
 	}
 
