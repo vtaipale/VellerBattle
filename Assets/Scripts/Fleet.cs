@@ -49,11 +49,18 @@ public class Fleet : TravellerBehaviour {
 	{
 		Report = "";
 
+		if (this.DefeatCheck () == true)
+			Report += "++DEFEAT++";
+		else {
+			Report += "++VICTORY++";
+			Report += "  Spaceships left: " + GetComponentsInChildren<Spaceship> ().Length;
+		}
+
 		foreach (Spaceship shippen in MyShips)
 		{
 			Report += "----- " + shippen.name
 			+ "\n CPT:     " + shippen.CaptainName
-			+ "\n TYPE:     " + shippen.HullType
+			+ "\n TYPE:    " + shippen.HullType
 			+ "\n STATUS:  " + shippen.Status + "\n";
 		}
 
@@ -61,12 +68,17 @@ public class Fleet : TravellerBehaviour {
 
 	}
 
+	/// <summary>
+	/// Checks if no ships left. If none, fleet defeated
+	/// </summary>
+	/// <returns><c>true</c> when Defeated <c>false</c> if still alive</returns>
 	public bool DefeatCheck()
 	{
 		//foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>()) {		}
 
-		if (GetComponentsInChildren<Spaceship> ().Length == 0)
+		if (GetComponentsInChildren<Spaceship> ().Length == 0) {
 			return true;
+		}
 
 		return false;
 	}

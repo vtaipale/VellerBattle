@@ -39,10 +39,14 @@ public class GameFlowController : TravellerBehaviour {
 			update = 0.0f;
 			NextRound ();
 
-			if (Fleet1.DefeatCheck () | Fleet2.DefeatCheck ()) {
+			if (FindObjectOfType<MissileSalvo>() == null && (Fleet1.DefeatCheck () | Fleet2.DefeatCheck ())) {
 				ContinueGame = false;
 				Fleet1.StatusReport ();
 				Fleet2.StatusReport ();
+				Debug.Log ("-- BATTLE OVER --");
+				if (Fleet1.DefeatCheck () && Fleet2.DefeatCheck ())
+					Debug.Log ("No survivors... ");
+
 			}
 		}
 	}
@@ -55,14 +59,14 @@ public class GameFlowController : TravellerBehaviour {
 		Debug.Log ("-- BATTLE ROUND "+roundNumber+" --");
 
 
-		foreach (Shipweapon gun in FindObjectsOfType<Shipweapon>())
+		foreach (Shipweapon gun in FindObjectsOfType<Shipweapon>()) //resets guns to be OK to fire
 		{
 			gun.OkToFire = true;
 		}
 	
 		foreach (SpaceObject objecten in FindObjectsOfType<SpaceObject>())
 		{
-			if (objecten.gameObject.activeSelf) {
+			if (objecten.gameObject.activeSelf && objecten != null) {
 				objecten.GameTurn (this.roundNumber);
 
 				//this.Wait
