@@ -21,7 +21,7 @@ public class Spaceship : SpaceObject {
 	//public int Skill_Gunnery = 0;
 	public int Skill_Pilot = 0;
 	public int Skill_Electronics = 0;
-
+	public GameObject ShipExplosion;
 	public Shipweapon[] MyGuns;
 
 	public Spaceship Enemy;
@@ -351,6 +351,8 @@ public class Spaceship : SpaceObject {
 					toNote.UpdateBattleLog (" " + this.name + " " + how);
 			}
 		}
+
+		Instantiate (ShipExplosion, this.transform.position,this.transform.rotation);
 
 		this.gameObject.SetActive (false);
 

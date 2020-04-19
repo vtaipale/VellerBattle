@@ -390,18 +390,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TL: 12
+  Thrust: 1
   HullType: Merc Cruiser
   Hullpoints: 320
   HullpointsOrig: 320
   Armour: 4
+  Sensors: 0
+  Stealth: 0
+  Transponders: 0
   Side: UNION
   Status: OK
   CaptainName: Haddock
   Skill_Pilot: 0
   Skill_Electronics: 0
+  ShipExplosion: {fileID: 1970377141282846, guid: 0188c3f62e4926b42b87c9d90fa467ed,
+    type: 2}
   MyGuns: []
   Enemy: {fileID: 0}
-  IncomingMissiles: 0
+  Targetlock: {fileID: 0}
+  IncomingMissiles: []
   myBattleLog: 
 --- !u!114 &114319332831830226
 MonoBehaviour:
