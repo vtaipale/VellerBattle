@@ -52,7 +52,9 @@ public class Spaceship : SpaceObject {
 
 		//MOVEMENTLOGIC
 
-		//this.Move (this.Thrust, this.transform.forward);
+		//this.Move (this.Thrust, this.transform.);
+
+		//ATTACKLOGIC
 
 		if (HasLock() && Targetlock.gameObject.activeSelf == false)	//targetlock dies
 			this.Targetlock = this;
@@ -82,6 +84,7 @@ public class Spaceship : SpaceObject {
 		{
 			//this.transform.LookAt (Enemy.transform);
 
+			this.Move (this.Thrust, Enemy.transform.position);
 
 			foreach (Shipweapon Gun in MyGuns) {		
 				//Debug.Log (Gun.Attack (Enemy));;
