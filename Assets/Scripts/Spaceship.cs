@@ -10,6 +10,8 @@ public class Spaceship : SpaceObject {
 	public int Armour = 4;
 	public int Sensors = 0; 	//standard mil sensors
 	public int Stealth = 0;		//for stealth ships...
+	public bool Transponders = false;
+
 	public string Side; //more complex?
 	public string Status = "OK";
 
@@ -24,7 +26,7 @@ public class Spaceship : SpaceObject {
 
 	public Spaceship Enemy;
 	public Spaceship Targetlock;	//if set to self it is nonexistant
-	public int IncomingMissiles = 0;
+	public List<MissileSalvo> IncomingMissiles = new List<MissileSalvo>();
 
 	public string myBattleLog = "";
 
@@ -48,6 +50,10 @@ public class Spaceship : SpaceObject {
 		//if (this.Hullpoints <= 0 && this.gameObject.activeSelf == true)
 		//this.Die();
 
+		//MOVEMENTLOGIC
+
+		//this.Move (this.Thrust, this.transform.forward);
+
 		if (HasLock() && Targetlock.gameObject.activeSelf == false)	//targetlock dies
 			this.Targetlock = this;
 	
@@ -69,18 +75,18 @@ public class Spaceship : SpaceObject {
 	}
 
 
-	public void PointDefenceNeeded(int amount)
-	{
-		this.IncomingMissiles += amount;
-	}
-
 	public void Attack (Spaceship Enemy)
 	{
 
-		foreach (Shipweapon Gun in MyGuns)
-		{		
-			//Debug.Log (Gun.Attack (Enemy));;
-			UpdateBattleLog(Gun.Attack(Enemy));
+		if (Enemy != null && Enemy != this) 
+		{
+			//this.transform.LookAt (Enemy.transform);
+
+
+			foreach (Shipweapon Gun in MyGuns) {		
+				//Debug.Log (Gun.Attack (Enemy));;
+				UpdateBattleLog (Gun.Attack (Enemy));
+			}
 		}
 
 	}
@@ -103,13 +109,19 @@ public class Spaceship : SpaceObject {
 
 			this.Status = "Critical";
 
-			if (Random.Range (0, 10) > 5) {
-				MyGuns [Mathf.RoundToInt (Random.Range (0f, 3f))].Skill_Gunnery -=  1; //wounded crewmember
-			} else if (Random.Range (0, 10) > 5) {
+			if (Random.Range (0, 10) > 7) {
+				MyGuns [Mathf.RoundToInt (Random.Range (0f, 3f))].Skill_Gunnery -= 1; //wounded crewmember
+				UpdateBattleLog (" Crew hit!");
+			} else if (Random.Range (0, 10) > 7) {
 				MyGuns [Mathf.RoundToInt (Random.Range (0f, 3f))].gameObject.SetActive (false); //disabled gun
+				UpdateBattleLog (" Turret disabled!");
+			} else if (Random.Range (0, 10) > 7) {
+				this.Armour = Mathf.Max (0, this.Armour - 1);
+				UpdateBattleLog (" Armor plates scarred!");
+			}else {
+				this.Hullpoints -= d6 (2);
+				UpdateBattleLog (" Hull rupture!");
 			}
-			else
-				this.Hullpoints -= d6(2);
 		}	
 		else if ((Hullpoints < HullpointsOrig / 10)) {
 			this.Armour = 3;
@@ -130,7 +142,7 @@ public class Spaceship : SpaceObject {
 			return (this.name + " - Armor Deflected all damage!");
 		}
 			
-		UpdateBattleLog (" Under fire: " + Source + " - took " + ActualDamage + " hull damage!");
+		UpdateBattleLog (" Under fire from: " + Source + "! Received " + ActualDamage + " hull damage!");
 
 		AngerEngagingSwitchCheck (Source);
 
@@ -185,8 +197,9 @@ public class Spaceship : SpaceObject {
 		//Debug.Log (this.name + " SEEKING NEW ENEMY ");
 
 
-		if (this.HasLock() && this.Targetlock.gameObject.activeSelf == true)	//like to target targetlock, duh
-		{	Engage(Targetlock);
+		if (this.HasLock() && this.Targetlock.gameObject.activeSelf == true && this.Targetlock != this)	//like to target targetlock, duh
+		{	
+			Engage(Targetlock);
 			return Targetlock;
 		}
 
@@ -203,15 +216,21 @@ public class Spaceship : SpaceObject {
 			}
 		}
 
-		if (d6(1)>3)
+		if (d6(1)>3){
+			UpdateBattleLog (" No targets found!");
+
 			return this; //urhgtihetseith
-		
+		}
 		return SeekNewEnemy(); //urhgtihetseith
 		//Debug.Log (this.name + " IS VICTORIOUS! CHEEERING!");
 
 
 	}
 
+	/// <summary>
+	/// Attack the specified Target ship.
+	/// </summary>
+	/// <param name="Target">Enemy to attack.</param>
 	public void Engage(Spaceship Target)
 	{
 		if (this.Enemy != Target) 
@@ -229,12 +248,14 @@ public class Spaceship : SpaceObject {
 		//If Missiles incoming = countermeasures!
 
 
-		if (this.GetComponentsInChildren<MissileSalvo> ().Length > 0) {
-			UpdateBattleLog(ElectronicCountermeasure (this.GetComponentsInChildren<MissileSalvo> () [0]) ); //should priorize moreeee but not now
+		if (this.IncomingMissiles.Count > 0) {
+
+			if (this.IncomingMissiles[0] != null)
+				UpdateBattleLog(ElectronicCountermeasure (this.IncomingMissiles[0]) ); //should priorize moreeee but not now
 		}		
 		else
 		{
-			if (Enemy != null && Enemy.gameObject.activeSelf == true)
+			if (Enemy != null && Enemy.gameObject.activeSelf == true && Targetlock != Enemy )
 				this.TargetLockCheck (Enemy);
 		}
 
@@ -250,21 +271,20 @@ public class Spaceship : SpaceObject {
 			int Effect = Check - 9;
 
 			problem.ReduceMissiles (Effect);
-			this.IncomingMissiles -= Effect;
 
 			return (" Successfully countermeasured against " + problem.name +"!");
 
 		}
-		return (" Failed countermeasure! ");
+		return (" Failed countermeasures against "+ problem.name + "! ");
 
 	}
 
 	public void TargetLockCheck( Spaceship potentialtarget)
 	{
-		if (Targetlock != this | Targetlock == potentialtarget) {	//do nothing if already has target lock!
+		if (Targetlock != this | Targetlock != potentialtarget) {	//do nothing if already has target lock!
 			int Check = d6 (2) + Skill_Electronics + Sensors - potentialtarget.Stealth; 
 
-			if (Check >= 8) {
+			if (Check >= 8 | potentialtarget.Transponders == true) {
 				this.Targetlock = potentialtarget;
 
 				UpdateBattleLog (" Sensor Locked " + potentialtarget.name + "!");
@@ -286,7 +306,10 @@ public class Spaceship : SpaceObject {
 
 		if (Check >= 8) 
 		{
-			UpdateBattleLog(" Incoming missile from " + problem.source + "!");
+			if (problem.AmountOfMissiles > 1)
+				UpdateBattleLog(" Incoming missiles from " + problem.source.name + "!");
+			else
+				UpdateBattleLog(" Incoming missile  from " + problem.source.name + "!");
 
 			// todo AI logic??
 		}
@@ -299,7 +322,7 @@ public class Spaceship : SpaceObject {
 	/// <param name="Newline">Newline.</param>
 	public void UpdateBattleLog(string Newline)
 	{
-		if (Newline.Contains ("No missiles left") == false )
+		if (Newline.Contains ("No missiles left") == false | Newline.Contains (" Trying Touch selfshoot WTF"))
 			this.myBattleLog += (Newline + "\n");
 	}
 

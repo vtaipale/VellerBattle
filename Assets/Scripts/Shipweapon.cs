@@ -26,7 +26,15 @@ public class Shipweapon : TravellerBehaviour {
 	/// </summary>
 	/// <param name="Target">Target.</param>
 	public string Attack (Spaceship Target) {
-		if (OkToFire == true )
+		if (Target == null){
+			return (" No target!");
+		}
+		else if (Target == MyShip) 
+		{
+			Debug.LogWarning (this.MyShip.name + " trying shoot herself!!");
+			return (" Trying Touch selfshoot WTF");
+		}
+		else if (OkToFire == true )
 		{
 			if (Target == this.MyShip) {
 				OkToFire = true;

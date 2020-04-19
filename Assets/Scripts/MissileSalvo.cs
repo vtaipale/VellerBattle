@@ -6,8 +6,8 @@ public class MissileSalvo : SpaceObject {
 
 	public Spaceship Target;
 	public Spaceship source;
+	public string sourceName;
 	public int roundsToTarget;
-	public int Thrust = 10;
 	public int DamageDice = 4;
 	public int AmountOfMissiles = 1;
 
@@ -52,16 +52,16 @@ public class MissileSalvo : SpaceObject {
 		Target = Enemy;
 		this.source = SourceInject;
 
-		this.transform.SetParent (Enemy.transform);
+		Enemy.IncomingMissiles.Add (this);
 
-		AmountOfMissiles = HowManyMissiles;
+		this.AmountOfMissiles = HowManyMissiles;
 
 		if (this.AmountOfMissiles == 1)
 			this.name = this.Type + " from " + this.source.name;
 		else
 			this.name = this.Type + " salvo from " + this.source.name;
 
-		roundsToTarget = (Distance / 10) +1;
+		roundsToTarget = (this.DistanceTo(Enemy) / Thrust) +1;
 
 		if (Distance > 44) {	//no launches futhrer!
 			LowOnFuel = true; //couldbechecked with fly but meh.
@@ -74,13 +74,15 @@ public class MissileSalvo : SpaceObject {
 
 	public void Fly()
 	{
-		roundsToTarget--;
+		this.Move (this.Thrust, Target.transform.position);
+
+		roundsToTarget = (this.DistanceTo(Target) / Thrust);
 
 		if (roundsToTarget == 0) {
 			ImpactCheck ();
-			Destroy (this.gameObject);
-		} else if (roundsToTarget == 1)
-			this.Target.IncomingMissiles += AmountOfMissiles;
+			this.Target.IncomingMissiles.Remove (this);
+			Destroy (this.gameObject,0.1f);
+		}
 	}
 
 	public void ImpactCheck ()
@@ -98,44 +100,47 @@ public class MissileSalvo : SpaceObject {
 
 		if (finalEffect < 0)
 		{
-				this.Target.IncomingMissiles -= AmountOfMissiles;
-				Destroy (this.gameObject); //MISS!
+			//MISSED! (can attack again next turn?
 		}
-		else if (finalEffect == 0 | AmountOfMissiles == 1) {
+		else if (finalEffect == 0 | AmountOfMissiles == 1) {	//straight damage is done if Effect is 0
 			int Damage = d6 (DamageDice);
 
-			Target.Damage(Damage,this.name);
-			Debug.Log (this.name + " hit " + Target);
+			if (source.gameObject.activeSelf) {	//report back to homeship, if it is alive!
+					source.UpdateBattleLog (" " + this.Type + " hit " + Target.name + " for " + Damage + " Damage!");
+			}
+			Target.IncomingMissiles.Remove (this);
 
-			if (source.gameObject.activeSelf)
-				source.UpdateBattleLog( " " + this.Type  + " hit " + Target.name +" for " + Damage + " Damage!");
+			Target.Damage(Damage,this.name);
+			//Debug.Log (this.name + " hit " + Target);
 
 		}
-		else if (finalEffect > 0) {
+		else if (finalEffect > 0) { // Damage is way larger if Effect > 0
 
 			if (finalEffect > AmountOfMissiles)
 				finalEffect = AmountOfMissiles;
 
 			int Damage = ( d6(DamageDice) - Target.Armour) * finalEffect;
 
-			if (source.gameObject.activeSelf)
-				source.UpdateBattleLog( " " + this.Type  + " salvo hit " + Target.name +" for " + Damage + " Damage!");
+			if (source.gameObject.activeSelf) {//report back to homeship, if it is alive!
+					source.UpdateBattleLog (" " + this.Type + " salvo hit " + Target.name + " for " + Damage + " Damage!");
+			}
+			Target.IncomingMissiles.Remove (this);
 
-			Target.Damage(Damage, (this.name));
+			Target.Damage(Damage, this.name);
 			//Debug.Log (this.name + " hit " + Target +" for " + Damage + " Damage!");
 
+
 		}
-
-		this.Target.IncomingMissiles -= AmountOfMissiles;
-
+			
 	}
 
 	public void ReduceMissiles(int amount)
 	{
 		AmountOfMissiles -= amount;
 
-		if (AmountOfMissiles <= 0)
-			Destroy (this.gameObject);
+		if (AmountOfMissiles <= 0 && this != null)
+			Target.IncomingMissiles.Remove (this);
+			Destroy (this.gameObject,0.5f);
 	}
 
 

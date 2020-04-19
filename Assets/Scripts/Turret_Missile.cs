@@ -25,7 +25,9 @@ public class Turret_Missile : Shipweapon {
 
 		int HowManyToShoot = Mathf.Min (MissileRack, this.TurretAmount); //if remaining missiles < Turretamount
 
-		NewSalvo.Launch (target, 15, HowManyToShoot, MyShip);
+		//Debug.Log ("MissileLaunch: " + this.gameObject.name + "| " + target + "|" + HowManyToShoot + "|" + MyShip  + "|" + NewSalvo);;
+
+		NewSalvo.Launch (target, 15, HowManyToShoot, this.MyShip);
 	
 		MissileRack -= HowManyToShoot;
 

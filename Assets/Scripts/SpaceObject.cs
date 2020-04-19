@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class SpaceObject : TravellerBehaviour {
 
+	public int Thrust = 1;
+
 	public virtual void GameTurn(int turnNumber)
 	{
 	}
@@ -21,5 +23,27 @@ public class SpaceObject : TravellerBehaviour {
 	{
 		return Mathf.RoundToInt( Vector3.Distance (this.transform.position, target.transform.position) ) ;
 
+	}
+
+	public int DistanceTo(Vector3 target)
+	{
+		return Mathf.RoundToInt( Vector3.Distance (this.transform.position, target) ) ;
+
+	}
+
+	/// <summary>
+	/// Moves towards direction.
+	/// </summary>
+	public void Move(int amount, Vector3 direction)
+	{
+		this.transform.LookAt (direction);
+
+		if (amount > this.Thrust)
+			amount = this.Thrust;
+
+		if (amount > this.DistanceTo (direction))
+			this.transform.position = direction;
+		else			
+			this.transform.Translate (this.transform.forward * amount,Space.World);
 	}
 }
