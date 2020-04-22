@@ -44,7 +44,7 @@ public class MissileSalvo : SpaceObject {
 			Fly ();
 		
 		} else
-			Destroy (this.gameObject);
+			this.EndOfLife ();
 	}
 
 	public void Launch(Spaceship Enemy, int Distance, int HowManyMissiles, Spaceship SourceInject)
@@ -81,7 +81,7 @@ public class MissileSalvo : SpaceObject {
 		if (roundsToTarget == 0) {
 			ImpactCheck ();
 			this.Target.IncomingMissiles.Remove (this);
-			Destroy (this.gameObject,0.1f);
+			this.EndOfLife ();
 		}
 	}
 
@@ -138,12 +138,20 @@ public class MissileSalvo : SpaceObject {
 	{
 		AmountOfMissiles -= amount;
 
-		if (AmountOfMissiles <= 0 && this != null)
+		if (AmountOfMissiles <= 0) {
 			Target.IncomingMissiles.Remove (this);
-			Destroy (this.gameObject,0.5f);
+			this.EndOfLife ();
+		}
 	}
 
 
 
+	public void EndOfLife()
+	{
+		//TODO explosion for missile?
+		TrailRenderer MyTrail = this.GetComponentInChildren<TrailRenderer> ();
+		MyTrail.transform.SetParent (null,true);
 
+		Destroy (this.gameObject,0.4f);
+	}
 }
