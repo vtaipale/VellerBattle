@@ -10,6 +10,7 @@ public class MissileSalvo : SpaceObject {
 	public int roundsToTarget;
 	public int DamageDice = 4;
 	public int AmountOfMissiles = 1;
+	public int Fuel = 10;
 
 	public string Type = "Missile";
 
@@ -39,12 +40,21 @@ public class MissileSalvo : SpaceObject {
 	// This used to be in update dammit
 	public override void GameTurn(int turnNumber)
 	{
+		Fuel--;
+
+		if (Fuel <= 0)
+			this.EndOfLife();
+		else if (Fuel == 5 ) { //half of the starting one
+			LowOnFuel = true;
+			this.AmountOfMissiles = Mathf.RoundToInt (this.AmountOfMissiles / 2);
+		}
+
 		if ((Target != null) && (Target.gameObject.activeSelf == true)) {
 
 			Fly ();
 		
-		} else
-			this.EndOfLife ();
+		} else //TODO: missiles keep on flying if miss and explode after fuel runs out.
+			FlyStraight();
 	}
 
 	public void Launch(Spaceship Enemy, int Distance, int HowManyMissiles, Spaceship SourceInject)
@@ -63,9 +73,7 @@ public class MissileSalvo : SpaceObject {
 
 		roundsToTarget = (this.DistanceTo(Enemy) / Thrust) +1;
 
-		if (Distance > 44) {	//no launches futhrer!
-			LowOnFuel = true; //couldbechecked with fly but meh.
-		}
+
 
 		Enemy.MissileLaunchDetectCheck (this);
 
@@ -83,6 +91,11 @@ public class MissileSalvo : SpaceObject {
 			this.Target.IncomingMissiles.Remove (this);
 			this.EndOfLife ();
 		}
+	}
+	public void FlyStraight()
+	{
+		this.Move (this.Thrust, this.transform.position+this.transform.forward*Thrust);
+		//Debug.Log ("FLYSTRHAIGHT: " + this.transform.position+this.transform.forward);
 	}
 
 	public void ImpactCheck ()
@@ -149,9 +162,6 @@ public class MissileSalvo : SpaceObject {
 	public void EndOfLife()
 	{
 		//TODO explosion for missile?
-		TrailRenderer MyTrail = this.GetComponentInChildren<TrailRenderer> ();
-		MyTrail.transform.SetParent (null,true);
-
 		Destroy (this.gameObject,0.4f);
 	}
 }
