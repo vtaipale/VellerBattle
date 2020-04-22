@@ -36,7 +36,9 @@ public class Fleet : TravellerBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+
+		//TODO actual FleetAI.
+
 		update += Time.deltaTime;
 		if (update > 1.0f)
 		{

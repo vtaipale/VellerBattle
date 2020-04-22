@@ -50,16 +50,18 @@ public class Spaceship : SpaceObject {
 		//if (this.Hullpoints <= 0 && this.gameObject.activeSelf == true)
 		//this.Die();
 
-		//MOVEMENTLOGIC
+		//MOVEMENT STEP
+
+		//TODO: MOVEMENTLOGIC. Straight Towards enemy, traight to any direction, dogfight, follow friend?
 
 		//this.Move (this.Thrust, this.transform.);
 
-		//ATTACKLOGIC
+		//ATTACK STEP
 
 		if (HasLock() && Targetlock.gameObject.activeSelf == false)	//targetlock dies
 			this.Targetlock = this;
 	
-		if (Enemy == null) {
+		if (Enemy == null | Enemy == this) {
 			UpdateBattleLog (" Scanning for new target..");
 			this.SeekNewEnemy ();
 			this.Attack (Enemy);
@@ -73,7 +75,10 @@ public class Spaceship : SpaceObject {
 			this.Attack (Enemy);
 		}
 
+		//ACTIONS STEP
 		this.PerformSensorAction ();
+
+
 	}
 
 
@@ -199,6 +204,7 @@ public class Spaceship : SpaceObject {
 
 		//Debug.Log (this.name + " SEEKING NEW ENEMY ");
 
+		//TODO ask fleet for a target
 
 		if (this.HasLock() && this.Targetlock.gameObject.activeSelf == true && this.Targetlock != this)	//like to target targetlock, duh
 		{	
@@ -206,6 +212,7 @@ public class Spaceship : SpaceObject {
 			return Targetlock;
 		}
 
+		//TODO more detailed way of randomising the next target: perhaps by range?
 		foreach (Spaceship question in FindObjectsOfType<Spaceship>())
 		{
 			if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true )
@@ -240,7 +247,7 @@ public class Spaceship : SpaceObject {
 		{
 			this.Enemy = Target;
 			//Debug.Log (this.name + " ENGAGING " + question.name);
-			UpdateBattleLog (" ENGAGING " + Target.HullType + " " + Target.name);
+			UpdateBattleLog (" ENGAGING " + Target.HullType + " " + Target.name + " Distance: " + this.DistanceTo(Target));
 		}
 	}
 
@@ -314,7 +321,7 @@ public class Spaceship : SpaceObject {
 			else
 				UpdateBattleLog(" Incoming missile  from " + problem.source.name + "!");
 
-			// todo AI logic??
+			//TODO AI logic?? should this only here add them to IncomingMissiles?
 		}
 
 	}

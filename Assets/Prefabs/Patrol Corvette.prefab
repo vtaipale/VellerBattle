@@ -616,6 +616,8 @@ MonoBehaviour:
   OkToFire: 1
   WeaponMod: 2
   GunType: Beam Laser
+  DamageDice: 1
+  MaxRange: 9
 --- !u!114 &114336960389163130
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -666,7 +668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TL: 12
-  Thrust: 1
+  Thrust: 4
   HullType: Patrol Cruiser
   Hullpoints: 160
   HullpointsOrig: 160
@@ -704,6 +706,8 @@ MonoBehaviour:
   OkToFire: 1
   WeaponMod: 2
   GunType: Beam Laser
+  DamageDice: 1
+  MaxRange: 9
 --- !u!212 &212262722818434434
 SpriteRenderer:
   m_ObjectHideFlags: 1

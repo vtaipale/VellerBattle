@@ -17,8 +17,8 @@ public class SpaceObject : TravellerBehaviour {
 	/// <summary>
 	/// Gimme distance to other SpaceObject!
 	/// </summary>
-	/// <returns>The to.</returns>
-	/// <param name="target">Target.</param>
+	/// <returns>The distance to the Target.</returns>
+	/// <param name="target">OtherObject</param>
 	public int DistanceTo(SpaceObject target)
 	{
 		return Mathf.RoundToInt( Vector3.Distance (this.transform.position, target.transform.position) ) ;

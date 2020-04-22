@@ -131,6 +131,8 @@ MonoBehaviour:
   OkToFire: 1
   WeaponMod: 2
   GunType: Beam Laser
+  DamageDice: 1
+  MaxRange: 9
 --- !u!114 &114237218469991500
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,16 +145,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TL: 12
+  Thrust: 2
   HullType: Scout
   Hullpoints: 40
   HullpointsOrig: 40
   Armour: 4
+  Sensors: 0
+  Stealth: 0
+  Transponders: 0
   Side: UNION
   Status: OK
   CaptainName: Haddock
   Skill_Pilot: 0
   Skill_Electronics: 0
+  ShipExplosion: {fileID: 0}
   MyGuns: []
   Enemy: {fileID: 0}
-  IncomingMissiles: 0
+  Targetlock: {fileID: 0}
+  IncomingMissiles: []
   myBattleLog: 
