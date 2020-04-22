@@ -10,12 +10,7 @@ public class Turret_Missile : Shipweapon {
 
 	public override string Attacklogic(Spaceship target)
 	{
-
-		if (target.DistanceTo (this.MyShip) > 100) 
-		{
-			return (" " + target.name + " out of Missile range!");
-		}
-		else if (MissileRack > 0) {
+		if (MissileRack > 0) {
 			return LaunchMissile (target);
 		}
 		
