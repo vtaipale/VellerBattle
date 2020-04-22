@@ -89,7 +89,10 @@ public class Spaceship : SpaceObject {
 		{
 			//this.transform.LookAt (Enemy.transform);
 
-			this.Move (this.Thrust, Enemy.transform.position);
+			if (this.DistanceTo (Enemy) > 2) //Standard
+				this.Move (this.Thrust, Enemy.transform.position);
+			else
+				this.Move (this.Thrust/2, this.transform.position+this.transform.forward*this.Thrust); //so they do not get stuck in piles
 
 			foreach (Shipweapon Gun in MyGuns) {		
 				//Debug.Log (Gun.Attack (Enemy));;
