@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Cameras;
 
 public class GameFlowController : TravellerBehaviour {
 
@@ -39,6 +40,8 @@ public class GameFlowController : TravellerBehaviour {
 		{
 			update = 0.0f;
 			NextRound ();
+
+			FindObjectOfType<FreeLookCam> ().ManualUpdate();
 
 			if (Battle == true && FindObjectOfType<MissileSalvo>() == null && (Fleet1.DefeatCheck () | Fleet2.DefeatCheck ())) {
 				ContinueGame = false;
