@@ -211,7 +211,7 @@ TrailRenderer:
     textureMode: 0
     generateLightingData: 0
   m_MinVertexDistance: 0.1
-  m_Autodestruct: 1
+  m_Autodestruct: 0
 --- !u!114 &114255371851431416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -231,5 +231,6 @@ MonoBehaviour:
   roundsToTarget: 0
   DamageDice: 4
   AmountOfMissiles: 1
+  Fuel: 10
   Type: Missile
   LowOnFuel: 0

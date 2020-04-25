@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Cameras;
 
 public class Fleet : TravellerBehaviour {
 
@@ -8,7 +9,7 @@ public class Fleet : TravellerBehaviour {
 
 	public string Side = "";
 
-	private float update = 0f;
+	//private float update = 0f;
 
 	public Spaceship[] MyShips;
 
@@ -16,10 +17,16 @@ public class Fleet : TravellerBehaviour {
 
 	public bool InstantMayhem = false;
 
+	public GameObject Destination;
+
 	// Use this for initialization
 	void Start () {
 
 		MyShips = GetComponentsInChildren<Spaceship> ();
+
+		Debug.Assert (MyShips.Length > 0);
+
+		Leader = MyShips [0];
 
 		foreach (Spaceship shippen in MyShips) {
 			shippen.name = Side + "-" + Mathf.RoundToInt (Random.Range (19f, 999f)) + " " + Shipnames [(Mathf.RoundToInt (Random.value * (Shipnames.GetLength (0) - 1)))];
@@ -30,6 +37,13 @@ public class Fleet : TravellerBehaviour {
 				shippen.CaptainName = LastNames [(Mathf.RoundToInt (Random.value * (LastNames.GetLength (0) - 1)))];
 
 			shippen.UpdateBattleLog ("---Captain " + shippen.CaptainName + "s battlelog for " + shippen.HullType + " " + shippen.name);
+			shippen.UpdateBattleLog (" Location: FARHO: " + shippen.transform.position);
+
+			if (Leader == shippen) 
+				shippen.UpdateBattleLog (" Commander: ME! ");
+			else
+				shippen.UpdateBattleLog (" Commander: " + Leader.CaptainName + " of " + Leader.name);
+
 
 			if (InstantMayhem) {
 				this.Alarm (shippen, "Red");
@@ -42,14 +56,9 @@ public class Fleet : TravellerBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		//TODO actual FleetAI.
+		LeaderCheck ();
 
-		update += Time.deltaTime;
-		if (update > 1.0f)
-		{
-			update = 0.0f;
-			DefeatCheck ();
-		}	
+		//TODO actual FleetAI.
 	}
 
 
@@ -71,6 +80,48 @@ public class Fleet : TravellerBehaviour {
 		}
 	}
 
+	public void OrderAll(string WhatToOrder)
+	{
+		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>())
+		{
+			if (shippen.gameObject.activeSelf)
+				Order (shippen, WhatToOrder);
+		}
+	}
+
+	public void MoveOrderAll(GameObject DestinationPoint)
+	{
+		if (Destination != null && Destination.tag == "MovementPoint"){
+			Debug.LogWarning ("Destroying " + Destination);
+			//Destroy (Destination, 1f); //there can be only one
+		}
+		
+		Destination = DestinationPoint;
+
+		OrderAll ("Move");
+
+		MessageAll (" Destination: " + Destination.transform.position + ". Dist: " + Leader.DistanceTo (Destination.transform));
+
+		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>())
+		{
+			if (shippen.gameObject.activeSelf)
+				shippen.Destination = this.Destination.transform;
+		}
+
+	}
+		
+	public void MoveOrderAll(Vector3 Destination)
+	{
+		GameObject NuMovementPoint = (GameObject)Instantiate (new GameObject(), Destination,new Quaternion(0f,0f,0f,0f));
+
+		NuMovementPoint.tag = "MovementPoint";
+
+		NuMovementPoint.name = "Movementpoint of Fleet " + this.name;
+
+		this.MoveOrderAll (NuMovementPoint);
+
+	}
+
 	public void Alarm(Spaceship WhoToAlarm, string WhatAlarm)
 	{
 		if (IsThisOurs(WhoToAlarm)) 
@@ -79,34 +130,110 @@ public class Fleet : TravellerBehaviour {
 			}	//TODO somethin here.
 		}
 	}
+	public void AlarmAll(string WhatAlarm)
+	{
+		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship> ())
+		{
+			if (shippen.gameObject.activeSelf)
+				Alarm (shippen, WhatAlarm);
+		}
+	}
 
 	private bool IsThisOurs(Spaceship question)
 	{
 		return (question.Side == this.Side);
 	}
 
+	public void MessageAll(string Message)
+	{
+		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship> ())
+		{
+			if (shippen.gameObject.activeSelf)
+				shippen.UpdateBattleLog (" Fleet: " + Message);
+		}
+	}
+
+
 	public string StatusReport ()
 	{
 		Report = "";
 
 		if (this.DefeatCheck () == true)
-			Report += "++DEFEAT++";
+			Report += "++DEFEAT++\n";
 		else {
-			Report += "++VICTORY++";
-			Report += "  Spaceships left: " + GetComponentsInChildren<Spaceship> ().Length;
+			Report += "++VICTORY++\n";
+			Report += "  Spaceships left: " + GetComponentsInChildren<Spaceship> ().Length +"\n";
 		}
 
-		foreach (Spaceship shippen in MyShips)
-		{
-			Report += "----- " + shippen.name
-			+ "\n CPT:     " + shippen.CaptainName
-			+ "\n TYPE:    " + shippen.HullType
-			+ "\n STATUS:  " + shippen.Status + "\n";
+		Report += "  Spaceships originally: " + MyShips.Length +"\n";
+
+
+		if (GetComponentsInChildren<Spaceship> ().Length > 0) {
+
+			Report += "\n+ACTIVE+ \n";
+
+			foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>()) {
+				if (shippen.gameObject.activeSelf == true) {
+
+					Report += "----- " + shippen.name
+					+ "\n CPT:     " + shippen.CaptainName
+					+ "\n TYPE:    " + shippen.HullType
+					+ "\n STATUS:  " + shippen.Status + "\n";
+				}
+			}
+		}
+
+		if (GetComponentsInChildren<Spaceship> ().Length < MyShips.Length) {
+			
+			Report += "\n+LOST+ \n";
+
+			foreach (Spaceship shippen in MyShips) {
+				if (shippen.gameObject.activeSelf == false) {
+
+					//shippen.gameObject.SetActive (true);
+
+					Report += "----- " + shippen.name
+					+ "\n CPT:     " + shippen.CaptainName
+					+ "\n TYPE:    " + shippen.HullType
+					+ "\n STATUS:  " + shippen.Status + "\n";
+
+					//shippen.gameObject.SetActive (false);
+					//Destroy (shippen, 2f);
+				}
+			}
+
+
 		}
 
 		return Report;
 
 	}
+
+	/// <summary>
+	/// Is leader alive
+	/// </summary>
+	/// <returns><c>true</c>, if leader is OK <c>false</c> if dead and assigns nuboss.</returns>
+	public bool LeaderCheck()
+	{
+		if (Leader.gameObject.activeSelf) {
+			return true;
+		}
+
+		if (DefeatCheck() == false) 
+		{
+			Leader = GetComponentsInChildren<Spaceship> () [0];
+			MessageAll ("Commander KIA, acting commander: " + Leader.CaptainName + " of " + Leader.name);
+		}
+
+		return false;
+	}
+
+	public void CamToFollowLeader(int DisplayNumber)
+	{
+		FindObjectOfType<FreeLookCam>().SetTarget(Leader.transform);
+	}
+
+
 
 	/// <summary>
 	/// Checks if no ships left. If none, fleet defeated

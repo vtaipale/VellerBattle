@@ -878,6 +878,8 @@ MonoBehaviour:
   Transponders: 0
   Side: UNION
   Status: OK
+  Alarm: Yellow
+  Order: Move
   CaptainName: Haddock
   Skill_Pilot: 0
   Skill_Electronics: 0
@@ -886,6 +888,7 @@ MonoBehaviour:
   MyGuns: []
   Enemy: {fileID: 0}
   Targetlock: {fileID: 0}
+  Destination: {fileID: 0}
   IncomingMissiles: []
   myBattleLog: 
 --- !u!114 &114507986751158988
