@@ -458,6 +458,25 @@ public class Spaceship : SpaceObject {
 	}
 
 
+	public string MiniReport()
+	{
+		if (this.Order == "Move" && this.Destination != null)
+			return (this.name + " | Moving to " + Destination.name + ", Dist " + this.DistanceTo(Destination));
+		if (this.Order == "Move" && this.Destination == null)
+			return (this.name + " | Advancing towards " + this.transform.forward );
+		else if (this.Order == "Engage" && HasEnemy())
+			return (this.name + " | Engaging " + Enemy.name + ", Dist " + this.DistanceTo(Enemy));
+		else if (this.Alarm == "Red" && HasEnemy())
+			return (this.name + " | Firing at " + Enemy.name + ", Dist " + this.DistanceTo(Enemy));
+		else if (this.Alarm == "White")
+			return (this.name + " | Surrendering" );
+		else if (this.Order == "Stop")
+			return (this.name + " | At " + this.transform.position );
+
+		return (this.name + " | No orders");
+		 
+	}
+
 	public string Die () {
 		return this.Die("was wrecked!");
 	}

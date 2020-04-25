@@ -153,6 +153,21 @@ public class Fleet : TravellerBehaviour {
 		}
 	}
 
+	public string GetMiniReports ()
+	{
+		Report = "";
+
+		Report += "Ships: " + GetComponentsInChildren<Spaceship> ().Length + "/" + MyShips.Length + "\n";
+
+		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>())
+		{
+			if (shippen.gameObject.activeSelf)
+				Report += shippen.MiniReport () + "\n";
+		}
+
+		return Report;
+
+	}
 
 	public string StatusReport ()
 	{
