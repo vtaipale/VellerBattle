@@ -14,22 +14,27 @@ public class Fleet : TravellerBehaviour {
 
 	public string Report = "";
 
+	public bool InstantMayhem = false;
+
 	// Use this for initialization
 	void Start () {
 
 		MyShips = GetComponentsInChildren<Spaceship> ();
 
-		foreach (Spaceship shippen in MyShips)
-		{
+		foreach (Spaceship shippen in MyShips) {
 			shippen.name = Side + "-" + Mathf.RoundToInt (Random.Range (19f, 999f)) + " " + Shipnames [(Mathf.RoundToInt (Random.value * (Shipnames.GetLength (0) - 1)))];
 
 			shippen.Side = this.Side;
 
-			if (shippen.CaptainName == "Haddock") 
+			if (shippen.CaptainName == "Haddock")
 				shippen.CaptainName = LastNames [(Mathf.RoundToInt (Random.value * (LastNames.GetLength (0) - 1)))];
 
 			shippen.UpdateBattleLog ("---Captain " + shippen.CaptainName + "s battlelog for " + shippen.HullType + " " + shippen.name);
 
+			if (InstantMayhem) {
+				this.Alarm (shippen, "Red");
+				this.Order (shippen, "Engage");
+			}
 		}
 
 	}
@@ -45,6 +50,39 @@ public class Fleet : TravellerBehaviour {
 			update = 0.0f;
 			DefeatCheck ();
 		}	
+	}
+
+
+	public void Engage(Spaceship OurShip, Spaceship EnemyShip)
+	{
+		if (IsThisOurs (OurShip) && EnemyShip.Side != this.Side) {
+		
+			OurShip.Engage (EnemyShip);
+
+		}
+		
+	}
+
+	public void Order(Spaceship WhoToOrder, string WhatToOrder)
+	{
+		if (IsThisOurs(WhoToOrder)) {
+			WhoToOrder.Order = WhatToOrder;
+			WhoToOrder.UpdateBattleLog (" Fleet Order: " + WhatToOrder.ToUpper ());
+		}
+	}
+
+	public void Alarm(Spaceship WhoToAlarm, string WhatAlarm)
+	{
+		if (IsThisOurs(WhoToAlarm)) 
+		{
+			if (WhoToAlarm.ChangeAlarm (WhatAlarm) == false) {
+			}	//TODO somethin here.
+		}
+	}
+
+	private bool IsThisOurs(Spaceship question)
+	{
+		return (question.Side == this.Side);
 	}
 
 	public string StatusReport ()

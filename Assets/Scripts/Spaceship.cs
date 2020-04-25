@@ -14,6 +14,19 @@ public class Spaceship : SpaceObject {
 
 	public string Side; //more complex?
 	public string Status = "OK";
+	public string Alarm = "Yellow";
+		/*	White = do not move, surrender
+		 *  Green = standard, no hostiles present
+		 *  Yellow = Ready for action, do not fire first
+		 *  TODO: Orange: Lasers OK, Missiles no?
+		 *  Red = Fire at will!
+		 */ 
+	public string Order = "Move";
+		/*	Move = move towards movementTarget, attacking directed by alert status
+		 *  Stop = Do Not Move, attacking directed by alert status
+		 * 	Engage = will move towards Enemy at max speed.
+		 *  (later = Dock)
+		 */
 
 	//public Captain = Haddoc
 	public string CaptainName = "Haddock";
@@ -26,6 +39,7 @@ public class Spaceship : SpaceObject {
 
 	public Spaceship Enemy;
 	public Spaceship Targetlock;	//if set to self it is nonexistant
+	public Transform MovementTarget;
 	public List<MissileSalvo> IncomingMissiles = new List<MissileSalvo>();
 
 	public string myBattleLog = "";
@@ -54,13 +68,37 @@ public class Spaceship : SpaceObject {
 
 		//TODO: MOVEMENTLOGIC. Straight Towards enemy, traight to any direction, dogfight, follow friend?
 
-		//this.Move (this.Thrust, this.transform.);
+		if (Alarm != "White" && Order != "Stop")
+			this.MovementLogic();
 
 		//ATTACK STEP
+		if (Alarm == "Red")
+			this.AttackLogic();
 
+		//ACTIONS STEP
+		this.PerformSensorAction ();
+
+
+	}
+
+	//
+	private void MovementLogic ()
+	{
+
+		if (MovementTarget == null | (Alarm == "Red" && (Enemy != null && this.DistanceTo(Enemy) < 2) ) ) 
+			this.Move (this.Thrust/2, this.transform.position+this.transform.forward*this.Thrust); //Default move, merely forward
+		else 
+		{
+			//TODO complain upwards that hey gimme me ssomething to do!
+			this.Move (this.Thrust, MovementTarget.transform.position);
+		}
+	}
+
+	private void AttackLogic ()
+	{
 		if (HasLock() && Targetlock.gameObject.activeSelf == false)	//targetlock dies
 			this.Targetlock = this;
-	
+
 		if (Enemy == null | Enemy == this) {
 			UpdateBattleLog (" Scanning for new target..");
 			this.SeekNewEnemy ();
@@ -74,13 +112,7 @@ public class Spaceship : SpaceObject {
 			this.SeekNewEnemy ();
 			this.Attack (Enemy);
 		}
-
-		//ACTIONS STEP
-		this.PerformSensorAction ();
-
-
 	}
-
 
 	public void Attack (Spaceship Enemy)
 	{
@@ -89,11 +121,6 @@ public class Spaceship : SpaceObject {
 		{
 			//this.transform.LookAt (Enemy.transform);
 
-			if (this.DistanceTo (Enemy) > 2) //Standard
-				this.Move (this.Thrust, Enemy.transform.position);
-			else
-				this.Move (this.Thrust/2, this.transform.position+this.transform.forward*this.Thrust); //so they do not get stuck in piles
-
 			foreach (Shipweapon Gun in MyGuns) {		
 				//Debug.Log (Gun.Attack (Enemy));;
 				UpdateBattleLog (Gun.Attack (Enemy));
@@ -101,9 +128,15 @@ public class Spaceship : SpaceObject {
 		}
 
 	}
-		
+
+	/// <summary>
+	/// Damage the ship HowMuch.
+	/// </summary>
+	/// <param name="HowMuch">Amount of Damage</param>
+	/// <param name="Source">Source of Damage</param>
 	public string Damage (int HowMuch, string Source)
 	{
+
 		int ActualDamage = Mathf.Max(HowMuch - Armour,0);
 
 		if (Source.Contains("missile"))	//brutal check here but good enough for now;
@@ -135,15 +168,14 @@ public class Spaceship : SpaceObject {
 			}
 		}	
 		else if ((Hullpoints < HullpointsOrig / 10)) {
-			this.Armour = 3;
+			//this.Armour = 3;
 			//Debug.Log (this.name + " DANGER DANGER DA DAMAGED!");
 			UpdateBattleLog ("  DANGER DANGER DANGER!");
 
 			this.Status = "DANGER";
 		}	
 
-
-		if (Hullpoints <= 0) {
+		if (Hullpoints <= 0) {		//DEADCHECK
 			
 			return this.Die ("was destroyed by " + Source);
 		}
@@ -154,6 +186,8 @@ public class Spaceship : SpaceObject {
 		}
 			
 		UpdateBattleLog (" Under fire from: " + Source + "! Received " + ActualDamage + " hull damage!");
+
+		this.ChangeAlarm ("Red");
 
 		AngerEngagingSwitchCheck (Source);
 
@@ -225,7 +259,6 @@ public class Spaceship : SpaceObject {
 					Engage(question);
 					return question;
 				}
-
 			}
 		}
 
@@ -246,12 +279,16 @@ public class Spaceship : SpaceObject {
 	/// <param name="Target">Enemy to attack.</param>
 	public void Engage(Spaceship Target)
 	{
-		if (this.Enemy != Target) 
+		if (this.Enemy != Target && Alarm == "Red") 
 		{
 			this.Enemy = Target;
+			this.MovementTarget = Target.transform;
+			this.Order = "Engage";
 			//Debug.Log (this.name + " ENGAGING " + question.name);
 			UpdateBattleLog (" ENGAGING " + Target.HullType + " " + Target.name + " Distance: " + this.DistanceTo(Target));
 		}
+		else if (Alarm != "Red")
+			UpdateBattleLog (" Cannot Engage" + Target.name + ": Alarm not Red!");
 	}
 
 	public void PerformSensorAction()
@@ -268,7 +305,7 @@ public class Spaceship : SpaceObject {
 		}		
 		else
 		{
-			if (Enemy != null && Enemy.gameObject.activeSelf == true && Targetlock != Enemy )
+			if (Enemy != null && Enemy.gameObject.activeSelf == true && Targetlock != Enemy && Alarm == "Red" )
 				this.TargetLockCheck (Enemy);
 		}
 
@@ -324,10 +361,45 @@ public class Spaceship : SpaceObject {
 			else
 				UpdateBattleLog(" Incoming missile  from " + problem.source.name + "!");
 
+			this.ChangeAlarm ("Red");
 			//TODO AI logic?? should this only here add them to IncomingMissiles?
 		}
 
 	}
+
+	/// <summary>
+	/// Changes the Ships alert to a new type.
+	/// </summary>
+	/// <param name="NuAlarm">what to attempt changing</param>
+	public bool ChangeAlarm (string NuAlarm)
+	{
+		if ((NuAlarm == "White") && this.Alarm != "White") {
+			return SetAlarm (NuAlarm);
+		}
+		else if ((NuAlarm == "Green") && this.Alarm != "Green") {
+			return SetAlarm (NuAlarm);
+		}
+		else if ((NuAlarm == "Yellow") && this.Alarm != "Yellow") {
+			return SetAlarm (NuAlarm);
+		}
+		else if ((NuAlarm == "Red") && this.Alarm == "Yellow") {	//Only Yellow allows going to Red!
+			return SetAlarm (NuAlarm);
+		}
+		else if (!(NuAlarm == "White" | NuAlarm == "Green" | NuAlarm == "Yellow" | NuAlarm == "Red"))
+			Debug.LogWarning (this.name + " Trying to change to wrong kind of Alarm = " + NuAlarm);
+
+		return false;
+
+	}
+
+	private bool SetAlarm(string NuAlarm)
+	{
+		this.Alarm = NuAlarm;
+		UpdateBattleLog (" " + this.Alarm.ToUpper() + " ALERT!!");	
+		return true;
+
+	}
+
 
 	/// <summary>
 	/// Updates the battle log of the ship.
@@ -340,7 +412,6 @@ public class Spaceship : SpaceObject {
 	}
 
 
-	// Update is called once per frame
 	public string Die () {
 		return this.Die("was wrecked!");
 	}

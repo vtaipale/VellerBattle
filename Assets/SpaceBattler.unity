@@ -616,7 +616,7 @@ Transform:
   - {fileID: 447828815}
   - {fileID: 750689381}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &104663684
 GameObject:
@@ -1332,7 +1332,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 17.186, y: 45.536003, z: -0.023000002}
 --- !u!1001 &192346950
 Prefab:
@@ -2476,7 +2476,7 @@ Transform:
   - {fileID: 1789927710}
   - {fileID: 630721381}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &312592713
 GameObject:
@@ -2984,7 +2984,6 @@ Transform:
   m_LocalPosition: {x: 50, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1629574664}
   - {fileID: 692433189}
   - {fileID: 615147932}
   - {fileID: 1711636559}
@@ -2996,9 +2995,10 @@ Transform:
   - {fileID: 1233035379}
   - {fileID: 1423760881}
   - {fileID: 1947158126}
+  - {fileID: 1629574664}
   - {fileID: 1342201463}
   m_Father: {fileID: 763493583}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &405205033
 MonoBehaviour:
@@ -3016,6 +3016,7 @@ MonoBehaviour:
   Side: AFN
   MyShips: []
   Report: 
+  InstantMayhem: 1
 --- !u!1 &406859820
 GameObject:
   m_ObjectHideFlags: 0
@@ -3131,7 +3132,7 @@ Transform:
   - {fileID: 1345033491}
   - {fileID: 41903848}
   m_Father: {fileID: 763493583}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &415328968
 MonoBehaviour:
@@ -3149,6 +3150,7 @@ MonoBehaviour:
   Side: UAF
   MyShips: []
   Report: 
+  InstantMayhem: 1
 --- !u!1 &424992569
 GameObject:
   m_ObjectHideFlags: 0
@@ -3242,6 +3244,7 @@ MonoBehaviour:
   Side: UAF
   MyShips: []
   Report: 
+  InstantMayhem: 0
 --- !u!4 &446653601 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
@@ -3293,6 +3296,7 @@ MonoBehaviour:
   Side: AFN
   MyShips: []
   Report: 
+  InstantMayhem: 0
 --- !u!4 &453886301 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
@@ -3678,7 +3682,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 49a0e923d39ec3c4c8bb97699e2f2903, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 49a0e923d39ec3c4c8bb97699e2f2903, type: 2}
       propertyPath: m_AutoTargetPlayer
@@ -3719,6 +3723,10 @@ Prefab:
     - target: {fileID: 100004, guid: 49a0e923d39ec3c4c8bb97699e2f2903, type: 2}
       propertyPath: m_Name
       value: FreeLookCameraRig Normal
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 49a0e923d39ec3c4c8bb97699e2f2903, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 49a0e923d39ec3c4c8bb97699e2f2903, type: 2}
@@ -3832,7 +3840,7 @@ Transform:
   - {fileID: 747938919}
   - {fileID: 1181417732}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &544059308 stripped
 Transform:
@@ -3856,7 +3864,7 @@ GameObject:
   - component: {fileID: 555707466}
   - component: {fileID: 555707465}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: CameraUnionShip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3881,7 +3889,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 555707463}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &555707466
 Behaviour:
   m_ObjectHideFlags: 0
@@ -4473,7 +4481,7 @@ Transform:
   - {fileID: 1361567671}
   - {fileID: 1734544659}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &620310404 stripped
 Transform:
@@ -8748,7 +8756,7 @@ Transform:
   - {fileID: 1500704914}
   - {fileID: 1773259731}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &699332753
 GameObject:
@@ -9360,6 +9368,7 @@ MonoBehaviour:
   Side: AFN
   MyShips: []
   Report: 
+  InstantMayhem: 0
 --- !u!1 &750689380
 GameObject:
   m_ObjectHideFlags: 0
@@ -9406,6 +9415,7 @@ MonoBehaviour:
   Side: UAF
   MyShips: []
   Report: 
+  InstantMayhem: 0
 --- !u!1001 &753730498
 Prefab:
   m_ObjectHideFlags: 0
@@ -9505,6 +9515,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 951986681}
+  - {fileID: 2090726331}
   - {fileID: 405205032}
   - {fileID: 415328967}
   m_Father: {fileID: 0}
@@ -9919,6 +9930,8 @@ MonoBehaviour:
   Transponders: 0
   Side: FED
   Status: OK
+  Alarm: Yellow
+  Order: Move
   CaptainName: Haddock
   Skill_Pilot: 0
   Skill_Electronics: 0
@@ -9927,6 +9940,7 @@ MonoBehaviour:
   MyGuns: []
   Enemy: {fileID: 0}
   Targetlock: {fileID: 0}
+  MovementTarget: {fileID: 0}
   IncomingMissiles: []
   myBattleLog: 
 --- !u!23 &815836937
@@ -10398,7 +10412,7 @@ Transform:
   - {fileID: 1912725666}
   - {fileID: 1399835384}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &920483762
 Prefab:
@@ -11077,6 +11091,56 @@ Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
     type: 2}
   m_PrefabInternal: {fileID: 1019963652}
+--- !u!1001 &1030668235
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4075491861928340, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075491861928340, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075491861928340, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -30.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075491861928340, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0.0000019900988
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075491861928340, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075491861928340, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075491861928340, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.0000019520521
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075491861928340, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075491861928340, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075491861928340, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -180.00002
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 3beda79678d9b2141a1945d0c1e9eac1, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &1035917051
 Prefab:
   m_ObjectHideFlags: 0
@@ -11244,6 +11308,7 @@ MonoBehaviour:
   Side: AFN
   MyShips: []
   Report: 
+  InstantMayhem: 0
 --- !u!4 &1068016936 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4065887149097098, guid: 71472c96e5f10fd46837e6058c9a9354,
@@ -11925,7 +11990,7 @@ Transform:
   - {fileID: 446653601}
   - {fileID: 338226892}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1138521788 stripped
 Transform:
@@ -12259,6 +12324,7 @@ MonoBehaviour:
   Side: UAF
   MyShips: []
   Report: 
+  InstantMayhem: 0
 --- !u!1001 &1183178591
 Prefab:
   m_ObjectHideFlags: 0
@@ -12668,7 +12734,7 @@ Transform:
   - {fileID: 1219542843}
   - {fileID: 1492870905}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1233752007 stripped
 Transform:
@@ -13507,7 +13573,7 @@ Transform:
   - {fileID: 468630994}
   - {fileID: 505457456}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1350737226
 Prefab:
@@ -13598,23 +13664,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f8776b652cfcb1d459efb9f49d5cf9d9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.75894356
+      value: -0.7589436
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f8776b652cfcb1d459efb9f49d5cf9d9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.10416941
+      value: -0.10416942
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f8776b652cfcb1d459efb9f49d5cf9d9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.30911553
+      value: 0.30911556
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f8776b652cfcb1d459efb9f49d5cf9d9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.56356096
+      value: 0.563561
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f8776b652cfcb1d459efb9f49d5cf9d9, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f8776b652cfcb1d459efb9f49d5cf9d9, type: 3}
       propertyPath: m_LocalScale.x
@@ -14179,7 +14245,7 @@ Transform:
   - {fileID: 271844963}
   - {fileID: 605835060}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1429734340
 Prefab:
@@ -15604,14 +15670,14 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1629574663}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.97, y: 0.59, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalPosition: {x: 1.9700012, y: 0.5900002, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.20000024, z: 0.20000024}
   m_Children:
   - {fileID: 1233752007}
   - {fileID: 2017106502}
   - {fileID: 609586478}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 0
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1633496471
 Prefab:
@@ -15825,6 +15891,8 @@ MonoBehaviour:
   Transponders: 0
   Side: FED
   Status: OK
+  Alarm: Yellow
+  Order: Move
   CaptainName: Haddock
   Skill_Pilot: 0
   Skill_Electronics: 0
@@ -15833,6 +15901,7 @@ MonoBehaviour:
   MyGuns: []
   Enemy: {fileID: 0}
   Targetlock: {fileID: 0}
+  MovementTarget: {fileID: 0}
   IncomingMissiles: []
   myBattleLog: 
 --- !u!23 &1677977995
@@ -15992,7 +16061,7 @@ Transform:
   - {fileID: 1138521788}
   - {fileID: 1839687738}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1712663618
 Prefab:
@@ -16607,7 +16676,7 @@ Transform:
   - {fileID: 59377348}
   - {fileID: 1645194102}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1832838655
 Prefab:
@@ -16985,7 +17054,7 @@ Transform:
   - {fileID: 1821419547}
   - {fileID: 1391831999}
   m_Father: {fileID: 405205032}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1947341526
 Prefab:
@@ -18096,15 +18165,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2090726330}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.13599925, z: 0.13600004}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 93726270}
   - {fileID: 1067297121}
   - {fileID: 433943914}
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 763493583}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &2093567036
 GameObject:
