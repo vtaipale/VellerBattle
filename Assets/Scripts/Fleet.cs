@@ -8,6 +8,7 @@ public class Fleet : TravellerBehaviour {
 	public Spaceship Leader;
 
 	public string Side = "";
+	public Material SideFlag;
 
 	//private float update = 0f;
 
@@ -49,6 +50,10 @@ public class Fleet : TravellerBehaviour {
 				this.Alarm (shippen, "Red");
 				this.Order (shippen, "Engage");
 			}
+		}
+		foreach (MeshRenderer Flaggen in GetComponentsInChildren<MeshRenderer>()) {
+			if (Flaggen.name.Contains("Flag_"))
+				Flaggen.material = this.SideFlag;
 		}
 
 	}

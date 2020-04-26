@@ -48,7 +48,7 @@ public class Spaceship : SpaceObject {
 	void Start () {
 
 		this.MyGuns = this.gameObject.GetComponentsInChildren<Shipweapon> ();
-		this.Targetlock = this;
+		//this.Targetlock = this;
 
 		this.Skill_Pilot = Mathf.RoundToInt (Random.Range (0f, 2f));
 		this.Skill_Electronics = Mathf.RoundToInt (Random.Range (0f, 2f));
@@ -115,9 +115,11 @@ public class Spaceship : SpaceObject {
 			//TODO complain upwards that hey gimme me ssomething to do!
 
 			if (this.Move (this.Thrust, Destination.transform.position) == true) {
-				UpdateBattleLog (" Destination reached, coming to full stop!");
-				this.Order = "Stop";
-				this.Destination = null;
+				if (this.Order == "Move") {
+					UpdateBattleLog (" Destination reached, coming to full stop!");
+					this.Order = "Stop";
+					this.Destination = null;
+				}
 			}
 		}
 	}
@@ -199,6 +201,8 @@ public class Spaceship : SpaceObject {
 			UpdateBattleLog ("  DANGER DANGER DANGER!");
 
 			this.Status = "DANGER";
+
+			this.SurrenderCheck ();
 		}	
 
 		if (Hullpoints <= 0) {		//DEADCHECK
@@ -287,7 +291,7 @@ public class Spaceship : SpaceObject {
 
 		//TODO ask fleet for a target
 
-		if (this.HasLock())	//like to target targetlock, duh
+		if (this.HasLock() && Targetlock.Alarm != "White")	//like to target targetlock, duh
 		{	
 			Engage(Targetlock);
 			return Targetlock;
@@ -296,7 +300,7 @@ public class Spaceship : SpaceObject {
 		//TODO more detailed way of randomising the next target: perhaps by range?
 		foreach (Spaceship question in FindObjectsOfType<Spaceship>())
 		{
-			if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true )
+			if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true && question.Alarm != "White" )
 			{
 				//targetinglogic here??
 				if (Random.Range (0, 10) > 6) {
@@ -419,7 +423,10 @@ public class Spaceship : SpaceObject {
 	/// <param name="NuAlarm">what to attempt changing</param>
 	public bool ChangeAlarm (string NuAlarm)
 	{
-		if ((NuAlarm == "White") && this.Alarm != "White") {
+		if (this.Alarm == "White") {
+			return false;
+		}
+		else if ((NuAlarm == "White") && this.Alarm != "White") {
 			return SetAlarm (NuAlarm);
 		}
 		else if ((NuAlarm == "Green") && this.Alarm != "Green") {
@@ -477,6 +484,58 @@ public class Spaceship : SpaceObject {
 		 
 	}
 
+	public void SurrenderCheck()
+	{
+		if (Alarm != "White") {
+			int AreCrewCowards = d6 (2) + Mathf.Max (Skill_Pilot, Skill_Electronics); //Veterancy Helps
+
+			if (AreCrewCowards > 8) {
+				//Allgood
+			} else if (AreCrewCowards == 8) {
+				UpdateBattleLog (" Crew are getting restless!");
+			} else if (AreCrewCowards < 8) {
+				this.Surrender ();
+			}
+		} else {
+			UpdateBattleLog (" Aaargh!!");
+		}
+	}
+
+	public void Surrender()
+	{
+		Debug.Log (this.name + " Surrendered!");
+		UpdateBattleLog (" Surrendering!");
+		ChangeAlarm ("White");
+		this.Order = "Stop";
+		this.Thrust = 0;
+		this.Enemy = null;
+		this.Destination = null;
+		this.Targetlock = null;
+		this.Transponders = true;
+
+		foreach (MeshRenderer Flaggen in GetComponentsInChildren<MeshRenderer>()) {
+			if (Flaggen.name.Contains ("Flag_")) {
+				Flaggen.gameObject.SetActive(false);
+			}
+		}
+
+		foreach (Spaceship PlzDontShoot in FindObjectsOfType<Spaceship>())
+		{
+			if (PlzDontShoot.Enemy == this) 
+			{
+				PlzDontShoot.UpdateBattleLog (" " + PlzDontShoot.Enemy + " surrendered!");
+
+				int MoralityCheck = d6(2);
+				if (MoralityCheck >= 8)
+					PlzDontShoot.SeekNewEnemy();
+				else
+					PlzDontShoot.UpdateBattleLog (" Muahahhaa!");
+				
+			}
+
+		}
+	}
+
 	public string Die () {
 		return this.Die("was wrecked!");
 	}
@@ -488,15 +547,15 @@ public class Spaceship : SpaceObject {
 		Debug.Log (this.name + " " + how);
 		UpdateBattleLog ("....Log ends");
 
-		foreach (Spaceship toNote in FindObjectsOfType<Spaceship>()) 
-		{
-			
-			if (toNote.Enemy != null) 
-			{
-				if (toNote.Enemy == this)
-					toNote.UpdateBattleLog (" " + this.name + " " + how);
-			}
-		}
+//		foreach (Spaceship toNote in FindObjectsOfType<Spaceship>()) 
+//		{
+//			
+//			if (toNote.Enemy != null) 
+//			{
+//				if (toNote.Enemy == this)
+//					toNote.UpdateBattleLog (" " + this.name + " " + how);
+//			}
+//		}
 
 		Instantiate (ShipExplosion, this.transform.position,this.transform.rotation);
 
