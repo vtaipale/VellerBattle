@@ -12,7 +12,7 @@ public class UI_Mouselook : MonoBehaviour {
 	public bool MouseLookOn = false;
 
 	public int ZoomLevelCurrent = 3;
-
+	public float ZoomLevelActul = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -69,15 +69,21 @@ public class UI_Mouselook : MonoBehaviour {
 				3f,
 				5f,
 				10f,
+				25f,
+				50f,
 				100f,
+				500f,
 				1000f,
-				3000f
+				2500f,
+				5000f
 			};
 
 
 	private void Zoom(float ZoomLVL)
 	{
 		Pivot.transform.localScale = new Vector3(ZoomLVL,ZoomLVL,ZoomLVL);
+		ZoomLevelActul = ZoomLVL;
+
 
 		if (ZoomLVL < 0.5f) {
 			Pivot.transform.localPosition = new Vector3 (0f, 0.1f, 0f);

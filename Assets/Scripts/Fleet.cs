@@ -23,7 +23,7 @@ public class Fleet : TravellerBehaviour {
 	public GameObject Destination;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 
 		MyShips = GetMyCurrentShips();
 
@@ -139,7 +139,7 @@ public class Fleet : TravellerBehaviour {
 
 	public void MoveOrderAll(GameObject DestinationPoint)
 	{
-		if (Destination != null && Destination.tag == "MovementPoint"){
+		if (Destination != null && Destination.tag == "MovementPoint" && DestinationPoint != Destination){
 			Debug.LogWarning ("Destroying " + Destination);
 			//Destroy (Destination, 1f); //there can be only one
 		}
@@ -186,6 +186,25 @@ public class Fleet : TravellerBehaviour {
 				Alarm (shippen, WhatAlarm);
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//TODO MissileSalvoDetector!
+
+
+
+
 
 	private bool IsThisOurs(Spaceship question)
 	{
