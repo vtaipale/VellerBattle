@@ -14,6 +14,8 @@ public class Fleet : TravellerBehaviour {
 
 	public Spaceship[] MyShips;
 
+	public Fleet MyEnemies; //TODO: Myenemies shold be more dynamic!
+
 	public string Report = "";
 
 	public bool InstantMayhem = false;
@@ -23,7 +25,7 @@ public class Fleet : TravellerBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		MyShips = GetComponentsInChildren<Spaceship> ();
+		MyShips = GetMyCurrentShips();
 
 		Debug.Assert (MyShips.Length > 0);
 
@@ -55,6 +57,13 @@ public class Fleet : TravellerBehaviour {
 			if (Flaggen.name.Contains("Flag_"))
 				Flaggen.material = this.SideFlag;
 		}
+			
+
+		foreach (Fleet PotentialEnemy in FindObjectsOfType<Fleet>()) 
+		{
+			if (PotentialEnemy.Side != this.Side && PotentialEnemy.Side != "Neutral")
+				this.MyEnemies = PotentialEnemy;
+		}
 
 	}
 	
@@ -63,9 +72,43 @@ public class Fleet : TravellerBehaviour {
 
 		LeaderCheck ();
 
+		//Should not be here, but based on observations!
+//		foreach (Spaceship PotentialEnemy in FindObjectOfType<Spaceship>()) 
+//		{
+//			if (PotentialEnemy.Side != this.Side && PotentialEnemy.Side != "Neutral")
+//				this.MyEnemies
+//		}
+
+
 		//TODO actual FleetAI.
 	}
 
+	public Spaceship GiveRandomEnemy()
+	{
+		Spaceship[] CurrentEnemies = MyEnemies.GetMyCurrentShips ();
+
+		if (CurrentEnemies.Length == 0){
+			Debug.Log ("ConstructingDummyShip");
+			Spaceship NoEnemiesLeft = new Spaceship ();
+			NoEnemiesLeft.name = "lolz";
+			return NoEnemiesLeft;
+		}
+
+		int Returnoitava = Mathf.RoundToInt (Random.Range (0f, CurrentEnemies.Length - 1f));
+		return MyEnemies.GetMyCurrentShips()[Returnoitava];
+	}
+
+	public Spaceship[] GetMyCurrentShips()
+	{
+		return GetComponentsInChildren<Spaceship>();
+	}
+
+	public void AllEngageRandom()
+	{
+		foreach (Spaceship Ourship in GetMyCurrentShips())
+			Engage(Ourship,GiveRandomEnemy());
+
+	}
 
 	public void Engage(Spaceship OurShip, Spaceship EnemyShip)
 	{
@@ -87,7 +130,7 @@ public class Fleet : TravellerBehaviour {
 
 	public void OrderAll(string WhatToOrder)
 	{
-		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>())
+		foreach (Spaceship shippen in GetMyCurrentShips())
 		{
 			if (shippen.gameObject.activeSelf)
 				Order (shippen, WhatToOrder);
@@ -107,7 +150,7 @@ public class Fleet : TravellerBehaviour {
 
 		MessageAll (" Destination: " + Destination.transform.position + ". Dist: " + Leader.DistanceTo (Destination.transform));
 
-		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>())
+		foreach (Spaceship shippen in GetMyCurrentShips())
 		{
 			if (shippen.gameObject.activeSelf)
 				shippen.Destination = this.Destination.transform;
@@ -137,7 +180,7 @@ public class Fleet : TravellerBehaviour {
 	}
 	public void AlarmAll(string WhatAlarm)
 	{
-		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship> ())
+		foreach (Spaceship shippen in GetMyCurrentShips())
 		{
 			if (shippen.gameObject.activeSelf)
 				Alarm (shippen, WhatAlarm);
@@ -151,7 +194,7 @@ public class Fleet : TravellerBehaviour {
 
 	public void MessageAll(string Message)
 	{
-		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship> ())
+		foreach (Spaceship shippen in GetMyCurrentShips())
 		{
 			if (shippen.gameObject.activeSelf)
 				shippen.UpdateBattleLog (" Fleet: " + Message);
@@ -162,14 +205,14 @@ public class Fleet : TravellerBehaviour {
 	{
 		string MiniReport = "";
 
-		if (GetComponentsInChildren<Spaceship> ().Length == 0)
+		if (GetMyCurrentShips().Length == 0)
 			return "Defeat!";
 
-		MiniReport += "Ships: " + GetComponentsInChildren<Spaceship> ().Length + "/" + MyShips.Length + "\n";
+		MiniReport += "Ships: " + GetMyCurrentShips().Length + "/" + MyShips.Length + "\n";
 
 
 
-		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>())
+		foreach (Spaceship shippen in GetMyCurrentShips())
 		{
 			if (shippen.gameObject.activeSelf)
 				MiniReport += shippen.MiniReport () + "\n";
@@ -187,17 +230,17 @@ public class Fleet : TravellerBehaviour {
 			Report += "++DEFEAT++\n";
 		else {
 			Report += "++VICTORY++\n";
-			Report += "  Spaceships left: " + GetComponentsInChildren<Spaceship> ().Length +"\n";
+			Report += "  Spaceships left: " + GetMyCurrentShips().Length +"\n";
 		}
 
 		Report += "  Spaceships originally: " + MyShips.Length +"\n";
 
 
-		if (GetComponentsInChildren<Spaceship> ().Length > 0) {
+		if (GetMyCurrentShips().Length > 0) {
 
 			Report += "\n+ACTIVE+ \n";
 
-			foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>()) {
+			foreach (Spaceship shippen in GetMyCurrentShips()) {
 				if (shippen.gameObject.activeSelf == true) {
 
 					Report += "----- " + shippen.name
@@ -208,7 +251,7 @@ public class Fleet : TravellerBehaviour {
 			}
 		}
 
-		if (GetComponentsInChildren<Spaceship> ().Length < MyShips.Length) {
+		if (GetMyCurrentShips().Length < MyShips.Length) {
 			
 			Report += "\n+LOST+ \n";
 
@@ -246,7 +289,7 @@ public class Fleet : TravellerBehaviour {
 
 		if (DefeatCheck() == false) 
 		{
-			Leader = GetComponentsInChildren<Spaceship> () [0];
+			Leader = GetMyCurrentShips()[0];
 			MessageAll ("Commander KIA, acting commander: " + Leader.CaptainName + " of " + Leader.name);
 		}
 
@@ -268,7 +311,7 @@ public class Fleet : TravellerBehaviour {
 	{
 		//foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>()) {		}
 
-		if (GetComponentsInChildren<Spaceship> ().Length == 0) {
+		if (GetMyCurrentShips().Length == 0) {
 			return true;
 		}
 

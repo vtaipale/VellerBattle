@@ -289,33 +289,29 @@ public class Spaceship : SpaceObject {
 
 		//Debug.Log (this.name + " SEEKING NEW ENEMY ");
 
-		//TODO ask fleet for a target
-
 		if (this.HasLock() && Targetlock.Alarm != "White")	//like to target targetlock, duh
 		{	
-			Engage(Targetlock);
+			this.Enemy = Targetlock;
 			return Targetlock;
 		}
 
 		//TODO more detailed way of randomising the next target: perhaps by range?
-		foreach (Spaceship question in FindObjectsOfType<Spaceship>())
-		{
-			if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true && question.Alarm != "White" )
-			{
-				//targetinglogic here??
-				if (Random.Range (0, 10) > 6) {
-					Engage(question);
-					return question;
-				}
-			}
-		}
 
-		if (d6(1)>3){
+		if (GetComponentInParent<Fleet>().MyEnemies.GetMyCurrentShips().Length == 0)
+		{
 			UpdateBattleLog (" No targets found!");
 
-			return this; //urhgtihetseith
+			return this; //not the most ideaal
 		}
-		return SeekNewEnemy(); //urhgtihetseith
+
+		this.Enemy = GetComponentInParent<Fleet> ().GiveRandomEnemy ();
+
+		if (this.Order == "Engage")
+			this.Engage(Enemy);
+
+		return this.Enemy;
+
+
 		//Debug.Log (this.name + " IS VICTORIOUS! CHEEERING!");
 
 
