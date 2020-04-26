@@ -157,7 +157,12 @@ public class Fleet : TravellerBehaviour {
 	{
 		string MiniReport = "";
 
+		if (GetComponentsInChildren<Spaceship> ().Length == 0)
+			return "Defeat!";
+
 		MiniReport += "Ships: " + GetComponentsInChildren<Spaceship> ().Length + "/" + MyShips.Length + "\n";
+
+
 
 		foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>())
 		{
