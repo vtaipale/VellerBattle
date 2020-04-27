@@ -28,13 +28,23 @@ public class Fleet : TravellerBehaviour {
 		MyShips = GetMyCurrentShips();
 
 		Debug.Assert (MyShips.Length > 0);
-
-		Leader = MyShips [0];
-
+		
+		foreach (Spaceship shippen in MyShips) {
+			GenerateCommander(shippen);
+		}
+		
+		this.NewFleetCommander();
+		
+		Commander Ourboss = GetMyFleetCommander();
+		
+		int TacticsInitiativeRoll = d6(2) + Ourboss.Skill_Tactics + Ourboss.StatBonus(Mathf.Max(Ourboss.EDU,Ourboss.INT)) - 8;
+		
 		foreach (Spaceship shippen in MyShips) {
 			shippen.name = Side + "-" + Mathf.RoundToInt (Random.Range (19f, 999f)) + " " + Shipnames [(Mathf.RoundToInt (Random.value * (Shipnames.GetLength (0) - 1)))];
 
 			shippen.Side = this.Side;
+
+			shippen.Initiative = d6(2) + shippen.Thrust + TacticsInitiativeRoll;
 
 			if (shippen.CaptainName == "Haddock")
 				shippen.CaptainName = LastNames [(Mathf.RoundToInt (Random.value * (LastNames.GetLength (0) - 1)))];
@@ -45,7 +55,7 @@ public class Fleet : TravellerBehaviour {
 			if (Leader == shippen) 
 				shippen.UpdateBattleLog (" Commander: ME! ");
 			else
-				shippen.UpdateBattleLog (" Commander: " + Leader.CaptainName + " of " + Leader.name);
+				shippen.UpdateBattleLog (" Commander: " + GetMyFleetCommander() + " of " + Leader.name);
 
 
 			if (InstantMayhem) {
@@ -53,6 +63,10 @@ public class Fleet : TravellerBehaviour {
 				this.Order (shippen, "Engage");
 			}
 		}
+		
+		
+		
+		
 		foreach (MeshRenderer Flaggen in GetComponentsInChildren<MeshRenderer>()) {
 			if (Flaggen.name.Contains("Flag_"))
 				Flaggen.material = this.SideFlag;
@@ -308,8 +322,9 @@ public class Fleet : TravellerBehaviour {
 
 		if (DefeatCheck() == false) 
 		{
-			Leader = GetMyCurrentShips()[0];
-			MessageAll ("Commander KIA, acting commander: " + Leader.CaptainName + " of " + Leader.name);
+			NewFleetCommander();
+			
+			MessageAll ("Commander KIA, acting commander: " + GetMyFleetCommander() + " of " + Leader.name);
 		}
 
 		return false;
@@ -320,8 +335,8 @@ public class Fleet : TravellerBehaviour {
 		FindObjectOfType<FreeLookCam>().SetTarget(Leader.transform);
 	}
 
-
-
+	
+	
 	/// <summary>
 	/// Checks if no ships left. If none, fleet defeated
 	/// </summary>
@@ -335,6 +350,58 @@ public class Fleet : TravellerBehaviour {
 		}
 
 		return false;
+	}
+
+
+	public void GenerateCommander(Spaceship shippen){
+		
+		Commander NewCommander = shippen.gameObject.AddComponent<Commander>();
+
+		if (shippen.CaptainName == "Haddock")
+			shippen.CaptainName = LastNames [(Mathf.RoundToInt (Random.value * (LastNames.GetLength (0) - 1)))];
+		
+		NewCommander.LastName = shippen.CaptainName;
+		
+		NewCommander.CreateChar();
+		Debug.Log("New Char: " + NewCommander + " " +NewCommander.GetStats() + " of " + shippen.name);
+	}
+	
+	public Commander FindTopCommander()
+	{
+		Commander theBest = null;
+		
+		foreach (Commander juub in this.GetComponentsInChildren<Commander>())
+		{
+			if (theBest == null)
+			{
+				theBest = juub;
+			}
+			else if (juub.rank > theBest.rank)
+				theBest = juub;
+		}
+		
+		return theBest;
+	}
+	
+	public void NewFleetCommander()
+	{
+		Commander FleetCom = this.FindTopCommander();
+		
+		if (FleetCom == null)
+		{
+			Leader = GetMyCurrentShips()[0];
+			GenerateCommander(Leader);
+		}
+		else
+			Leader = FleetCom.GetMyShip();
+		
+		Debug.Log("New " +this.Side + " Fleetcom: " + FleetCom + " " +FleetCom.GetStats());
+
+		
+	}
+	public Commander GetMyFleetCommander()
+	{
+		return Leader.GetComponent<Commander>();
 	}
 
 	string[] LastNames = new string[] {
@@ -540,7 +607,8 @@ public class Fleet : TravellerBehaviour {
 		"Surge",
 		"Paragon",
 		"Pinnacle",
-		"Devoted",	"Oracle",
+		"Devoted",	
+		"Oracle",
 		"Spectacle",
 		"Eternal",
 		"Last Squid",
