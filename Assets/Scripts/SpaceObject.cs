@@ -9,6 +9,7 @@ using UnityEngine;
 public class SpaceObject : TravellerBehaviour {
 
 	public int Thrust = 1;
+	public int Initiative = 0;
 
 	public virtual void GameTurn(int turnNumber)
 	{
