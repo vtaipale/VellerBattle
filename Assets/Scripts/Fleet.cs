@@ -229,7 +229,7 @@ public class Fleet : TravellerBehaviour {
 
         foreach (Spaceship shippen in MyCurrentShips)
 		{
-            Debug.Log(shippen + " ships: " + WhatAlarm + " Alarm!");
+            //Debug.Log(shippen + " ships: " + WhatAlarm + " Alarm!");
             if (shippen.gameObject.activeSelf)
 				Alarm (shippen, WhatAlarm);
 		}
