@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spaceship : SpaceObject {
 
-	public string HullType = "Patrol Corvette";
+	public string HullType = "Patrol Cruiser";
 	public int Hullpoints = 160;
 	public int HullpointsOrig = 160;
 	public int Armour = 4;
@@ -104,12 +104,15 @@ public class Spaceship : SpaceObject {
 
 	}
 
-	//
-	private void MovementLogic ()
-	{
+    //
+    private void MovementLogic()
+    {
 
-		if (Destination == null | (Alarm == "Red" && (HasEnemy() && this.DistanceTo(Enemy) < 2) ) ) 
-			this.Move (this.Thrust/2, this.transform.position+this.transform.forward*this.Thrust); //Default move, merely forward
+        if (Destination == null | (Alarm == "Red" && (HasEnemy() && this.DistanceTo(Enemy) < 2)) ) { 
+            this.Move(this.Thrust / 2, this.transform.position + this.transform.forward * this.Thrust); //Default move, merely forward
+            //UpdateBattleLog(" Defaultmoving, howw boring..");
+          
+        }
 		else 
 		{
 			//TODO complain upwards that hey gimme me ssomething to do!
@@ -132,9 +135,8 @@ public class Spaceship : SpaceObject {
 		
 			this.Attack (Enemy);
 		}
-		else 
+		else //Ne enemy needed!
 		{
-			UpdateBattleLog (" Scanning for enemies.");
 			this.SeekNewEnemy ();
 			this.Attack (Enemy);
 		}
@@ -281,35 +283,43 @@ public class Spaceship : SpaceObject {
 		}
 	}
 
-	/// <summary>
-	/// find something to blast
-	/// </summary>
-	/// <returns>The new enemy.</returns>
-	public Spaceship SeekNewEnemy(){
+    /// <summary>
+    /// find something to blast
+    /// </summary>
+    /// <returns>The new enemy.</returns>
+    public Spaceship SeekNewEnemy() {
 
-		//Debug.Log (this.name + " SEEKING NEW ENEMY ");
+        UpdateBattleLog(" Scanning for enemies:");
+        //Debug.Log (this.name + " SEEKING NEW ENEMY ");
 
-		if (this.HasLock() && Targetlock.Alarm != "White")	//like to target targetlock, duh
-		{	
-			this.Enemy = Targetlock;
-			return Targetlock;
-		}
+        if (this.HasLock() && Targetlock.Alarm != "White")  //like to target targetlock, duh
+        {
+            this.Enemy = Targetlock;
+            UpdateBattleLog(" Targeting " + Enemy.HullType + " " + Enemy.name + " Distance: " + this.DistanceTo(Enemy));
+            return Targetlock;
+        }
 
-		//TODO more detailed way of randomising the next target: perhaps by range?
+        //TODO more detailed way of randomising the next target: perhaps by range?
 
-		if (GetComponentInParent<Fleet>().MyEnemies.GetMyCurrentShips().Length == 0)
-		{
-			UpdateBattleLog (" No targets found!");
+        if (GetComponentInParent<Fleet>().MyEnemies.GetMyCurrentShips().Length == 0)
+        {
+            UpdateBattleLog(" No targets found!");
 
-			return this; //not the most ideaal
-		}
+            return this; //not the most ideaal
+        }
 
-		this.Enemy = GetComponentInParent<Fleet> ().GiveRandomEnemy ();
+        Spaceship NuEnemy = GetComponentInParent<Fleet>().GiveRandomEnemy();
 
-		if (this.Order == "Engage")
-			this.Engage(Enemy);
+        if (this.Order == "Engage")
+        {
+            this.Engage(NuEnemy);
+        }
+        else {
+            this.Enemy = NuEnemy;
+            UpdateBattleLog(" Targeting " + Enemy.HullType + " " + Enemy.name + " Distance: " + this.DistanceTo(Enemy));
+        }
 
-		return this.Enemy;
+        return this.Enemy;
 
 
 		//Debug.Log (this.name + " IS VICTORIOUS! CHEEERING!");
@@ -419,7 +429,10 @@ public class Spaceship : SpaceObject {
 	/// <param name="NuAlarm">what to attempt changing</param>
 	public bool ChangeAlarm (string NuAlarm)
 	{
-		if (this.Alarm == "White") {
+        //Debug.Log(this.name + " ChangeAlarm " + this.Alarm + " : " + NuAlarm);
+
+
+        if (this.Alarm == "White") {
 			return false;
 		}
 		else if ((NuAlarm == "White") && this.Alarm != "White") {
@@ -431,7 +444,7 @@ public class Spaceship : SpaceObject {
 		else if ((NuAlarm == "Yellow") && this.Alarm != "Yellow") {
 			return SetAlarm (NuAlarm);
 		}
-		else if ((NuAlarm == "Red") && this.Alarm == "Yellow") {	//Only Yellow allows going to Red!
+		else if ((NuAlarm == "Red") && this.Alarm != "Red") {	//Only Yellow allows going to Red!
 			return SetAlarm (NuAlarm);
 		}
 		else if (!(NuAlarm == "White" | NuAlarm == "Green" | NuAlarm == "Yellow" | NuAlarm == "Red"))
@@ -514,6 +527,8 @@ public class Spaceship : SpaceObject {
 				Flaggen.gameObject.SetActive(false);
 			}
 		}
+
+        this.transform.parent = null; //Basically leaves the Fleet it as in.
 
 		foreach (Spaceship PlzDontShoot in FindObjectsOfType<Spaceship>())
 		{
