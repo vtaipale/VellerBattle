@@ -109,7 +109,7 @@ public class Commander : TravellerBehaviour {
 	public string GetRank()
 	{
 		if (rank == 1){
-			return "";
+			return "Ensign";
 		}
 		else if (rank == 2){
 			return "Sublieutenant";

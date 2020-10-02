@@ -182,7 +182,7 @@ public class Fleet : TravellerBehaviour {
 	{
 		if (Destination != null && Destination.tag == "MovementPoint" && DestinationPoint != Destination){
 			Debug.LogWarning ("Destroying " + Destination);
-			//Destroy (Destination, 1f); //there can be only one
+			Destroy (Destination, 1f); //there can be only one
 		}
 		
 		Destination = DestinationPoint;
@@ -209,7 +209,7 @@ public class Fleet : TravellerBehaviour {
 
 		NuMovementPoint.tag = "MovementPoint";
 
-		NuMovementPoint.name = "Movementpoint of Fleet " + this.name;
+		NuMovementPoint.name = "MP of  " + this.name;
 
 		this.MoveOrderAll (NuMovementPoint);
 
@@ -360,7 +360,7 @@ public class Fleet : TravellerBehaviour {
 		{
 			NewFleetCommander();
 			
-			MessageAll ("Commander KIA, acting commander: " + GetMyFleetCommander() + " of " + Leader.name);
+			MessageAll ("Commander lost, acting commander: " + GetMyFleetCommander() + " of " + Leader.name);
 		}
 
 		return false;

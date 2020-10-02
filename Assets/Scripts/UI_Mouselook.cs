@@ -28,7 +28,7 @@ public class UI_Mouselook : MonoBehaviour {
 
 		int ZoomDelta;
 
-		if (Input.GetMouseButtonDown (2)) {
+		if (Input.GetMouseButtonUp (2)) {
 			ZoomDelta = 3;
 		}
 		else 
@@ -59,7 +59,6 @@ public class UI_Mouselook : MonoBehaviour {
 		ZoomLevelCurrent = Mathf.Max (1,LevelToBe);
 		ZoomLevelCurrent = Mathf.Min (ZoomLevelCurrent,ZoomLevels.Length-1);
 	}
-
 
 	public float[] ZoomLevels = new float[] {
 				0.1f,
@@ -96,4 +95,21 @@ public class UI_Mouselook : MonoBehaviour {
 		}
 	}
 
+    public float GetZoomLevel()
+    {
+        return GetZoomLevel(ZoomLevelCurrent);
+
+    }
+
+    public float GetZoomLevel(int LevelReuest)
+    {
+        if (LevelReuest <= 0)
+            return ZoomLevels[0];
+
+        else if (LevelReuest >= ZoomLevels.Length)
+            return (ZoomLevels[ZoomLevels.Length - 1]);
+
+        return ZoomLevels[LevelReuest];
+
+    }
 }
