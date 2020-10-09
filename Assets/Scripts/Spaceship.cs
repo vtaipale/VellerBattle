@@ -107,8 +107,9 @@ public class Spaceship : SpaceObject {
     //
     private void MovementLogic()
     {
-
-        if (Destination == null | (Alarm == "Red" && (HasEnemy() && this.DistanceTo(Enemy) < 2)) ) { 
+        if (Order == "Stop")
+        { }
+        else if (Destination == null | (Alarm == "Red" && (HasEnemy() && this.DistanceTo(Enemy) < 2)) ) { 
             this.Move(this.Thrust / 2, this.transform.position + this.transform.forward * this.Thrust); //Default move, merely forward
             //UpdateBattleLog(" Defaultmoving, howw boring..");
           
@@ -289,6 +290,13 @@ public class Spaceship : SpaceObject {
     /// <returns>The new enemy.</returns>
     public Spaceship SeekNewEnemy() {
 
+        if (GetComponentInParent<Fleet>().MyEnemies == null)
+        {
+            UpdateBattleLog(" No enemies!");
+
+            return this; //not the most ideaal
+        }
+
         UpdateBattleLog(" Scanning for enemies:");
         //Debug.Log (this.name + " SEEKING NEW ENEMY ");
 
@@ -457,8 +465,12 @@ public class Spaceship : SpaceObject {
 	private bool SetAlarm(string NuAlarm)
 	{
 		this.Alarm = NuAlarm;
-		UpdateBattleLog (" " + this.Alarm.ToUpper() + " ALARM!!");	
-		return true;
+		if (NuAlarm == "Red")
+            UpdateBattleLog (" " + this.Alarm.ToUpper() + " ALARM!!");	
+        else
+            UpdateBattleLog(" " + this.Alarm + " Alarm!");
+
+        return true;
 
 	}
 

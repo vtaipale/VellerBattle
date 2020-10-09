@@ -19,6 +19,8 @@ public class Fleet : TravellerBehaviour {
 
 	public string Report = "";
 
+    public string CurrentOrder = "Move";
+    public string CurrentAlarm = "Green";
 	public bool InstantMayhem = false;
 
 	public GameObject Destination;
@@ -68,11 +70,17 @@ public class Fleet : TravellerBehaviour {
 			else
 				shippen.UpdateBattleLog (" FLEETCOM: " + GetMyFleetCommander() + " of " + Leader.name);
 
-
-			if (InstantMayhem) {
-				this.Alarm (shippen, "Red");
-				this.Order (shippen, "Engage");
-			}
+            if (InstantMayhem)
+            {
+                shippen.UpdateBattleLog(" Fleet: " + " Battlestations!");
+                this.Alarm(shippen, "Red");
+                this.Order(shippen, "Engage");
+            }
+            else
+            {
+                this.Alarm(shippen, CurrentAlarm);
+                this.Order(shippen, CurrentOrder);
+            }
 		}
 
 
@@ -89,12 +97,8 @@ public class Fleet : TravellerBehaviour {
 
         Debug.Log(this.Side + " Paint OK " + Time.time);
 
-
-        foreach (Fleet PotentialEnemy in FindObjectsOfType<Fleet>()) 
-		{
-			if (PotentialEnemy.Side != this.Side && PotentialEnemy.Side != "Neutral")
-				this.MyEnemies = PotentialEnemy;
-		}
+        //TODO Smarter enemy designation!
+        this.ScanForEnemyFleets();
 
 	}
 	
@@ -166,6 +170,8 @@ public class Fleet : TravellerBehaviour {
 
 	public void OrderAll(string WhatToOrder)
 	{
+        CurrentOrder = WhatToOrder;
+
         Spaceship[] MyCurrentShips = this.GetMyCurrentShips();
 
         foreach (Spaceship shippen in MyCurrentShips)
@@ -225,8 +231,13 @@ public class Fleet : TravellerBehaviour {
 	}
 	public void AlarmAll(string WhatAlarm)
 	{
-        Spaceship[] MyCurrentShips = this.GetMyCurrentShips();
+        CurrentAlarm = WhatAlarm;
 
+        if (WhatAlarm == "Green")
+            this.MyEnemies = null;
+
+        Spaceship[] MyCurrentShips = this.GetMyCurrentShips();
+        
         foreach (Spaceship shippen in MyCurrentShips)
 		{
             //Debug.Log(shippen + " ships: " + WhatAlarm + " Alarm!");
@@ -388,6 +399,30 @@ public class Fleet : TravellerBehaviour {
 		return false;
 	}
 
+    public void SetEnemyFleet(Fleet NewEnemy)
+    {
+        if ((NewEnemy != null) | (NewEnemy.MyShips.Length > 0))
+        { 
+           MyEnemies = NewEnemy;
+           this.MessageAll(" New Enemy Contact:" + NewEnemy.name + " | Dist: " + Leader.DistanceTo(NewEnemy.Leader.transform));
+        }
+    }
+
+    public void ScanForEnemyFleets()
+    {
+        //bool returnoitava = false;
+        foreach (Fleet PotentialEnemy in FindObjectsOfType<Fleet>())
+        {
+            if ((PotentialEnemy.Side != this.Side) && (PotentialEnemy.Side != "Neutral") && (Leader.DistanceTo(PotentialEnemy.Leader) < 300000)) //Up to Distant Edge 
+            {
+                //returnoitava = true;
+                if (this.MyEnemies == null)
+                    SetEnemyFleet(PotentialEnemy);
+            }
+
+        }
+        //return returnoitava;
+    }
 
 	public void GenerateCommander(Spaceship shippen){
 		

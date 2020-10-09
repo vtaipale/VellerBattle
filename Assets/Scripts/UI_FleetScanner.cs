@@ -16,6 +16,7 @@ public class UI_FleetScanner : MonoBehaviour {
 
     public bool MovementSelection = false;
     public LineRenderer MovLine;
+    public GameObject MovPlane;
 
 	public RawImage[] FleetImages;
 
@@ -43,8 +44,8 @@ public class UI_FleetScanner : MonoBehaviour {
 
         //Create a new plane with normal (0,0,1) at the position away from the camera you define in the Inspector. This is the plane that you can click so make sure it is reachable.
         //m_Plane = new Plane(Vector3.forward, 7);
-        m_Plane = new Plane(CurrentFleet.Leader.transform.up, 1f);
-
+        m_Plane = new Plane(Vector3.up, this.gameObject.transform.position);
+        MovPlane.SetActive(false);
     }
 
     // Update is called once per frame
@@ -68,8 +69,14 @@ public class UI_FleetScanner : MonoBehaviour {
                 //Initialise the enter variable
                 float enter = 0.0f;
 
+                m_Plane.SetNormalAndPosition(Vector3.up, this.CurrentFleet.Leader.transform.position);
+                MovPlane.transform.position = this.CurrentFleet.Leader.transform.position;
+
+                //Debug.Log("mplane : " + m_Plane);
+
                 if (m_Plane.Raycast(ray, out enter))
                 {
+
                     //Get the point that is clicked
                     Vector3 hitPoint = ray.GetPoint(enter);
                     //Debug.Log("OOO HIT");
@@ -87,8 +94,13 @@ public class UI_FleetScanner : MonoBehaviour {
 
                     float NevSize = Looky.GetZoomLevel();
 
+                   
                     MovLine.startWidth = NevSize/50;
                     MovLine.endWidth = NevSize/50;
+
+                    float CircleScaler = Vector3.Distance(CurrentFleet.Leader.transform.position, hitPoint) / 4.85f;
+
+                    MovPlane.transform.localScale = new Vector3(CircleScaler, CircleScaler, CircleScaler);
 
                     //Assing movement order
                     //TODO: vertical boost!
@@ -139,6 +151,7 @@ public class UI_FleetScanner : MonoBehaviour {
 
        MovementSelection = yesno;
        MovLine.gameObject.SetActive(yesno);
+       MovPlane.SetActive(yesno);
     }
 
 }
