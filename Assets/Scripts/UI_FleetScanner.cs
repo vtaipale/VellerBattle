@@ -18,7 +18,10 @@ public class UI_FleetScanner : MonoBehaviour {
     public LineRenderer MovLine;
     public GameObject MovPlane;
 
-	public RawImage[] FleetImages;
+    public bool RangePlanesVisible = false;
+    public GameObject RangePlanes;
+
+    public RawImage[] FleetImages;
 
 	EventSystem m_EventSystem;
 
@@ -46,6 +49,7 @@ public class UI_FleetScanner : MonoBehaviour {
         //m_Plane = new Plane(Vector3.forward, 7);
         m_Plane = new Plane(Vector3.up, this.gameObject.transform.position);
         MovPlane.SetActive(false);
+        RangePlanes.SetActive(false);
     }
 
     // Update is called once per frame
@@ -54,10 +58,19 @@ public class UI_FleetScanner : MonoBehaviour {
         //Camera TheCamera = FindObjectOfType<Camera> ();
         //Camera TheCamera = TheRaycaster.eventCamera;
 
+        if (RangePlanesVisible == true)
+        {
+            RangePlanes.transform.position = this.CurrentFleet.Leader.transform.position;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space)) // SCANNER ONLINE
+        {
+            this.SetRangePlanesVisible(!RangePlanesVisible);
+        }
 
         if (MovementSelection == true)
         {
-            if (Input.GetKeyDown(KeyCode.Escape) | Input.GetMouseButtonDown(1))
+            if (Input.GetKeyUp(KeyCode.Escape) | Input.GetMouseButtonDown(1))
             {
                 MovementSelecting(false);
             }
@@ -119,7 +132,7 @@ public class UI_FleetScanner : MonoBehaviour {
             temptime = Time.time;
             
         }
-        else if (Input.GetMouseButtonUp(1) && ((Time.time - temptime) < 0.5)) 
+        else if (Input.GetMouseButtonUp(1) && ((Time.time - temptime) < 0.25)) 
         {
             MovementSelecting(true);
         }
@@ -152,6 +165,14 @@ public class UI_FleetScanner : MonoBehaviour {
        MovementSelection = yesno;
        MovLine.gameObject.SetActive(yesno);
        MovPlane.SetActive(yesno);
+    }
+
+    private void SetRangePlanesVisible(bool yesno)
+    {
+        Debug.Log("RangeShov " + yesno);
+
+        RangePlanesVisible = yesno;
+        RangePlanes.SetActive(yesno);
     }
 
 }
