@@ -7,6 +7,8 @@ public class Fleet : TravellerBehaviour {
 
 	public Spaceship Leader;
 
+    public string OfficialName;
+
 	public string Side = "";
 	public Material SideFlag;
     public Material SideMetal;
@@ -49,7 +51,6 @@ public class Fleet : TravellerBehaviour {
 		Commander Ourboss = GetMyFleetCommander();
         Debug.Log(this.Side + " Commanders OK " + Time.time);
 
-
         int TacticsInitiativeRoll = d6(2) + Ourboss.Skill_Tactics + Ourboss.StatBonus(Mathf.Max(Ourboss.EDU,Ourboss.INT)) - 8;
 		
 		foreach (Spaceship shippen in MyShips) {
@@ -70,19 +71,19 @@ public class Fleet : TravellerBehaviour {
 			else
 				shippen.UpdateBattleLog (" FLEETCOM: " + GetMyFleetCommander() + " of " + Leader.name);
 
-            if (InstantMayhem)
-            {
-                shippen.UpdateBattleLog(" Fleet: " + " Battlestations!");
-                this.Alarm(shippen, "Red");
-                this.Order(shippen, "Engage");
-            }
-            else
-            {
-                this.Alarm(shippen, CurrentAlarm);
-                this.Order(shippen, CurrentOrder);
-            }
+            
 		}
-
+        if (InstantMayhem == true)
+        {
+            MessageAll("Battlestations!");
+            this.AlarmAll("Red");
+            this.OrderAll("Engage");
+        }
+        else
+        {
+            this.AlarmAll(CurrentAlarm);
+            this.OrderAll(CurrentOrder);
+        }
 
         Debug.Log(this.Side + " Ships OK " + Time.time);
 
@@ -98,9 +99,15 @@ public class Fleet : TravellerBehaviour {
         Debug.Log(this.Side + " Paint OK " + Time.time);
 
         //TODO Smarter enemy designation!
-        this.ScanForEnemyFleets();
+        if (this.Side != "Neutral")
+        {
+            this.ScanForEnemyFleets();
+        }
 
-	}
+        if (OfficialName == null)
+            OfficialName = Side + " Fleet";
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -188,14 +195,14 @@ public class Fleet : TravellerBehaviour {
 	{
 		if (Destination != null && Destination.tag == "MovementPoint" && DestinationPoint != Destination){
 			Debug.LogWarning ("Destroying " + Destination);
-			Destroy (Destination, 1f); //there can be only one
+			Destroy (Destination.gameObject, 1f); //there can be only one
 		}
 		
 		Destination = DestinationPoint;
 
 		OrderAll ("Move");
 
-		MessageAll (" Destination: " + Destination.transform.position + ". Dist: " + Leader.DistanceTo (Destination.transform));
+		MessageAll ("Destination: " + Destination.transform.position + ". Dist: " + Leader.DistanceTo (Destination.transform));
 
         Spaceship[] MyCurrentShips = this.GetMyCurrentShips();
 
@@ -215,7 +222,7 @@ public class Fleet : TravellerBehaviour {
 
 		NuMovementPoint.tag = "MovementPoint";
 
-		NuMovementPoint.name = "MP of  " + this.name;
+		NuMovementPoint.name = "MP | x:" + Mathf.RoundToInt(NuMovementPoint.transform.position.x) + " y:" + Mathf.RoundToInt(NuMovementPoint.transform.position.y) + " z:" + Mathf.RoundToInt(NuMovementPoint.transform.position.z);
 
 		this.MoveOrderAll (NuMovementPoint);
 
@@ -379,16 +386,20 @@ public class Fleet : TravellerBehaviour {
 
 	public void CamToFollowLeader(int DisplayNumber)
 	{
-		FindObjectOfType<FreeLookCam>().SetTarget(Leader.transform);
-	}
+        FreeLookCam OurCam = FindObjectOfType<FreeLookCam>();
 
-	
-	
-	/// <summary>
-	/// Checks if no ships left. If none, fleet defeated
-	/// </summary>
-	/// <returns><c>true</c> when Defeated <c>false</c> if still alive</returns>
-	public bool DefeatCheck()
+        OurCam.SetTarget(Leader.transform);
+        OurCam.ManualUpdate();
+
+    }
+
+
+
+    /// <summary>
+    /// Checks if no ships left. If none, fleet defeated
+    /// </summary>
+    /// <returns><c>true</c> when Defeated <c>false</c> if still alive</returns>
+    public bool DefeatCheck()
 	{
 		//foreach (Spaceship shippen in GetComponentsInChildren<Spaceship>()) {		}
 
@@ -404,24 +415,32 @@ public class Fleet : TravellerBehaviour {
         if ((NewEnemy != null) | (NewEnemy.MyShips.Length > 0))
         { 
            MyEnemies = NewEnemy;
-           this.MessageAll(" New Enemy Contact:" + NewEnemy.name + " | Dist: " + Leader.DistanceTo(NewEnemy.Leader.transform));
+           this.MessageAll("New Enemy Contact:" + NewEnemy.name + " | Dist: " + Leader.DistanceTo(NewEnemy.Leader.transform));
         }
     }
 
     public void ScanForEnemyFleets()
     {
-        //bool returnoitava = false;
-        foreach (Fleet PotentialEnemy in FindObjectsOfType<Fleet>())
-        {
-            if ((PotentialEnemy.Side != this.Side) && (PotentialEnemy.Side != "Neutral") && (Leader.DistanceTo(PotentialEnemy.Leader) < 300000)) //Up to Distant Edge 
-            {
-                //returnoitava = true;
-                if (this.MyEnemies == null)
-                    SetEnemyFleet(PotentialEnemy);
-            }
+        if (FindObjectsOfType<Fleet>().Length > 0)
 
+        {
+            //bool returnoitava = false;
+            foreach (Fleet PotentialEnemy in FindObjectsOfType<Fleet>())
+            {
+                if ((PotentialEnemy.Side != this.Side) && (PotentialEnemy.Side != "Neutral") && (Leader.DistanceTo(PotentialEnemy.Leader) < 300000)) //Up to Distant Edge 
+                {
+                    //returnoitava = true;
+                    if (this.MyEnemies == null)
+                        SetEnemyFleet(PotentialEnemy);
+                }
+
+            }
+            //return returnoitava;
         }
-        //return returnoitava;
+        else
+        {
+            //No enemies found!
+        }
     }
 
 	public void GenerateCommander(Spaceship shippen){

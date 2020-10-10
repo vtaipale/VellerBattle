@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class UI_FleetScanner : MonoBehaviour {
 
-	public Fleet[] AllFleets;
+	//public Fleet[] AllFleets;
     public Camera TheCamera;
 	public Canvas TheCanvas;
 	public GraphicRaycaster TheRaycaster;
@@ -37,11 +37,11 @@ public class UI_FleetScanner : MonoBehaviour {
 
         MovLine.gameObject.SetActive(false);
 
-		AllFleets = FindObjectsOfType<Fleet> ();
+		//AllFleets = FindObjectsOfType<Fleet> ();
         //TheCanvas = FindObjectOfType<Canvas> ();
         //TheRaycaster = TheCanvas.GetComponent<GraphicRaycaster> ();
 
-        CurrentFleet = AllFleets[0];
+        //CurrentFleet = AllFleets[0];
 
 		//Fetch the current EventSystem. Make sure your Scene has one.
 		m_EventSystem = EventSystem.current;

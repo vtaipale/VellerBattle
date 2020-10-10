@@ -72,7 +72,7 @@ public class Spaceship : SpaceObject {
 
 		if (turnNumber >= 10) {
 			int hours = Mathf.RoundToInt ((turnNumber / 10) - 0.5f);
-			UpdateBattleLog ("\n--Elapsed time: " + hours +" h, " + (turnNumber * 6 - hours*6) + " m, " + d6 (2) + " s");
+			UpdateBattleLog ("\n--Elapsed time: " + hours +" h, " + ((turnNumber * 6) - (hours*60)) + " m, " + d6 (2) + " s");
 		}
 		else
 			UpdateBattleLog ("\n--Elapsed time: " + turnNumber*6 + " m, " + d6 (2) + " s");
@@ -290,7 +290,7 @@ public class Spaceship : SpaceObject {
     /// <returns>The new enemy.</returns>
     public Spaceship SeekNewEnemy() {
 
-        if (GetComponentInParent<Fleet>().MyEnemies == null)
+        if (GetComponentInParent<Fleet>() == null | GetComponentInParent<Fleet>().MyEnemies == null)
         {
             UpdateBattleLog(" No enemies!");
 
