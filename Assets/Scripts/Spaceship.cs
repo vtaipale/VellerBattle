@@ -18,7 +18,7 @@ public class Spaceship : SpaceObject {
 		/*	White = do not move, surrender
 		 *  Green = standard, no hostiles present
 		 *  Yellow = Ready for action, do not fire first
-		 *  TODO: Orange: Lasers OK, Missiles no?
+		 *  Orange: Lasers OK, Missiles no?
 		 *  Red = Fire at will!
 		 */ 
 	public string Order = "Move";
@@ -254,34 +254,43 @@ public class Spaceship : SpaceObject {
 		return true;
 	}
 
+    /// <summary>
+    /// If attacked vhile engaging, does change attack target?
+    /// </summary>
+    /// <param name="damagesource"></param>
 	public void AngerEngagingSwitchCheck(string damagesource)
 		{
-		
-		if ( HasEnemy() == false )  //if after killing someone previously
-		{
-				foreach (Spaceship question in FindObjectsOfType<Spaceship>())
-				{
-					if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true && damagesource.Contains(question.name))
-					{
-						Engage(question);
-						break;
-					}
-				}
-		
-			}
-		else if (this.HasLock() && Targetlock == Enemy)
-		{			
-			//keep on shooting
-		}
-		else if ((d6(2)>8) && !damagesource.Contains(Enemy.name) ) //no jos ny vaihteeks
-		{			
-			foreach (Spaceship question in FindObjectsOfType<Spaceship>()) {
-				if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true && damagesource.Contains (question.name)) {
-					Engage(question);
-					break;
-				}
-			}
-		}
+
+        if (Order == "Engage")
+        {
+            if (HasEnemy() == false)  //if after killing someone previously
+            {
+                foreach (Spaceship question in FindObjectsOfType<Spaceship>())
+                {
+                    if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true && damagesource.Contains(question.name))
+                    {
+                        Engage(question);
+                        break;
+                    }
+                }
+
+            }
+            else if (this.HasLock() && Targetlock == Enemy)
+            {
+                //keep on shooting
+            }
+            else if ((d6(2) > 8) && !damagesource.Contains(Enemy.name)) //no jos ny vaihteeks
+            {
+                foreach (Spaceship question in FindObjectsOfType<Spaceship>())
+                {
+                    if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true && damagesource.Contains(question.name))
+                    {
+                        Engage(question);
+                        break;
+                    }
+                }
+            }
+        }
 	}
 
     /// <summary>
@@ -422,12 +431,21 @@ public class Spaceship : SpaceObject {
 				UpdateBattleLog(" Incoming missiles from " + problem.source.name + "!");
 			else
 				UpdateBattleLog(" Incoming missile  from " + problem.source.name + "!");
+            
+			this.ChangeAlarm ("Red"); //justified automation
 
-			this.ChangeAlarm ("Red");
-			if (HasEnemy() == false && problem.source.gameObject.activeSelf)
-				Engage (problem.source);
-			//TODO AI logic?? should this only here add them to IncomingMissiles?
-		}
+            if (HasEnemy() == false && problem.source.gameObject.activeSelf)
+            {
+                if (Order == "Engage")
+                    Engage(problem.source);
+                else
+                { 
+                    this.Enemy = problem.source;
+                    UpdateBattleLog(" Targeting missile source " + Enemy.HullType + " " + Enemy.name + " Distance: " + this.DistanceTo(Enemy));
+                }
+            }
+            //TODO AI logic?? should this only here add them to IncomingMissiles?
+        }
 
 	}
 
