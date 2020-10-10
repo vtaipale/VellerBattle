@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-
+/// <summary>
+/// handles point & click stuff
+/// </summary>
 public class UI_FleetScanner : MonoBehaviour {
 
 	public Fleet[] AllFleets;
@@ -158,7 +160,7 @@ public class UI_FleetScanner : MonoBehaviour {
 
     }
 
-    private void MovementSelecting(bool yesno)
+    public void MovementSelecting(bool yesno)
     {
        Debug.Log("MOVEMENTSELECTING " + yesno);
 
@@ -167,7 +169,7 @@ public class UI_FleetScanner : MonoBehaviour {
        MovPlane.SetActive(yesno);
     }
 
-    private void SetRangePlanesVisible(bool yesno)
+    public void SetRangePlanesVisible(bool yesno)
     {
         Debug.Log("RangeShov " + yesno);
 
