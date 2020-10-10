@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spaceship : SpaceObject {
 
-	public string HullType = "Patrol Corvette";
+	public string HullType = "Patrol Cruiser";
 	public int Hullpoints = 160;
 	public int HullpointsOrig = 160;
 	public int Armour = 4;
@@ -14,6 +14,19 @@ public class Spaceship : SpaceObject {
 
 	public string Side; //more complex?
 	public string Status = "OK";
+	public string Alarm = "Yellow";
+		/*	White = do not move, surrender
+		 *  Green = standard, no hostiles present
+		 *  Yellow = Ready for action, do not fire first
+		 *  Orange: Lasers OK, Missiles no?
+		 *  Red = Fire at will!
+		 */ 
+	public string Order = "Move";
+		/*	Move = move towards movementTarget, attacking directed by alert status
+		 *  Stop = Do Not Move, attacking directed by alert status
+		 * 	Engage = will move towards Enemy at max speed.
+		 *  (later = Dock)
+		 */
 
 	//public Captain = Haddoc
 	public string CaptainName = "Haddock";
@@ -25,7 +38,8 @@ public class Spaceship : SpaceObject {
 	public Shipweapon[] MyGuns;
 
 	public Spaceship Enemy;
-	public Spaceship Targetlock;	//if set to self it is nonexistant
+	public Spaceship Targetlock;
+	public Transform Destination;
 	public List<MissileSalvo> IncomingMissiles = new List<MissileSalvo>();
 
 	public string myBattleLog = "";
@@ -34,7 +48,7 @@ public class Spaceship : SpaceObject {
 	void Start () {
 
 		this.MyGuns = this.gameObject.GetComponentsInChildren<Shipweapon> ();
-		this.Targetlock = this;
+		//this.Targetlock = this;
 
 		this.Skill_Pilot = Mathf.RoundToInt (Random.Range (0f, 2f));
 		this.Skill_Electronics = Mathf.RoundToInt (Random.Range (0f, 2f));
@@ -43,9 +57,26 @@ public class Spaceship : SpaceObject {
 
 	}
 
+	/*
+	void Update ()
+	{
+		if (Enemy != null) {
+			if (Enemy.gameObject.activeSelf == false)
+				Enemy = null;
+		}
+	} 
+	*/
+
 	public override void GameTurn(int turnNumber)
 	{
-		UpdateBattleLog ("--Elapsed time: " + turnNumber*6 + " minutes, " + d6 (2) + "seconds");
+
+		if (turnNumber >= 10) {
+			int hours = Mathf.RoundToInt ((turnNumber / 10) - 0.5f);
+			UpdateBattleLog ("\n--Elapsed time: " + hours +" h, " + ((turnNumber * 6) - (hours*60)) + " m, " + d6 (2) + " s");
+		}
+		else
+			UpdateBattleLog ("\n--Elapsed time: " + turnNumber*6 + " m, " + d6 (2) + " s");
+		UpdateBattleLog (" -Location: " + this.transform.position);
 
 		//if (this.Hullpoints <= 0 && this.gameObject.activeSelf == true)
 		//this.Die();
@@ -54,26 +85,18 @@ public class Spaceship : SpaceObject {
 
 		//TODO: MOVEMENTLOGIC. Straight Towards enemy, traight to any direction, dogfight, follow friend?
 
-		//this.Move (this.Thrust, this.transform.);
+		if (Order == "Engage" && HasEnemy() && Alarm == "Red")
+			Destination = Enemy.transform;
 
+
+		if (!(Alarm == "White" | Order == "Stop")) {
+			if (Destination != null && Order != "Engage" )
+				UpdateBattleLog (" -Destination: " + Destination.transform.position + " Distance: " + this.DistanceTo(Destination));
+			this.MovementLogic ();
+		}
 		//ATTACK STEP
-
-		if (HasLock() && Targetlock.gameObject.activeSelf == false)	//targetlock dies
-			this.Targetlock = this;
-	
-		if (Enemy == null | Enemy == this) {
-			UpdateBattleLog (" Scanning for new target..");
-			this.SeekNewEnemy ();
-			this.Attack (Enemy);
-		}
-		else if (Enemy.gameObject.activeSelf == true)
-			//Debug.Log (this.Attack (Enemy));
-			this.Attack (Enemy);
-		else {
-			UpdateBattleLog (" Target destroyed, seeking new target.");
-			this.SeekNewEnemy ();
-			this.Attack (Enemy);
-		}
+		if (Alarm == "Red")
+			this.AttackLogic();
 
 		//ACTIONS STEP
 		this.PerformSensorAction ();
@@ -81,29 +104,70 @@ public class Spaceship : SpaceObject {
 
 	}
 
-
-	public void Attack (Spaceship Enemy)
-	{
-
-		if (Enemy != null && Enemy != this) 
+    //
+    private void MovementLogic()
+    {
+        if (Order == "Stop")
+        { }
+        else if (Destination == null | (Alarm == "Red" && (HasEnemy() && this.DistanceTo(Enemy) < 2)) ) { 
+            this.Move(this.Thrust / 2, this.transform.position + this.transform.forward * this.Thrust); //Default move, merely forward
+            //UpdateBattleLog(" Defaultmoving, howw boring..");
+          
+        }
+		else 
 		{
-			//this.transform.LookAt (Enemy.transform);
+			//TODO complain upwards that hey gimme me ssomething to do!
 
-			if (this.DistanceTo (Enemy) > 2) //Standard
-				this.Move (this.Thrust, Enemy.transform.position);
-			else
-				this.Move (this.Thrust/2, this.transform.position+this.transform.forward*this.Thrust); //so they do not get stuck in piles
-
-			foreach (Shipweapon Gun in MyGuns) {		
-				//Debug.Log (Gun.Attack (Enemy));;
-				UpdateBattleLog (Gun.Attack (Enemy));
+			if (this.Move (this.Thrust, Destination.transform.position) == true) {
+				if (this.Order == "Move") {
+					UpdateBattleLog (" Destination reached, coming to full stop!");
+					this.Order = "Stop";
+					this.Destination = null;
+				}
 			}
 		}
-
 	}
+
+	private void AttackLogic ()
+	{
+		if (HasEnemy ()) 
+		{
+			UpdateBattleLog (" -Target: " + Enemy.name + " Distance: " + this.DistanceTo (Enemy));
 		
+			this.Attack (Enemy);
+		}
+		else //Ne enemy needed!
+		{
+			this.SeekNewEnemy ();
+			this.Attack (Enemy);
+		}
+	}
+
+	public void Attack (Spaceship AttackTarget)
+	{
+
+		if (AttackTarget != null && AttackTarget != this) 
+		{
+			foreach (Shipweapon Gun in MyGuns) {		
+				//Debug.Log (Gun.Attack (Enemy));;
+				UpdateBattleLog (Gun.Attack (AttackTarget));
+			}
+		}
+	}
+
+	public void Attack ()
+	{
+		this.Attack (Enemy);
+	}
+
+	/// <summary>
+	/// Damage the ship HowMuch.
+	/// </summary>
+	/// <param name="HowMuch">Amount of Damage</param>
+	/// <param name="Source">Source of Damage</param>
 	public string Damage (int HowMuch, string Source)
 	{
+
 		int ActualDamage = Mathf.Max(HowMuch - Armour,0);
 
 		if (Source.Contains("missile"))	//brutal check here but good enough for now;
@@ -135,15 +199,16 @@ public class Spaceship : SpaceObject {
 			}
 		}	
 		else if ((Hullpoints < HullpointsOrig / 10)) {
-			this.Armour = 3;
+			//this.Armour = 3;
 			//Debug.Log (this.name + " DANGER DANGER DA DAMAGED!");
 			UpdateBattleLog ("  DANGER DANGER DANGER!");
 
 			this.Status = "DANGER";
+
+			this.SurrenderCheck ();
 		}	
 
-
-		if (Hullpoints <= 0) {
+		if (Hullpoints <= 0) {		//DEADCHECK
 			
 			return this.Die ("was destroyed by " + Source);
 		}
@@ -155,6 +220,8 @@ public class Spaceship : SpaceObject {
 			
 		UpdateBattleLog (" Under fire from: " + Source + "! Received " + ActualDamage + " hull damage!");
 
+		this.ChangeAlarm ("Red");
+
 		AngerEngagingSwitchCheck (Source);
 
 		return (this.name + " - " + ActualDamage + " hull damage!");
@@ -164,77 +231,114 @@ public class Spaceship : SpaceObject {
 
 	public bool HasLock()
 	{
-		if (this.Targetlock != this)
+		if (Targetlock != null && this.Targetlock != this && Targetlock.gameObject.activeSelf == true)
 			return true;
 		return false;
 	}
 
-	public void AngerEngagingSwitchCheck(string damagesource)
+	/// <summary>
+	/// Checks if there is an ALIVE and TARGETABLE enemy. If Enemy is dead, resets Enemy.
+	/// </summary>
+	/// <returns><c>true</c> if yes; <c>false</c> in other cases.</returns>
+	public bool HasEnemy()
+	{
+		if (Enemy == null | Enemy == this)
+			return false;
+
+		if (Enemy.gameObject.activeSelf == false) 
 		{
-		
-		if ( (Enemy == null  )  )  //if after killing someone previously
-		{
-				foreach (Spaceship question in FindObjectsOfType<Spaceship>())
-				{
-					if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true && damagesource.Contains(question.name))
-					{
-						Engage(question);
-						break;
-					}
-				}
-		
-			}
-		else if (this.HasLock() && Targetlock == Enemy && this.Targetlock.gameObject.activeSelf == true)
-		{			
-			//keep on shooting
+			Enemy = null;
+			return false;
 		}
-		else if ((d6(2)>8) && !damagesource.Contains(Enemy.name) ) //no jos ny vaihteeks
-		{			
-			foreach (Spaceship question in FindObjectsOfType<Spaceship>()) {
-				if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true && damagesource.Contains (question.name)) {
-					Engage(question);
-					break;
-				}
-			}
-		}
+
+		return true;
 	}
 
-	/// <summary>
-	/// find something to blast
-	/// </summary>
-	/// <returns>The new enemy.</returns>
-	public Spaceship SeekNewEnemy(){
-
-		//Debug.Log (this.name + " SEEKING NEW ENEMY ");
-
-		//TODO ask fleet for a target
-
-		if (this.HasLock() && this.Targetlock.gameObject.activeSelf == true && this.Targetlock != this)	//like to target targetlock, duh
-		{	
-			Engage(Targetlock);
-			return Targetlock;
-		}
-
-		//TODO more detailed way of randomising the next target: perhaps by range?
-		foreach (Spaceship question in FindObjectsOfType<Spaceship>())
+    /// <summary>
+    /// If attacked vhile engaging, does change attack target?
+    /// </summary>
+    /// <param name="damagesource"></param>
+	public void AngerEngagingSwitchCheck(string damagesource)
 		{
-			if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true )
-			{
-				//targetinglogic here??
-				if (Random.Range (0, 10) > 6) {
-					Engage(question);
-					return question;
-				}
 
-			}
-		}
+        if (Order == "Engage")
+        {
+            if (HasEnemy() == false)  //if after killing someone previously
+            {
+                foreach (Spaceship question in FindObjectsOfType<Spaceship>())
+                {
+                    if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true && damagesource.Contains(question.name))
+                    {
+                        Engage(question);
+                        break;
+                    }
+                }
 
-		if (d6(1)>3){
-			UpdateBattleLog (" No targets found!");
+            }
+            else if (this.HasLock() && Targetlock == Enemy)
+            {
+                //keep on shooting
+            }
+            else if ((d6(2) > 8) && !damagesource.Contains(Enemy.name)) //no jos ny vaihteeks
+            {
+                foreach (Spaceship question in FindObjectsOfType<Spaceship>())
+                {
+                    if (question.Side != "Neutral" && question.Side != this.Side && question.gameObject.activeSelf == true && damagesource.Contains(question.name))
+                    {
+                        Engage(question);
+                        break;
+                    }
+                }
+            }
+        }
+	}
 
-			return this; //urhgtihetseith
-		}
-		return SeekNewEnemy(); //urhgtihetseith
+    /// <summary>
+    /// find something to blast
+    /// </summary>
+    /// <returns>The new enemy.</returns>
+    public Spaceship SeekNewEnemy() {
+
+        if (GetComponentInParent<Fleet>() == null | GetComponentInParent<Fleet>().MyEnemies == null)
+        {
+            UpdateBattleLog(" No enemies!");
+
+            return this; //not the most ideaal
+        }
+
+        UpdateBattleLog(" Scanning for enemies:");
+        //Debug.Log (this.name + " SEEKING NEW ENEMY ");
+
+        if (this.HasLock() && Targetlock.Alarm != "White")  //like to target targetlock, duh
+        {
+            this.Enemy = Targetlock;
+            UpdateBattleLog(" Targeting " + Enemy.HullType + " " + Enemy.name + " Distance: " + this.DistanceTo(Enemy));
+            return Targetlock;
+        }
+
+        //TODO more detailed way of randomising the next target: perhaps by range?
+
+        if (GetComponentInParent<Fleet>().MyEnemies.GetMyCurrentShips().Length == 0)
+        {
+            UpdateBattleLog(" No targets found!");
+
+            return this; //not the most ideaal
+        }
+
+        Spaceship NuEnemy = GetComponentInParent<Fleet>().GiveRandomEnemy();
+
+        if (this.Order == "Engage")
+        {
+            this.Engage(NuEnemy);
+        }
+        else {
+            this.Enemy = NuEnemy;
+            UpdateBattleLog(" Targeting " + Enemy.HullType + " " + Enemy.name + " Distance: " + this.DistanceTo(Enemy));
+        }
+
+        return this.Enemy;
+
+
 		//Debug.Log (this.name + " IS VICTORIOUS! CHEEERING!");
 
 
@@ -246,12 +350,16 @@ public class Spaceship : SpaceObject {
 	/// <param name="Target">Enemy to attack.</param>
 	public void Engage(Spaceship Target)
 	{
-		if (this.Enemy != Target) 
+		if (this.Enemy != Target && Alarm == "Red") 
 		{
 			this.Enemy = Target;
+			this.Destination = Target.transform;
+			this.Order = "Engage";
 			//Debug.Log (this.name + " ENGAGING " + question.name);
 			UpdateBattleLog (" ENGAGING " + Target.HullType + " " + Target.name + " Distance: " + this.DistanceTo(Target));
 		}
+		else if (Alarm != "Red")
+			UpdateBattleLog (" Cannot Engage" + Target.name + ": Alarm not Red!");
 	}
 
 	public void PerformSensorAction()
@@ -268,7 +376,7 @@ public class Spaceship : SpaceObject {
 		}		
 		else
 		{
-			if (Enemy != null && Enemy.gameObject.activeSelf == true && Targetlock != Enemy )
+			if (HasEnemy() && Targetlock != Enemy && Alarm == "Red" )
 				this.TargetLockCheck (Enemy);
 		}
 
@@ -300,7 +408,7 @@ public class Spaceship : SpaceObject {
 			if (Check >= 8 | potentialtarget.Transponders == true) {
 				this.Targetlock = potentialtarget;
 
-				UpdateBattleLog (" Sensor Locked " + potentialtarget.name + "!");
+				UpdateBattleLog (" Sensors locked to " + potentialtarget.name + "!");
 				potentialtarget.UpdateBattleLog (" " + this.name + " got a sensor lock on us!");	//nothing more for nooow??
 
 			}
@@ -323,11 +431,67 @@ public class Spaceship : SpaceObject {
 				UpdateBattleLog(" Incoming missiles from " + problem.source.name + "!");
 			else
 				UpdateBattleLog(" Incoming missile  from " + problem.source.name + "!");
+            
+			this.ChangeAlarm ("Red"); //justified automation
 
-			//TODO AI logic?? should this only here add them to IncomingMissiles?
-		}
+            if (HasEnemy() == false && problem.source.gameObject.activeSelf)
+            {
+                if (Order == "Engage")
+                    Engage(problem.source);
+                else
+                { 
+                    this.Enemy = problem.source;
+                    UpdateBattleLog(" Targeting missile source " + Enemy.HullType + " " + Enemy.name + " Distance: " + this.DistanceTo(Enemy));
+                }
+            }
+            //TODO AI logic?? should this only here add them to IncomingMissiles?
+        }
 
 	}
+
+	/// <summary>
+	/// Changes the Ships alert to a new type.
+	/// </summary>
+	/// <param name="NuAlarm">what to attempt changing</param>
+	public bool ChangeAlarm (string NuAlarm)
+	{
+        //Debug.Log(this.name + " ChangeAlarm " + this.Alarm + " : " + NuAlarm);
+
+
+        if (this.Alarm == "White") {
+			return false;
+		}
+		else if ((NuAlarm == "White") && this.Alarm != "White") {
+			return SetAlarm (NuAlarm);
+		}
+		else if ((NuAlarm == "Green") && this.Alarm != "Green") {
+			return SetAlarm (NuAlarm);
+		}
+		else if ((NuAlarm == "Yellow") && this.Alarm != "Yellow") {
+			return SetAlarm (NuAlarm);
+		}
+		else if ((NuAlarm == "Red") && this.Alarm != "Red") {	//Only Yellow allows going to Red!
+			return SetAlarm (NuAlarm);
+		}
+		else if (!(NuAlarm == "White" | NuAlarm == "Green" | NuAlarm == "Yellow" | NuAlarm == "Red"))
+			Debug.LogWarning (this.name + " Trying to change to wrong kind of Alarm = " + NuAlarm);
+
+		return false;
+
+	}
+
+	private bool SetAlarm(string NuAlarm)
+	{
+		this.Alarm = NuAlarm;
+		if (NuAlarm == "Red")
+            UpdateBattleLog (" " + this.Alarm.ToUpper() + " ALARM!!");	
+        else
+            UpdateBattleLog(" " + this.Alarm + " Alarm!");
+
+        return true;
+
+	}
+
 
 	/// <summary>
 	/// Updates the battle log of the ship.
@@ -340,7 +504,79 @@ public class Spaceship : SpaceObject {
 	}
 
 
-	// Update is called once per frame
+	public string MiniReport()
+	{
+		if (this.Order == "Move" && this.Destination != null)
+			return (this.name + " | Moving to " + Destination.name + ", Dist " + this.DistanceTo(Destination));
+		if (this.Order == "Move" && this.Destination == null)
+			return (this.name + " | Advancing towards " + this.transform.forward );
+		else if (this.Order == "Engage" && HasEnemy())
+			return (this.name + " | Engaging " + Enemy.name + ", Dist " + this.DistanceTo(Enemy));
+		else if (this.Alarm == "Red" && HasEnemy())
+			return (this.name + " | Firing at " + Enemy.name + ", Dist " + this.DistanceTo(Enemy));
+		else if (this.Alarm == "White")
+			return (this.name + " | Surrendering" );
+		else if (this.Order == "Stop")
+			return (this.name + " | At " + this.transform.position );
+
+		return (this.name + " | No orders");
+		 
+	}
+
+	public void SurrenderCheck()
+	{
+		if (Alarm != "White") {
+			int AreCrewCowards = d6 (2) + Mathf.Max (Skill_Pilot, Skill_Electronics); //Veterancy Helps
+
+			if (AreCrewCowards > 8) {
+				//Allgood
+			} else if (AreCrewCowards == 8) {
+				UpdateBattleLog (" Crew are getting restless!");
+			} else if (AreCrewCowards < 8) {
+				this.Surrender ();
+			}
+		} else {
+			UpdateBattleLog (" Aaargh!!");
+		}
+	}
+
+	public void Surrender()
+	{
+		Debug.Log (this.name + " Surrendered!");
+		UpdateBattleLog (" Surrendering!");
+		ChangeAlarm ("White");
+		this.Order = "Stop";
+		this.Thrust = 0;
+		this.Enemy = null;
+		this.Destination = null;
+		this.Targetlock = null;
+		this.Transponders = true;
+
+		foreach (MeshRenderer Flaggen in GetComponentsInChildren<MeshRenderer>()) {
+			if (Flaggen.name.Contains ("Flag_")) {
+				Flaggen.gameObject.SetActive(false);
+			}
+		}
+
+        this.transform.parent = null; //Basically leaves the Fleet it as in.
+
+		foreach (Spaceship PlzDontShoot in FindObjectsOfType<Spaceship>())
+		{
+			if (PlzDontShoot.Enemy == this) 
+			{
+				PlzDontShoot.UpdateBattleLog (" " + PlzDontShoot.Enemy + " surrendered!");
+
+				int MoralityCheck = d6(2);
+				if (MoralityCheck >= 8)
+					PlzDontShoot.SeekNewEnemy();
+				else
+					PlzDontShoot.UpdateBattleLog (" Muahahhaa!");
+				
+			}
+
+		}
+	}
+
 	public string Die () {
 		return this.Die("was wrecked!");
 	}
@@ -352,20 +588,24 @@ public class Spaceship : SpaceObject {
 		Debug.Log (this.name + " " + how);
 		UpdateBattleLog ("....Log ends");
 
-		foreach (Spaceship toNote in FindObjectsOfType<Spaceship>()) 
-		{
-			
-			if (toNote.Enemy != null) 
-			{
-				if (toNote.Enemy == this)
-					toNote.UpdateBattleLog (" " + this.name + " " + how);
-			}
-		}
+//		foreach (Spaceship toNote in FindObjectsOfType<Spaceship>()) 
+//		{
+//			
+//			if (toNote.Enemy != null) 
+//			{
+//				if (toNote.Enemy == this)
+//					toNote.UpdateBattleLog (" " + this.name + " " + how);
+//			}
+//		}
 
 		Instantiate (ShipExplosion, this.transform.position,this.transform.rotation);
 
 		this.gameObject.SetActive (false);
 
 		return (this.name + " " + how);
+	}
+
+	void OnDestroy(){
+		//Debug.LogError ("This should not happen!!");
 	}
 }

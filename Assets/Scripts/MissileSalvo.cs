@@ -73,7 +73,9 @@ public class MissileSalvo : SpaceObject {
 
 		roundsToTarget = (this.DistanceTo(Enemy) / Thrust) +1;
 
-
+//		if (Random.Range (0, 100) < 95) {	//Yeah no
+//			Destroy (GetComponentInChildren<UI_Symbol> ().transform.parent.gameObject);
+//		}
 
 		Enemy.MissileLaunchDetectCheck (this);
 
@@ -162,6 +164,6 @@ public class MissileSalvo : SpaceObject {
 	public void EndOfLife()
 	{
 		//TODO explosion for missile?
-		Destroy (this.gameObject,0.4f);
+		Destroy (this.gameObject, 0.4f);
 	}
 }

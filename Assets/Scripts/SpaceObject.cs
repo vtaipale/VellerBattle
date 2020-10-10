@@ -20,10 +20,14 @@ public class SpaceObject : TravellerBehaviour {
 	/// </summary>
 	/// <returns>The distance to the Target.</returns>
 	/// <param name="target">OtherObject</param>
-	public int DistanceTo(SpaceObject target)
+	public int DistanceTo(SpaceObject Target)
 	{
-		return Mathf.RoundToInt( Vector3.Distance (this.transform.position, target.transform.position) ) ;
+		return this.DistanceTo(Target.transform.position);
+	}
 
+	public int DistanceTo(Transform Target)
+	{
+		return this.DistanceTo(Target.position);
 	}
 
 	public int DistanceTo(Vector3 target)
@@ -33,18 +37,24 @@ public class SpaceObject : TravellerBehaviour {
 	}
 
 	/// <summary>
-	/// Moves towards direction.
+	/// Moves tovards the Direction. Returns FALSE if moving, TRUE if already there.
 	/// </summary>
-	public void Move(int amount, Vector3 direction)
+	/// <param name="amount">Amount to move.</param>
+	/// <param name="Target">.</param>
+	public bool Move(int amount, Vector3 Target)
 	{
-		this.transform.LookAt (direction);
+		this.transform.LookAt (Target);
 
 		if (amount > this.Thrust)
 			amount = this.Thrust;
 
-		if (amount > this.DistanceTo (direction))
-			this.transform.position = direction;
-		else			
-			this.transform.Translate (this.transform.forward * amount,Space.World);
+		if (amount > this.DistanceTo (Target)) {
+			this.transform.position = Target;
+			return true;
+		}
+			
+		this.transform.Translate (this.transform.forward * amount,Space.World);
+
+		return false; //stull moving
 	}
 }

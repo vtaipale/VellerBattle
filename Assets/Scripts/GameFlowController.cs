@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Cameras;
 
 public class GameFlowController : TravellerBehaviour {
 
@@ -11,6 +12,7 @@ public class GameFlowController : TravellerBehaviour {
 	public float Gamespeed = 1.0f;
 
 	public bool ContinueGame = true;
+	public bool Battle = true;
 
 	int roundNumber = 0;
 
@@ -23,7 +25,7 @@ public class GameFlowController : TravellerBehaviour {
 		AllShips = FindObjectsOfType<Spaceship> ();
 
 		Debug.Log ("-- NEW BATTLE --");
-		Debug.Log ("Counting" + FindObjectsOfType<Spaceship>().Length + " ships! \nLet the battle commerce!!!");
+		Debug.Log ("Counting " + FindObjectsOfType<Spaceship>().Length + " ships! \nLet the battle commerce!!!");
 
 
 		//INITIATIVEJÄRJESTYS ETC
@@ -39,8 +41,11 @@ public class GameFlowController : TravellerBehaviour {
 			update = 0.0f;
 			NextRound ();
 
-			if (FindObjectOfType<MissileSalvo>() == null && (Fleet1.DefeatCheck () | Fleet2.DefeatCheck ())) {
+			FindObjectOfType<FreeLookCam> ().ManualUpdate();
+
+			if (Battle == true && FindObjectOfType<MissileSalvo>() == null && (Fleet1.DefeatCheck () | Fleet2.DefeatCheck ())) {
 				ContinueGame = false;
+				Battle = false;
 				Fleet1.StatusReport ();
 				Fleet2.StatusReport ();
 				Debug.Log ("-- BATTLE OVER --");
@@ -51,8 +56,20 @@ public class GameFlowController : TravellerBehaviour {
 		}
 	}
 
+	public void ToggleContinue()
+	{
+		if (ContinueGame == false) {
+			ContinueGame = true;
+			Debug.Log (" Game CONTINUE");
+		} else {
+			ContinueGame = false;
+			Debug.Log (" Game STOPPED");
 
-	void NextRound(){
+		}
+	}
+
+
+	public void NextRound(){
 
 		roundNumber++;
 
