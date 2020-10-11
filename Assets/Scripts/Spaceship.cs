@@ -110,7 +110,7 @@ public class Spaceship : SpaceObject {
         if (Order == "Stop")
         { }
         else if (Destination == null | (Alarm == "Red" && (HasEnemy() && this.DistanceTo(Enemy) < 2)) ) { 
-            this.Move(this.Thrust / 2, this.transform.position + this.transform.forward * this.Thrust); //Default move, merely forward
+            this.MoveForward(this.Thrust / 2); //Default move, merely forward
             //UpdateBattleLog(" Defaultmoving, howw boring..");
           
         }

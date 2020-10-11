@@ -504,7 +504,7 @@ MonoBehaviour:
   WeaponMod: 2
   GunType: Pulse Laser
   DamageDice: 2
-  MaxRange: 19
+  MaxRange: 2500
 --- !u!1 &7506370345350716907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1185,7 +1185,7 @@ MonoBehaviour:
   WeaponMod: 2
   GunType: Pulse Laser
   DamageDice: 2
-  MaxRange: 19
+  MaxRange: 2500
 --- !u!1 &9018834479723073591
 GameObject:
   m_ObjectHideFlags: 0

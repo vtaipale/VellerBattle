@@ -11,7 +11,19 @@ public class SpaceObject : TravellerBehaviour {
 	public int Thrust = 1;
 	public int Initiative = 0;
 
-	public virtual void GameTurn(int turnNumber)
+    //SPACEBAND RANGES
+    //GLOBALLY: 1 Unity Unit = 10 KM Traveller Space
+    private static int RangeB_Adjacent  = 0;
+    private static int RangeB_Close     = 1;
+    private static int RangeB_Short     = 125;
+    private static int RangeB_Medium    = 1000;
+    private static int RangeB_Long      = 2500;
+    private static int RangeB_VLong     = 5000;
+    private static int RangeB_Distant   = 30000;
+    private static int RangeB_VDistant  = 500000;   //edge of anything sane battlethingys
+
+
+    public virtual void GameTurn(int turnNumber)
 	{
 	}
 
@@ -37,10 +49,11 @@ public class SpaceObject : TravellerBehaviour {
 	}
 
 	/// <summary>
-	/// Moves tovards the Direction. Returns FALSE if moving, TRUE if already there.
+	/// Moves tovards a destination. 
+    /// Returns FALSE if moving, TRUE if the destination reached.
 	/// </summary>
 	/// <param name="amount">Amount to move.</param>
-	/// <param name="Target">.</param>
+	/// <param name="Target">Destination to move.</param>
 	public bool Move(int amount, Vector3 Target)
 	{
 		this.transform.LookAt (Target);
@@ -48,13 +61,21 @@ public class SpaceObject : TravellerBehaviour {
 		if (amount > this.Thrust)
 			amount = this.Thrust;
 
+        amount = amount * 130; //The Space ratio 1297 km/round /10 to get to unity scale
+
 		if (amount > this.DistanceTo (Target)) {
-			this.transform.position = Target;
-			return true;
+            
+			this.transform.position = Target + new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)); // a bit of scatter
+            return true;
 		}
 			
 		this.transform.Translate (this.transform.forward * amount,Space.World);
 
 		return false; //stull moving
 	}
+
+    public bool MoveForward(int amount)
+    {
+        return this.Move(amount, this.transform.position + this.transform.forward * this.Thrust * 1300);  
+    }
 }

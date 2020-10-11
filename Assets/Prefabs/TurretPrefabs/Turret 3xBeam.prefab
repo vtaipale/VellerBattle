@@ -51,4 +51,4 @@ MonoBehaviour:
   WeaponMod: 4
   GunType: Beam Laser
   DamageDice: 1
-  MaxRange: 9
+  MaxRange: 1000

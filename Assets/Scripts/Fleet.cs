@@ -218,7 +218,9 @@ public class Fleet : TravellerBehaviour {
 		
 	public void MoveOrderAll(Vector3 Destination)
 	{
-		GameObject NuMovementPoint = (GameObject)Instantiate (new GameObject(), Destination,new Quaternion(0f,0f,0f,0f));
+        Destination = Destination ; //a bit of randomness
+
+        GameObject NuMovementPoint = (GameObject)Instantiate (new GameObject(), Destination,new Quaternion(0f,0f,0f,0f));
 
 		NuMovementPoint.tag = "MovementPoint";
 

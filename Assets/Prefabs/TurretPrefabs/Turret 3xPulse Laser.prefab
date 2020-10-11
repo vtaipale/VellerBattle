@@ -51,4 +51,4 @@ MonoBehaviour:
   WeaponMod: 2
   GunType: Pulse Laser
   DamageDice: 2
-  MaxRange: 19
+  MaxRange: 2500
