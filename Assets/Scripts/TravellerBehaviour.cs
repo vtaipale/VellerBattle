@@ -7,10 +7,22 @@ using UnityEngine;
 /// </summary>
 public class TravellerBehaviour : MonoBehaviour {
 
-	/// <summary>
-	/// Tech Level
-	/// </summary>
-	public int TL = 12;
+
+    //SPACEBAND RANGES
+    //GLOBALLY: 1 Unity Unit = 10 KM Traveller Space
+    public static int RangeB_Adjacent = 0;
+    public static int RangeB_Close = 1;
+    public static int RangeB_Short = 125;
+    public static int RangeB_Medium = 1000;
+    public static int RangeB_Long = 2500;
+    public static int RangeB_VLong = 5000;
+    public static int RangeB_Distant = 30000;
+    public static int RangeB_VDistant = 500000;   //edge of anything sane battlethingys
+
+    /// <summary>
+    /// Tech Level
+    /// </summary>
+    public int TL = 12;
 
 	/// <summary>
 	/// Roll X regular dice, return sum .

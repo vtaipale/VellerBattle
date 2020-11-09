@@ -7,12 +7,16 @@ public class Spaceship : SpaceObject {
 	public string HullType = "Patrol Cruiser";
 	public int Hullpoints = 160;
 	public int HullpointsOrig = 160;
+    public string HullConfig = "Streamlined";
 	public int Armour = 4;
 	public int Sensors = 0; 	//standard mil sensors
+    public int SensorRoll = 0;  //The Standard Sensor Roll for this round.
 	public int Stealth = 0;		//for stealth ships...
+    public int JumpClass = 3;   
 	public bool Transponders = false;
+    public string TransponderMessage = "";
 
-	public string Side; //more complex?
+    public string Side; //more complex?
 	public string Status = "OK";
 	public string Alarm = "Yellow";
 		/*	White = do not move, surrender
@@ -47,7 +51,11 @@ public class Spaceship : SpaceObject {
 	// Use this for initialization
 	void Start () {
 
-		this.MyGuns = this.gameObject.GetComponentsInChildren<Shipweapon> ();
+        if (this.TransponderMessage == "")
+            TransponderMessage = this.name;
+
+
+        this.MyGuns = this.gameObject.GetComponentsInChildren<Shipweapon> ();
 		//this.Targetlock = this;
 
 		this.Skill_Pilot = Mathf.RoundToInt (Random.Range (0f, 2f));
@@ -109,11 +117,13 @@ public class Spaceship : SpaceObject {
     {
         if (Order == "Stop")
         { }
-        else if (Destination == null | (Alarm == "Red" && (HasEnemy() && this.DistanceTo(Enemy) < 2)) ) { 
+        else if (Destination == null ) { 
             this.MoveForward(this.Thrust / 2); //Default move, merely forward
             //UpdateBattleLog(" Defaultmoving, howw boring..");
           
         }
+        //else if (Alarm == "Red" && (HasEnemy() && this.DistanceTo(Enemy) < RangeB_Close))
+            //DOGFIGHTING
 		else 
 		{
 			//TODO complain upwards that hey gimme me ssomething to do!
@@ -362,28 +372,33 @@ public class Spaceship : SpaceObject {
 			UpdateBattleLog (" Cannot Engage" + Target.name + ": Alarm not Red!");
 	}
 
-	public void PerformSensorAction()
-	{
-		//SCAN SURROUNDINGS
+    public void PerformSensorAction()
+    {
+        
+        //If Missiles incoming = countermeasures!
 
-		//If Missiles incoming = countermeasures!
+        this.SensorRoll = -10; //aka not done this round
+
+        if (this.IncomingMissiles.Count > 0)
+        {
+
+            if (this.IncomingMissiles[0] != null)
+                UpdateBattleLog(ElectronicCountermeasure(this.IncomingMissiles[0])); //should priorize moreeee but not now
+        }
+        else if (HasEnemy() && Targetlock != Enemy && Alarm == "Red")
+
+        {
+            this.TargetLockCheck(Enemy);
+        }
+        else // Sensor operator has time to do something else this round!
+        {
+            this.SensorRoll = d6(2) + Skill_Electronics + Sensors; //SCAN SURROUNDINGS
+        }
 
 
-		if (this.IncomingMissiles.Count > 0) {
+    }
 
-			if (this.IncomingMissiles[0] != null)
-				UpdateBattleLog(ElectronicCountermeasure (this.IncomingMissiles[0]) ); //should priorize moreeee but not now
-		}		
-		else
-		{
-			if (HasEnemy() && Targetlock != Enemy && Alarm == "Red" )
-				this.TargetLockCheck (Enemy);
-		}
-
-
-	}
-
-	public string ElectronicCountermeasure( MissileSalvo problem)
+    public string ElectronicCountermeasure( MissileSalvo problem)
 	{
 		int Check = d6 (2) + Skill_Electronics + Sensors; 
 
@@ -417,15 +432,89 @@ public class Spaceship : SpaceObject {
 
 	}
 
+    /// <summary>
+    /// Ship is scanned by another ship/fleet
+    /// </summary>
+    /// <param name="Distance"></param>
+    /// <returns>Scan result</returns>
+    public string Scanned(float Distance)
+    {
+        string ScanResult = "";
+
+        // THERMAL
+
+        if (this.Hullpoints > 0)
+            ScanResult += "Warm ";
+        else
+            ScanResult += "Cold ";
+
+        //VISUAL
+
+        if (Distance < RangeB_Medium)
+            ScanResult += (this.HullpointsOrig * 2.5f) + " ton ";
+
+        if (Distance < RangeB_Short)
+            ScanResult += this.HullType;    // Fine Details
+        else if (Distance < RangeB_Long)
+            ScanResult += this.HullConfig;  // Shape and structure
+        else
+            ScanResult += "unidentified";  // Basic outline
+
+        // EM
+
+        if (Distance < RangeB_VLong && Distance >= RangeB_Short)
+            ScanResult += " spaceship";   
+        else if (Distance < RangeB_Distant)
+            ScanResult += " object";        //TODO: scan for other SpaceObjects?
+
+        ScanResult += "\n";
+
+        if (this.Order != "Stop")
+        {
+            ScanResult += " Speed: " + this.Thrust + "\n";
+            ScanResult += " Direction: " + this.transform.forward + "\n";
+        }
+
+        // Fine Details
+
+        if (this.MyGuns.Length > 0 )
+        {
+            if (Distance < RangeB_Long)
+            {
+                ScanResult += " weapons: " + MyGuns.Length + "\n"; // Hot or Cold Spots + Sources
+               
+            }
+            else if (Distance < RangeB_Short)
+            {
+                foreach (Shipweapon gunnen in this.MyGuns)  // Fine Details
+                {
+                    if (gunnen.gameObject.activeInHierarchy == true)
+                        ScanResult += " " + gunnen + "\n";
+                }
+            }
+        }
+
+        if (Distance < RangeB_Short)
+            ScanResult += " Hull: " + Hullpoints + " / " + HullpointsOrig + "\n";
+
+
+        if (this.Transponders == true)
+            ScanResult += " Transponder: " + this.TransponderMessage + "\n";
+
+        return ScanResult;
+
+
+    }
+
+
 	/// <summary>
 	/// Does ship detect a missile launch towards itself??
 	/// </summary>
 	/// <param name="problem">incoming missile.</param>
 	public void MissileLaunchDetectCheck( MissileSalvo problem)
 	{
-		int Check = d6 (2) + Skill_Electronics + Sensors; 
 
-		if (Check >= 8) 
+		if (SensorRoll >= 8) 
 		{
 			if (problem.AmountOfMissiles > 1)
 				UpdateBattleLog(" Incoming missiles from " + problem.source.name + "!");
@@ -551,8 +640,9 @@ public class Spaceship : SpaceObject {
 		this.Destination = null;
 		this.Targetlock = null;
 		this.Transponders = true;
+        this.TransponderMessage = "SOS from " + this.name ;
 
-		foreach (MeshRenderer Flaggen in GetComponentsInChildren<MeshRenderer>()) {
+        foreach (MeshRenderer Flaggen in GetComponentsInChildren<MeshRenderer>()) {
 			if (Flaggen.name.Contains ("Flag_")) {
 				Flaggen.gameObject.SetActive(false);
 			}

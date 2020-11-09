@@ -29,6 +29,8 @@ public class UI_FleetScanner : MonoBehaviour {
 
     private float temptime;
 
+    public Text ScanText;
+
     public float m_DistanceZ;
     Plane m_Plane;
 
@@ -175,6 +177,13 @@ public class UI_FleetScanner : MonoBehaviour {
 
         RangePlanesVisible = yesno;
         RangePlanes.SetActive(yesno);
+    }
+
+
+    public void ScanFleet(Fleet TargetFleet)
+    {
+        string ResultingScan = TargetFleet.GetScan(CurrentFleet);
+        ScanText.text = ResultingScan;
     }
 
 }

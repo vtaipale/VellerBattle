@@ -257,7 +257,20 @@ public class Fleet : TravellerBehaviour {
         Debug.Log(this.name + " All " + MyCurrentShips.Length + " ships: " + WhatAlarm + " Alarm!");
     }
 
+    public int GetMaxSensorRoll()
+    {
 
+        int returnoitava = -10; //-10 = no-one even tried!
+        
+        foreach (Spaceship shippen in this.GetMyCurrentShips())
+        {
+            //Debug.Log(shippen + " ships: " + WhatAlarm + " Alarm!");
+            if (shippen.gameObject.activeSelf && (shippen.SensorRoll > returnoitava))
+                returnoitava = shippen.SensorRoll;
+        }
+
+        return returnoitava;
+    }
 
 
 
@@ -443,6 +456,65 @@ public class Fleet : TravellerBehaviour {
         {
             //No enemies found!
         }
+    }
+
+    /// <summary>
+    /// This Fleet is being Scanned.
+    /// </summary>
+    /// <param name="DistanceToUs"></param>
+    /// <returns>Vhat enemy sees. </returns>
+    public string GetScan(Fleet ScanningFleet)
+    {
+        string ScanReport = "Nothing!";
+
+        int MaxSensorRoll = ScanningFleet.GetMaxSensorRoll();
+
+        // TODO RAYTRACE betveen fleets: can they see eachother?
+
+        if (MaxSensorRoll == -10)
+        {
+            return "Sensors too buzy to scan!";
+        }
+        else if (MaxSensorRoll < 8)
+        {
+            return "Sensors are confused!"; //different strings of no-data / excuses?
+        }
+
+        float DistanceToUs = this.Leader.DistanceTo(ScanningFleet.Leader);
+
+        // after this, Scan is >= 8, aka successfull!
+        
+        int ScannedShips = 0;
+        string ShipScans = "";
+
+        if (DistanceToUs > RangeB_VDistant)
+        {
+            return "Target is too distant!";
+        }
+        else 
+        {
+            foreach (Spaceship shippen in this.GetMyCurrentShips())
+            {
+                if (MaxSensorRoll - shippen.Stealth >= 8)
+                {
+                    ScannedShips++;
+                    ShipScans += shippen.Scanned(DistanceToUs) + "\n";
+                }
+
+            }
+
+            
+        }
+
+        if (ScannedShips == 0)
+            return "Sensors are confused!"; // if scan is successfull, but enemy haz stealth. 
+
+        ScanReport = "Scanned " + ScannedShips + " targets: \n Distance " 
+            + Mathf.RoundToInt(DistanceToUs) + " KM = " + this.Leader.RangeBandToString(ScanningFleet.Leader.transform) + "\n\n";
+
+        ScanReport += ShipScans;
+
+        return ScanReport;
     }
 
 	public void GenerateCommander(Spaceship shippen){

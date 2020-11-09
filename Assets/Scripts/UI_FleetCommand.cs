@@ -37,7 +37,8 @@ public class UI_FleetCommand : MonoBehaviour
     void Update()
     {
 
-        FleetText.text = MyFleet.OfficialName + " | COM: " + MyFleet.Leader.CaptainName + "\n";
+        //FleetText.text = MyFleet.OfficialName + " | COM: " + MyFleet.Leader.CaptainName + "\n";
+        FleetText.text = MyFleet.OfficialName + " | SENSOR: " + MyFleet.GetMaxSensorRoll() + "\n";
         FleetText.text += "SHIPS: " + MyFleet.GetMyCurrentShips().Length + "/" + MyFleet.MyShips.Length + "\n";
         FleetText.text += "ALARM: " + MyFleet.CurrentAlarm + "\n";
         FleetText.text += "ORDER: " + MyFleet.CurrentOrder;
