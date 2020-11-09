@@ -14,7 +14,11 @@ public class UI_FleetScanner : MonoBehaviour {
 	public Canvas TheCanvas;
 	public GraphicRaycaster TheRaycaster;
 
-    public Fleet CurrentFleet;
+    public bool ScanninActive = false;
+    public Text ScanText;
+    public InputField FleetNumberInputter;
+
+    public Fleet CurrentFleet; // The Fleet currently in control, from FleetCommand
 
     public bool MovementSelection = false;
     public LineRenderer MovLine;
@@ -28,8 +32,6 @@ public class UI_FleetScanner : MonoBehaviour {
 	EventSystem m_EventSystem;
 
     private float temptime;
-
-    public Text ScanText;
 
     public float m_DistanceZ;
     Plane m_Plane;
@@ -179,6 +181,99 @@ public class UI_FleetScanner : MonoBehaviour {
         RangePlanes.SetActive(yesno);
     }
 
+    public void SetScanninActive(bool yesno)
+    {
+        Debug.Log("Scanning V " + CurrentFleet + ": " + yesno);
+
+        ScanninActive = yesno;
+        if (yesno == true)
+            this.ResetScanText();
+
+    }
+
+    /// <summary>
+    /// Button to Scan another Fleet, Indicated by FleetNumberImputter input field
+    /// </summary>
+    public void ScanFleetButton()
+    {
+        Fleet[] AllFleets = FindObjectsOfType<Fleet>();
+
+        if (FleetNumberInputter.text == "")
+            this.ResetScanText();
+        else
+        {
+            int FleetToScan = int.Parse(FleetNumberInputter.text) -1;
+
+            if (FleetToScan == 98)
+            {
+                ScanText.text = "Every detected ship: \n\n";
+
+                int ScanRoll = CurrentFleet.GetMaxSensorRoll();
+
+                if (ScanRoll == -10)
+                {
+                    ScanText.text += "Sensors too buzy to scan!";
+                }
+                else if (ScanRoll < 8)
+                {
+                    ScanText.text += "Sensors are confused!"; //different strings of no-data / excuses?
+                }
+                else
+                { 
+                    foreach (Spaceship shippen in FindObjectsOfType<Spaceship>())
+                    {
+                        if (ScanRoll - shippen.Stealth >= 8)
+                        {
+                            int DistanceToShippen = CurrentFleet.Leader.DistanceTo(shippen.transform.position);
+
+                            ScanText.text += "Position " + shippen.transform.position + "| Distance: " + DistanceToShippen + " KM = " + CurrentFleet.Leader.RangeBandToString(shippen.transform)+ "\n";
+                            if (shippen.Side == CurrentFleet.Side)
+                                ScanText.text += shippen.name + "\n";
+                            ScanText.text += shippen.Scanned(DistanceToShippen) + "\n";
+                        }
+                    }
+                }
+            }
+            
+
+
+            else if (FleetToScan >= 0 && FleetToScan <= AllFleets.Length)
+            {
+                if (AllFleets[FleetToScan] == CurrentFleet)
+                { 
+                    this.ResetScanText();
+                    ScanText.text += "\n \nPlease input a valid fleetnumber! No reason to scan yourself!";
+                }
+                else
+                    this.ScanFleet(AllFleets[FleetToScan]);
+            }
+            else
+            {
+                this.ResetScanText();
+                ScanText.text += "\n \nPlease input a valid fleetnumber!";
+            }
+        }
+    }
+
+    public void ResetScanText()
+    {
+        FleetNumberInputter.text = "";
+
+        string NuScanText = "Select Fleet to Scan: \n\n";
+
+        Fleet[] AllFleets = FindObjectsOfType<Fleet>();
+
+        int FleetNumbers = 0;
+        foreach (Fleet fleety in AllFleets)
+        {
+            FleetNumbers++;
+            if (fleety != CurrentFleet)
+            {
+                NuScanText += FleetNumbers + ":  " + fleety.name + " | Distance: " + CurrentFleet.Leader.DistanceTo(fleety.Leader.transform)  + " KM = " + CurrentFleet.Leader.RangeBandToString(fleety.Leader.transform) +  "\n\n"; //TODO Fleet Identification!
+            }
+        }
+        ScanText.text = NuScanText;
+    }
 
     public void ScanFleet(Fleet TargetFleet)
     {

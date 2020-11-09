@@ -443,10 +443,14 @@ public class Spaceship : SpaceObject {
 
         // THERMAL
 
+
         if (this.Hullpoints > 0)
             ScanResult += "Warm ";
         else
             ScanResult += "Cold ";
+
+        if (Distance < RangeB_Short)
+            ScanResult += this.Side + " ";    // Fine Details - basically visual Inspection
 
         //VISUAL
 
@@ -464,42 +468,44 @@ public class Spaceship : SpaceObject {
 
         if (Distance < RangeB_VLong && Distance >= RangeB_Short)
             ScanResult += " spaceship";   
-        else if (Distance < RangeB_Distant)
+        else if (Distance < RangeB_Distant && Distance >= RangeB_VLong)
             ScanResult += " object";        //TODO: scan for other SpaceObjects?
 
         ScanResult += "\n";
 
+        if (this.Transponders == true)
+            ScanResult += " Transponder: " + this.TransponderMessage + "\n";
+        
         if (this.Order != "Stop")
         {
             ScanResult += " Speed: " + this.Thrust + "\n";
-            ScanResult += " Direction: " + this.transform.forward + "\n";
+            //ScanResult += " Direction: " + this.transform.forward + "\n";
         }
 
         // Fine Details
 
-        if (this.MyGuns.Length > 0 )
-        {
-            if (Distance < RangeB_Long)
-            {
-                ScanResult += " weapons: " + MyGuns.Length + "\n"; // Hot or Cold Spots + Sources
-               
-            }
-            else if (Distance < RangeB_Short)
-            {
-                foreach (Shipweapon gunnen in this.MyGuns)  // Fine Details
-                {
-                    if (gunnen.gameObject.activeInHierarchy == true)
-                        ScanResult += " " + gunnen + "\n";
-                }
-            }
-        }
-
         if (Distance < RangeB_Short)
             ScanResult += " Hull: " + Hullpoints + " / " + HullpointsOrig + "\n";
 
+        if (this.MyGuns.Length > 0 )
+        {
+            if (Distance < RangeB_Short)
+            {
+                ScanResult += " Weapons:\n";
+                foreach (Shipweapon gunnen in this.MyGuns)  // Fine Details
+                {
+                    if (gunnen.gameObject.activeInHierarchy == true)
+                        ScanResult += "  " + gunnen.name + "\n";
+                }
+            }
+            else if (Distance < RangeB_Long)
+            {
+                ScanResult += " Weapons: " + MyGuns.Length + "\n"; // Hot or Cold Spots + Sources
+               
+            }
+            
+        }
 
-        if (this.Transponders == true)
-            ScanResult += " Transponder: " + this.TransponderMessage + "\n";
 
         return ScanResult;
 

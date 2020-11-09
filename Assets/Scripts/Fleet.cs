@@ -480,10 +480,12 @@ public class Fleet : TravellerBehaviour {
             return "Sensors are confused!"; //different strings of no-data / excuses?
         }
 
+
+
         float DistanceToUs = this.Leader.DistanceTo(ScanningFleet.Leader);
 
         // after this, Scan is >= 8, aka successfull!
-        
+
         int ScannedShips = 0;
         string ShipScans = "";
 
@@ -491,8 +493,12 @@ public class Fleet : TravellerBehaviour {
         {
             return "Target is too distant!";
         }
+        else if ( this.GetMyCurrentShips().Length == 0)
+        { 
+            return "No active targets left!";
+        }
         else 
-        {
+            {
             foreach (Spaceship shippen in this.GetMyCurrentShips())
             {
                 if (MaxSensorRoll - shippen.Stealth >= 8)
