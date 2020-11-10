@@ -77,4 +77,21 @@ public class TravellerBehaviour : MonoBehaviour {
 
 		return returnoitava;
 	}
+
+    /// <summary>
+    /// Asks GameFlowController what current round is.
+    /// </summary>
+    /// <returns>Current Round</returns>
+    public int GetCurrentRound()
+    {
+        return FindObjectOfType<GameFlowController>().GetRoundNumber();
+    }
+    /// <summary>
+    /// Asks GameFlowController what current round is as String.
+    /// </summary>
+    /// <returns>R-Current Round</returns>
+    public string GetCurrentRoundString()
+    {
+        return ("R-" + FindObjectOfType<GameFlowController>().GetRoundNumber());
+    }
 }

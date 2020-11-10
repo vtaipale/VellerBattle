@@ -2,19 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_Symbol : MonoBehaviour {
+public class UI_Symbol : SpaceObject {
 
 	public int ScaleFactor = 100;
 	public int ShowStart = 50;
+    
+    public UI_FleetScanner MyScanner;
 
 	public bool DoNotTrack = false;
+    
+    void Start()
+    {
+        MyScanner = FindObjectOfType<UI_FleetScanner>();
+    }
 
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		this.LookAtCamera ();
 
-	}
+        if (MyScanner.CurrentFleet.IsVisible(this))
+            this.LookAtCamera ();
+        else
+            this.transform.localScale = new Vector3(0, 0, 0);
+
+    }
 
 	virtual public void LookAtCamera()
 	{

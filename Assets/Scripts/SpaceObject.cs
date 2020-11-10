@@ -58,7 +58,7 @@ public class SpaceObject : TravellerBehaviour {
             return "Very Distant";
 
         return "Far";
- }
+    }
 
     /// <summary>
     /// Moves tovards a destination. 
@@ -89,5 +89,17 @@ public class SpaceObject : TravellerBehaviour {
     public bool MoveForward(int amount)
     {
         return this.Move(amount, this.transform.position + this.transform.forward * this.Thrust * 1300);  
+    }
+
+    /// <summary>
+    /// Can This SpaceObject See Objecty-SpaceObject using Linecast AND it is within detection range
+    /// </summary>
+    /// <param name="Objecty"></param>
+    /// <returns></returns>
+    public bool IsVisible(SpaceObject Objecty)
+    {
+        bool LineCasty = ((Physics.Linecast(this.transform.position, Objecty.transform.position) == false) && (this.DistanceTo(Objecty) < RangeB_Distant));
+        //Debug.Log("Linecast from " + this.name + " to " + Objecty + ": " + LineCasty);
+        return LineCasty;
     }
 }

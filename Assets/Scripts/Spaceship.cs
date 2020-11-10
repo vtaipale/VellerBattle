@@ -654,7 +654,7 @@ public class Spaceship : SpaceObject {
 			}
 		}
 
-        this.transform.parent = null; //Basically leaves the Fleet it as in.
+        this.transform.parent = null; //Basically leaves the Fleet it as in. TODO something better here!
 
 		foreach (Spaceship PlzDontShoot in FindObjectsOfType<Spaceship>())
 		{
