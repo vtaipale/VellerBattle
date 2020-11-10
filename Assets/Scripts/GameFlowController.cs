@@ -69,6 +69,11 @@ public class GameFlowController : TravellerBehaviour {
 	}
 
 
+    public int GetRoundNumber()
+    {
+        return this.roundNumber;
+    }
+
 	public void NextRound(){
 
 		roundNumber++;

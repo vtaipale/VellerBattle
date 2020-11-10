@@ -37,7 +37,8 @@ public class UI_FleetCommand : MonoBehaviour
     void Update()
     {
 
-        FleetText.text = MyFleet.OfficialName + " | COM: " + MyFleet.Leader.CaptainName + "\n";
+        //FleetText.text = MyFleet.OfficialName + " | COM: " + MyFleet.Leader.CaptainName + "\n";
+        FleetText.text = MyFleet.OfficialName + " | SENSOR: " + MyFleet.GetMaxSensorRoll() + "\n";
         FleetText.text += "SHIPS: " + MyFleet.GetMyCurrentShips().Length + "/" + MyFleet.MyShips.Length + "\n";
         FleetText.text += "ALARM: " + MyFleet.CurrentAlarm + "\n";
         FleetText.text += "ORDER: " + MyFleet.CurrentOrder;
@@ -49,52 +50,56 @@ public class UI_FleetCommand : MonoBehaviour
 
 
         //FLEETCHANGERS
-        if (Input.GetKeyUp(KeyCode.Alpha1)) 
-        {
-            Fleet[] Fleets = FindObjectsOfType<Fleet>();
 
-            if (Fleets.Length>=1)
+        if (MyFleetScanner.ScanninActive == false)
+        { 
+            if (Input.GetKeyUp(KeyCode.Alpha1))
             {
-                this.SelectOtherFleet(Fleets[0]);
-            }
-        }
-       else if (Input.GetKeyUp(KeyCode.Alpha2))
-        {
-            Fleet[] Fleets = FindObjectsOfType<Fleet>();
+                Fleet[] Fleets = FindObjectsOfType<Fleet>();
 
-            if (Fleets.Length >= 2)
-            {
-                this.SelectOtherFleet(Fleets[1]);
+                if (Fleets.Length >= 1)
+                {
+                    this.SelectOtherFleet(Fleets[0]);
+                }
             }
-            else
+            else if (Input.GetKeyUp(KeyCode.Alpha2))
             {
-                Debug.Log("Tried to Change to Fleet Number 2!");
-            }
-        }
-        else if (Input.GetKeyUp(KeyCode.Alpha3))
-        {
-            Fleet[] Fleets = FindObjectsOfType<Fleet>();
+                Fleet[] Fleets = FindObjectsOfType<Fleet>();
 
-            if (Fleets.Length >= 3)
-            {
-                this.SelectOtherFleet(Fleets[2]);
+                if (Fleets.Length >= 2)
+                {
+                    this.SelectOtherFleet(Fleets[1]);
+                }
+                else
+                {
+                    Debug.Log("Tried to Change to Fleet Number 2!");
+                }
             }
-            else
+            else if (Input.GetKeyUp(KeyCode.Alpha3))
             {
-                Debug.Log("Tried to Change to Fleet Number 2!");
-            }
-        }
-        else if (Input.GetKeyUp(KeyCode.Alpha4))
-        {
-            Fleet[] Fleets = FindObjectsOfType<Fleet>();
+                Fleet[] Fleets = FindObjectsOfType<Fleet>();
 
-            if (Fleets.Length >= 4)
-            {
-                this.SelectOtherFleet(Fleets[3]);
+                if (Fleets.Length >= 3)
+                {
+                    this.SelectOtherFleet(Fleets[2]);
+                }
+                else
+                {
+                    Debug.Log("Tried to Change to Fleet Number 2!");
+                }
             }
-            else
+            else if (Input.GetKeyUp(KeyCode.Alpha4))
             {
-                Debug.Log("Tried to Change to Fleet Number 4!");
+                Fleet[] Fleets = FindObjectsOfType<Fleet>();
+
+                if (Fleets.Length >= 4)
+                {
+                    this.SelectOtherFleet(Fleets[3]);
+                }
+                else
+                {
+                    Debug.Log("Tried to Change to Fleet Number 4!");
+                }
             }
         }
     }

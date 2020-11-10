@@ -11,18 +11,6 @@ public class SpaceObject : TravellerBehaviour {
 	public int Thrust = 1;
 	public int Initiative = 0;
 
-    //SPACEBAND RANGES
-    //GLOBALLY: 1 Unity Unit = 10 KM Traveller Space
-    private static int RangeB_Adjacent  = 0;
-    private static int RangeB_Close     = 1;
-    private static int RangeB_Short     = 125;
-    private static int RangeB_Medium    = 1000;
-    private static int RangeB_Long      = 2500;
-    private static int RangeB_VLong     = 5000;
-    private static int RangeB_Distant   = 30000;
-    private static int RangeB_VDistant  = 500000;   //edge of anything sane battlethingys
-
-
     public virtual void GameTurn(int turnNumber)
 	{
 	}
@@ -48,13 +36,37 @@ public class SpaceObject : TravellerBehaviour {
 
 	}
 
-	/// <summary>
-	/// Moves tovards a destination. 
+    public string RangeBandToString(Transform Target)
+    {
+        int DistanceMath = this.DistanceTo(Target);
+
+        if (this.transform.position == Target.position)
+            return "Adjacent";
+        else if (DistanceMath < RangeB_Close)
+            return "Close";
+        else if (DistanceMath < RangeB_Short)
+            return "Short";
+        else if (DistanceMath < RangeB_Medium)
+            return "Medium";
+        else if (DistanceMath < RangeB_Long)
+            return "Long";
+        else if (DistanceMath < RangeB_VLong)
+            return "Very Long";
+        else if (DistanceMath < RangeB_Distant)
+            return "Distant";
+        else if (DistanceMath < RangeB_VDistant)
+            return "Very Distant";
+
+        return "Far";
+    }
+
+    /// <summary>
+    /// Moves tovards a destination. 
     /// Returns FALSE if moving, TRUE if the destination reached.
-	/// </summary>
-	/// <param name="amount">Amount to move.</param>
-	/// <param name="Target">Destination to move.</param>
-	public bool Move(int amount, Vector3 Target)
+    /// </summary>
+    /// <param name="amount">Amount to move.</param>
+    /// <param name="Target">Destination to move.</param>
+    public bool Move(int amount, Vector3 Target)
 	{
 		this.transform.LookAt (Target);
 
@@ -63,7 +75,7 @@ public class SpaceObject : TravellerBehaviour {
 
         amount = amount * 130; //The Space ratio 1297 km/round /10 to get to unity scale
 
-		if (amount > this.DistanceTo (Target)) {
+		if (amount >= this.DistanceTo (Target)) {
             
 			this.transform.position = Target + new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)); // a bit of scatter
             return true;
@@ -77,5 +89,17 @@ public class SpaceObject : TravellerBehaviour {
     public bool MoveForward(int amount)
     {
         return this.Move(amount, this.transform.position + this.transform.forward * this.Thrust * 1300);  
+    }
+
+    /// <summary>
+    /// Can This SpaceObject See Objecty-SpaceObject using Linecast AND it is within detection range
+    /// </summary>
+    /// <param name="Objecty"></param>
+    /// <returns></returns>
+    public bool IsVisible(SpaceObject Objecty)
+    {
+        bool LineCasty = ((Physics.Linecast(this.transform.position, Objecty.transform.position) == false) && (this.DistanceTo(Objecty) < RangeB_Distant));
+        //Debug.Log("Linecast from " + this.name + " to " + Objecty + ": " + LineCasty);
+        return LineCasty;
     }
 }

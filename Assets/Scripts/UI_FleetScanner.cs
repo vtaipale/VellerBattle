@@ -7,14 +7,18 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// handles point & click stuff
 /// </summary>
-public class UI_FleetScanner : MonoBehaviour {
+public class UI_FleetScanner : TravellerBehaviour {
 
 	//public Fleet[] AllFleets;
     public Camera TheCamera;
 	public Canvas TheCanvas;
 	public GraphicRaycaster TheRaycaster;
 
-    public Fleet CurrentFleet;
+    public bool ScanninActive = false;
+    public Text ScanText;
+    public InputField FleetNumberInputter;
+
+    public Fleet CurrentFleet; // The Fleet currently in control, from FleetCommand
 
     public bool MovementSelection = false;
     public LineRenderer MovLine;
@@ -162,7 +166,7 @@ public class UI_FleetScanner : MonoBehaviour {
 
     public void MovementSelecting(bool yesno)
     {
-       Debug.Log("MOVEMENTSELECTING " + yesno);
+       //Debug.Log("MOVEMENTSELECTING " + yesno);
 
        MovementSelection = yesno;
        MovLine.gameObject.SetActive(yesno);
@@ -171,10 +175,181 @@ public class UI_FleetScanner : MonoBehaviour {
 
     public void SetRangePlanesVisible(bool yesno)
     {
-        Debug.Log("RangeShov " + yesno);
+        //Debug.Log("RangeShov " + yesno);
 
         RangePlanesVisible = yesno;
         RangePlanes.SetActive(yesno);
+    }
+
+    public void SetScanninActive(bool yesno)
+    {
+        //Debug.Log("Scanning V " + CurrentFleet + ": " + yesno);
+
+        ScanninActive = yesno;
+        if (yesno == true)
+            this.ResetScanText();
+
+    }
+
+    public Fleet[] SearchForFleets()
+    {
+        Fleet[] AllFleets = FindObjectsOfType<Fleet>();
+
+        Fleet[] FoundFleets = new Fleet[AllFleets.Length];
+
+        FoundFleets[0] = CurrentFleet;
+
+        int FleetNumbers = 0;
+
+        foreach (Fleet fleety in AllFleets)
+        {
+            if (fleety != CurrentFleet)
+            {
+                if (IsVisible(fleety.Leader))
+                    { 
+                    FleetNumbers++;
+                    FoundFleets[FleetNumbers] = fleety;
+                }
+            }
+        }
+
+        return FoundFleets;
+    }
+
+    /// <summary>
+    /// Can CurrentFleet See Objecty-SpaceObject using Linecast
+    /// </summary>
+    /// <param name="Objecty"></param>
+    /// <returns></returns>
+    public bool IsVisible(SpaceObject Objecty)
+    {
+        return CurrentFleet.IsVisible(Objecty);
+       
+    }
+
+    /// <summary>
+    /// Button to Scan another Fleet, Indicated by FleetNumberImputter input field
+    /// </summary>
+    public void ScanFleetButton()
+    {
+
+        if (FleetNumberInputter.text == "")
+        { 
+            this.ResetScanText();
+            ScanText.text += "\n \nPlease input a valid fleetnumber!";
+        }
+        else
+        {
+            Fleet[] AllFleets = SearchForFleets();
+
+            int FleetToScan = int.Parse(FleetNumberInputter.text) -1;
+
+            if (FleetToScan == 98) //debug-ish
+            {
+                this.ScanAllShips();
+            }
+            else if (FleetToScan >= 0 && FleetToScan <= AllFleets.Length) //regular scan
+            {
+                this.ScanFleet(AllFleets[FleetToScan]);
+            }
+            else
+            {
+                this.ResetScanText();
+                ScanText.text += "\n \nPlease input a valid fleetnumber!";
+            }
+        }
+    }
+
+    public void ScanAllShips()
+    {
+        int ScanRoll = CurrentFleet.GetMaxSensorRoll();
+
+        int ObjectsFound = 0;
+
+
+        if (ScanRoll == -10)
+        {
+            ScanText.text = "Sensors too buzy to scan!";
+        }
+        else if (ScanRoll < 8)
+        {
+            ScanText.text = "Sensors are confused!"; //different strings of no-data / excuses?
+        }
+        else
+        {
+
+            string ShipList = "";
+
+            foreach (Spaceship shippen in FindObjectsOfType<Spaceship>())
+            {
+                if (((ScanRoll - shippen.Stealth >= 8) | (shippen.Side == CurrentFleet.Side)) && (IsVisible(shippen)))
+                {
+                    ObjectsFound++;
+
+                    int DistanceToShippen = CurrentFleet.GetDistance(shippen);
+
+                    ShipList += "Position " + shippen.transform.position + "| Distance: " + DistanceToShippen + " KM = " + CurrentFleet.Leader.RangeBandToString(shippen.transform) + "\n";
+                    if (shippen.Side == CurrentFleet.Side)
+                        ShipList += shippen.name + "\n";
+                    ShipList += shippen.Scanned(DistanceToShippen) + "\n";
+                }
+            }
+
+            string NuScanText = "Found " + ObjectsFound + "objects: \n\n" + ShipList; //ship must see itself at least
+
+            ScanText.text = NuScanText;
+        }
+
+
+    }
+
+    public void ResetScanText()
+    {
+        int ScanRoll = CurrentFleet.GetMaxSensorRoll();
+
+        FleetNumberInputter.text = "";
+
+        if (ScanRoll == -10)
+        {
+            ScanText.text = "Sensors too buzy to scan!";
+        }
+        else if (ScanRoll < 8)
+        {
+            ScanText.text = "Sensors are confused!"; //different strings of no-data / excuses?
+        }
+        else
+        { 
+            string NuScanText = "Select Fleet to Scan: \n\n";
+
+            Fleet[] AllFleets = SearchForFleets();
+
+            int FleetNumbers = 0;
+            foreach (Fleet fleety in AllFleets)
+            {
+                FleetNumbers++;
+
+                if (fleety == CurrentFleet)
+                {
+                    NuScanText += FleetNumbers + ": Our own " + fleety.OfficialName + " \n\n";
+                }
+                else if (fleety != null)
+                {
+                    string FleetyName = "unknown contact";
+
+                    if (fleety.GetTransponders() == true)
+                        FleetyName = fleety.OfficialName;
+
+                    NuScanText += FleetNumbers + ":  " + FleetyName + " | Distance: " + CurrentFleet.GetDistance(fleety) + " KM = " + CurrentFleet.Leader.RangeBandToString(fleety.Leader.transform) + "\n\n"; //TODO Fleet Identification!
+                }
+            }
+            ScanText.text = NuScanText;
+        }
+    }
+
+    public void ScanFleet(Fleet TargetFleet)
+    {
+        string ResultingScan = TargetFleet.GetScan(CurrentFleet);
+        ScanText.text = ResultingScan;
     }
 
 }
