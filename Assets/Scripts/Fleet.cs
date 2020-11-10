@@ -464,6 +464,7 @@ public class Fleet : TravellerBehaviour {
     public bool IsVisible(Fleet TargetFleet)
     {
         bool LeaderCast = Leader.IsVisible(TargetFleet.Leader);
+        Debug.Log(GetCurrentRoundString() + ": Linecast from " + this.name + " to " + TargetFleet + ": " + LeaderCast);
         return LeaderCast;
     }
 
@@ -503,6 +504,7 @@ public class Fleet : TravellerBehaviour {
         }
         else
         {
+            Debug.Log(GetCurrentRoundString() + ": " + this.name + "No hostiles found.");
         }
     }
 
@@ -563,6 +565,7 @@ public class Fleet : TravellerBehaviour {
         if (ScannedShips == 0)
             return "Sensors are confused!"; // if scan is successfull, but enemy haz stealth. 
 
+        ScanReport = GetCurrentRoundString() + ": Scanned " + ScannedShips + " objects. \n Distance " 
             + Mathf.RoundToInt(DistanceToUs) + " KM = " + this.Leader.RangeBandToString(ScanningFleet.Leader.transform) + "\n\n";
 
         ScanReport += ShipScans;
