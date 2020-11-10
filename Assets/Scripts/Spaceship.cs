@@ -5,6 +5,7 @@ using UnityEngine;
 public class Spaceship : SpaceObject {
 
 	public string HullType = "Patrol Cruiser";
+    public int Tonnage = 400;
 	public int Hullpoints = 160;
 	public int HullpointsOrig = 160;
     public string HullConfig = "Streamlined";

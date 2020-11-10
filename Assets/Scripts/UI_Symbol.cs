@@ -11,7 +11,7 @@ public class UI_Symbol : SpaceObject {
 
 	public bool DoNotTrack = false;
     
-    void Start()
+    void Awake()
     {
         MyScanner = FindObjectOfType<UI_FleetScanner>();
     }
