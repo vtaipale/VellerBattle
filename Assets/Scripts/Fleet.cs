@@ -464,7 +464,7 @@ public class Fleet : TravellerBehaviour {
     public bool IsVisible(Fleet TargetFleet)
     {
         bool LeaderCast = Leader.IsVisible(TargetFleet.Leader);
-        Debug.Log(GetCurrentRoundString() + ": Linecast from " + this.name + " to " + TargetFleet + ": " + LeaderCast);
+        //Debug.Log(GetCurrentRoundString() + ": Linecast from " + this.name + " to " + TargetFleet + ": " + LeaderCast);
         return LeaderCast;
     }
 
