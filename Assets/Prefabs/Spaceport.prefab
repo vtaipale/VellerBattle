@@ -47,6 +47,7 @@ MonoBehaviour:
   MyShip: {fileID: 114928292838559746}
   TurretAmount: 3
   Skill_Gunnery: 0
+  Damaged: 0
   OkToFire: 1
   WeaponMod: 2
   GunType: Beam Laser
@@ -99,6 +100,7 @@ MonoBehaviour:
   MyShip: {fileID: 114928292838559746}
   TurretAmount: 3
   Skill_Gunnery: 0
+  Damaged: 0
   OkToFire: 1
   WeaponMod: 2
   GunType: Beam Laser
@@ -151,6 +153,7 @@ MonoBehaviour:
   MyShip: {fileID: 0}
   TurretAmount: 3
   Skill_Gunnery: 0
+  Damaged: 0
   OkToFire: 1
   MissileRack: 12
   MissileToShoot: {fileID: 1872258310347650, guid: deed8967ee792f347a37a891b8086f7b,
@@ -202,6 +205,7 @@ MonoBehaviour:
   MyShip: {fileID: 0}
   TurretAmount: 3
   Skill_Gunnery: 0
+  Damaged: 0
   OkToFire: 1
   MissileRack: 12
   MissileToShoot: {fileID: 1872258310347650, guid: deed8967ee792f347a37a891b8086f7b,
@@ -267,10 +271,13 @@ MonoBehaviour:
   Tonnage: 1250
   Hullpoints: 500
   HullpointsOrig: 500
+  Fuel: 500
+  FuelOrig: 500
   HullConfig: Streamlined
   Armour: 4
   Sensors: 2
   SensorRoll: 0
+  MaxSensorRange: 500000
   Stealth: 0
   JumpClass: 3
   Transponders: 0
@@ -285,6 +292,7 @@ MonoBehaviour:
   ShipExplosion: {fileID: 1970377141282846, guid: 0188c3f62e4926b42b87c9d90fa467ed,
     type: 3}
   MyGuns: []
+  MyCritDamages: []
   Enemy: {fileID: 0}
   Targetlock: {fileID: 0}
   Destination: {fileID: 0}
@@ -499,6 +507,7 @@ MonoBehaviour:
   MyShip: {fileID: 0}
   TurretAmount: 3
   Skill_Gunnery: 0
+  Damaged: 0
   OkToFire: 1
   MissileRack: 12
   MissileToShoot: {fileID: 1872258310347650, guid: deed8967ee792f347a37a891b8086f7b,
@@ -550,6 +559,7 @@ MonoBehaviour:
   MyShip: {fileID: 114928292838559746}
   TurretAmount: 3
   Skill_Gunnery: 0
+  Damaged: 0
   OkToFire: 1
   WeaponMod: 2
   GunType: Beam Laser
@@ -602,6 +612,7 @@ MonoBehaviour:
   MyShip: {fileID: 114928292838559746}
   TurretAmount: 3
   Skill_Gunnery: 0
+  Damaged: 0
   OkToFire: 1
   WeaponMod: 2
   GunType: Beam Laser
@@ -654,6 +665,7 @@ MonoBehaviour:
   MyShip: {fileID: 0}
   TurretAmount: 3
   Skill_Gunnery: 0
+  Damaged: 0
   OkToFire: 1
   MissileRack: 12
   MissileToShoot: {fileID: 1872258310347650, guid: deed8967ee792f347a37a891b8086f7b,

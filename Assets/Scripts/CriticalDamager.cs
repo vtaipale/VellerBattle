@@ -14,7 +14,13 @@ public class CriticalDamager : TravellerBehaviour
         ShipToDamage = ShipToDamageInject;
     }
 
-    public void CritDamage(string DamageType)
+    /// <summary>
+    /// Actual crit damage done here
+    /// </summary>
+    /// <param name="DamageType">Subsystem critted</param>
+    /// <param name="damagetext">Used only for crits</param>
+    /// <param name="NuSeverity">Severity to add</param>
+    private void CritDamage(string DamageType, string damagetext, int NuSeverity)
     {
         int CurrentSeverity = GetCurrentSeverity(DamageType);
 
@@ -30,7 +36,8 @@ public class CriticalDamager : TravellerBehaviour
         }
         else
         {
-            int NuSeverity = CurrentSeverity + 1;
+            if (NuSeverity <= 0)
+                NuSeverity = CurrentSeverity + 1;
 
             string ThisDamage = (DamageType + NuSeverity);
 
@@ -46,6 +53,7 @@ public class CriticalDamager : TravellerBehaviour
                 case "PowerPlant":
                     break;
                 case "Fuel":
+                    this.Crit_Fuel(NuSeverity);
                     break;
                 case "Weapon":
                     this.Crit_Weapon(NuSeverity);
@@ -54,7 +62,7 @@ public class CriticalDamager : TravellerBehaviour
                     this.Crit_Armour(NuSeverity);
                     break;
                 case "Hull":
-                    this.Crit_Hull(NuSeverity);
+                    this.Crit_Hull(NuSeverity, damagetext);
                     break;
                 case "M-Drive":
                     break;
@@ -72,11 +80,34 @@ public class CriticalDamager : TravellerBehaviour
             }
         }
     }
-
-
-    public void Crit_Hull(int Severity)
+    /// <summary>
+    /// Actual crit damage done here. Severity increased by one.
+    /// </summary>
+    /// <param name="DamageType">Subsystem critted</param>
+    /// <param name="damagetext">Used only for crits</param>
+    private void CritDamage(string DamageType, string damagetext)
     {
-        ShipToDamage.Damage(d6(Severity), "critical hull rupture", true); //some of these crits are easy at least...
+        this.CritDamage(DamageType, damagetext, 0);
+    }
+
+    /// <summary>
+    /// Actual Critical Damage is done here.
+    /// </summary>
+    /// <param name="DamageType">Subsystem critted</param>
+    public void CritDamage(string DamageType)
+    {
+        this.CritDamage(DamageType, "");
+    }
+
+    public void Crit_Hull(int Severity, string rupturetext) //some of these crits are easy at least...
+    {
+        Severity = Mathf.Min(Severity, 6); //Max damage is 6
+
+        if (rupturetext == "")
+            ShipToDamage.Damage(d6(Severity), "critical hull rupture", true); 
+
+        else
+            ShipToDamage.Damage(d6(Severity), rupturetext, true);
     }
 
     public void Crit_Sensors(int Severity) //THESE ARE LETHAL FOR FLEETLEADER
@@ -114,6 +145,39 @@ public class CriticalDamager : TravellerBehaviour
                 break;
         }
         
+    }
+
+    public void Crit_Fuel(int Severity) 
+    {
+        switch (Severity)
+        {
+            case 1:
+                //ShipToDamage.UpdateBattleLog(" Fuel Leak!");
+                ShipToDamage.gameObject.AddComponent<FuelLeak>();
+                break;
+            case 2:
+                //ShipToDamage.UpdateBattleLog(" Serious Fuel Leak!");
+                ShipToDamage.gameObject.AddComponent<FuelSeriousLeak>();
+                break;
+            case 3:
+                ShipToDamage.UpdateBattleLog(" Significant fuel leak!");
+                ShipToDamage.FuelChange(ShipToDamage.FuelOrig/10*-d6(1));
+                break;
+            case 4:
+                ShipToDamage.UpdateBattleLog(" Fuel tank destroyed!");
+                ShipToDamage.FuelChange(-99999);
+                break;
+            case 5:
+                CritDamage("Hull", "fuel tank breach");
+                break;
+            case 6:
+                CritDamage("Hull", "fuel tank breach",d6(1));
+                break;
+            default:
+                Debug.LogError("UNDEFINED SEVERITY");
+                break;
+        }
+
     }
     public void Crit_Weapon(int Severity)
     {
@@ -169,7 +233,7 @@ public class CriticalDamager : TravellerBehaviour
     {
         Shipweapon ToBoom = ShipToDamage.MyGuns[Mathf.RoundToInt(Random.Range(0, ShipToDamage.MyGuns.Length - 1))];
         ShipToDamage.UpdateBattleLog(" " + ToBoom.name + " exploded!");
-        CritDamage("Hull");
+        CritDamage("Hull", ToBoom.name + " explosion");
         Destroy(ToBoom.gameObject); //urgh this can lead to troubles..
     }
 
@@ -212,7 +276,7 @@ public class CriticalDamager : TravellerBehaviour
                 ShipToDamage.UpdateBattleLog(" Armour destroyed!!");
 
             if (Severity >= 5)
-                CritDamage("Hull");
+                CritDamage("Hull", "armour breach");
 
         }
         else

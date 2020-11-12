@@ -23,6 +23,8 @@ public class Fleet : TravellerBehaviour {
 
     public string CurrentOrder = "Move";
     public string CurrentAlarm = "Green";
+
+    public int JumpExit = 0;
     public bool InstantMayhem = false;
 
     public GameObject Destination;
@@ -72,8 +74,16 @@ public class Fleet : TravellerBehaviour {
                 shippen.UpdateBattleLog(" FLEETCOM: " + GetMyFleetCommander() + " of " + Leader.name);
         }
 
+        if (JumpExit > 0) ///simulates direct exit from jump to a battlezone. NOTE: check that ships can do the jump!
+        {
+            foreach (Spaceship shippen in MyShips)
+            {
+                shippen.FuelChange(shippen.JumpFuelCalculate(JumpExit) * -1);
+                shippen.UpdateBattleLog(" +++ JUMP EXIT +++");
+            }
+        }
 
-        if (InstantMayhem == true)
+            if (InstantMayhem == true)
         {
             MessageAll("Battlestations!");
             this.AlarmAll("Red");

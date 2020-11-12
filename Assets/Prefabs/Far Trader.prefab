@@ -242,6 +242,7 @@ MonoBehaviour:
   MyShip: {fileID: 114602717187796924}
   TurretAmount: 3
   Skill_Gunnery: 0
+  Damaged: 0
   OkToFire: 1
   WeaponMod: 2
   GunType: Beam Laser
@@ -299,10 +300,13 @@ MonoBehaviour:
   Tonnage: 200
   Hullpoints: 80
   HullpointsOrig: 80
+  Fuel: 41
+  FuelOrig: 41
   HullConfig: Streamlined
   Armour: 0
   Sensors: 0
   SensorRoll: 0
+  MaxSensorRange: 500000
   Stealth: 0
   JumpClass: 3
   Transponders: 1
@@ -317,6 +321,7 @@ MonoBehaviour:
   ShipExplosion: {fileID: 1423144587608864, guid: fb8ce593efce8874c80f6bf219bf0400,
     type: 3}
   MyGuns: []
+  MyCritDamages: []
   Enemy: {fileID: 0}
   Targetlock: {fileID: 0}
   Destination: {fileID: 0}

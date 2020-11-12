@@ -11,6 +11,8 @@ public class Spaceship : SpaceObject {
     public int Tonnage = 400;
     public int Hullpoints = 160;
     public int HullpointsOrig = 160;
+    public int Fuel = 124;
+    public int FuelOrig = 124;
     public string HullConfig = "Streamlined";
     public int Armour = 4;
     public int Sensors = 0; 	//standard mil sensors
@@ -98,8 +100,15 @@ public class Spaceship : SpaceObject {
             UpdateBattleLog("\n--Elapsed time: " + turnNumber * 6 + " m, " + d6(2) + " s");
         UpdateBattleLog(" -Location: " + this.transform.position);
 
-        //if (this.Hullpoints <= 0 && this.gameObject.activeSelf == true)
-        //this.Die();
+        if (GetComponents<FuelLeak>() != null)
+        {
+            foreach (FuelLeak leaky in GetComponents<FuelLeak>())
+            {
+                leaky.LeakFuelCheck();
+                //TODO: Engineers fix leak!
+            }
+        }
+        
 
         //MOVEMENT STEP
 
@@ -149,7 +158,6 @@ public class Spaceship : SpaceObject {
             }
         }
     }
-
     private void AttackLogic()
     {
         if (HasEnemy())
@@ -210,17 +218,6 @@ public class Spaceship : SpaceObject {
         }
 
         UpdateBattleLog(" Received " + ActualDamage + " hull damage from " + Source + "!");
-        
-        this.CriticalHitCheck(ActualDamage);
-
-        if (Hullpoints > HullpointsOrig * 0.75)
-            this.Status = "Damaged";
-        else if (Hullpoints > HullpointsOrig * 0.5)
-            this.Status = "Severe";
-        else if (Hullpoints > HullpointsOrig * 0.25)
-            this.Status = "Critical";
-        else if (Hullpoints >= HullpointsOrig / 10)
-            this.Status = "Grave";
 
         if (((Hullpoints < HullpointsOrig / 10)) && (this.Hullpoints>0))
         {
@@ -231,6 +228,8 @@ public class Spaceship : SpaceObject {
 
             this.SurrenderCheck();
         }
+
+        this.CriticalHitCheck(ActualDamage);
 
         this.ChangeAlarm("Red");
 
@@ -265,6 +264,26 @@ public class Spaceship : SpaceObject {
 
         if (CritCheck > 0)
         {
+            if (this.MyCritDamages.Count == 0)
+            {
+                this.Status = "Damaged";
+                UpdateBattleLog(" Status " + Status + ": HP " + Hullpoints + "/" + HullpointsOrig);
+            }
+            else if (this.MyCritDamages.Count == 2)
+            {
+                this.Status = "Severe";
+                UpdateBattleLog(" Status " + Status + ": HP " + Hullpoints + "/" + HullpointsOrig);
+            }
+            else if (this.MyCritDamages.Count == 4)
+            {
+                this.Status = "Critical";
+                UpdateBattleLog(" Status " + Status + ": HP " + Hullpoints + "/" + HullpointsOrig);
+            }
+            else if (this.MyCritDamages.Count == 7)
+            {
+                this.Status = "Grave";
+                UpdateBattleLog(" Status " + Status + ": HP " + Hullpoints + "/" + HullpointsOrig);
+            }
 
             for (int e = CritCheck; e > 0; e--)
                 this.CriticalDamage();
@@ -336,7 +355,70 @@ public class Spaceship : SpaceObject {
     
     }
 
-	public bool HasLock()
+    /// <summary>
+    /// Changes current fuel by amount.
+    /// If fuel == 0, surrenders.
+    /// </summary>
+    /// <param name="amount"></param>
+    public void FuelChange(int amount)
+    {
+        if (Fuel > 0)
+        {
+            this.Fuel = Mathf.Min(Fuel + amount, FuelOrig);
+
+            if (Fuel <= 0) //TODO calc for no enough fuel to run Power Plants
+            {
+                Fuel = 0;
+                UpdateBattleLog(" No fuel left!");
+                this.Surrender();
+            }
+            else if (amount > 0)
+            {
+                UpdateBattleLog(" Refueled for " + amount + " tons.");
+            }
+            else if (amount < 0)
+            {
+                UpdateBattleLog(" Lost " + amount * -1 + " tons of fuel.");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Tries to Jump. Currently in basic form only.
+    /// </summary>
+    /// <param name="ParsekDistance">Distance to target</param>
+    /// <param name="JumpTarget"></param>
+    /// <returns></returns>
+    public bool Jump(int ParsekDistance, string JumpTarget)
+    {
+        if (this.JumpClass <= 0)
+        {
+            UpdateBattleLog(" Jump: Cannot jump to " + JumpTarget + ": No functioning jump engine!");
+        }
+        else if (ParsekDistance > this.JumpClass)
+        {
+            UpdateBattleLog(" Jump: Cannot jump to " + JumpTarget + ": Target too far!");
+        }
+        else if (JumpFuelCalculate(ParsekDistance) + 1 > this.Fuel)
+        {
+            UpdateBattleLog(" Jump: Cannot jump to " + JumpTarget + ": Not enough fuel!");
+        }
+
+        UpdateBattleLog(" Jump: Initialising jump travel to " + JumpTarget + ".");
+
+        this.FuelChange(JumpFuelCalculate(ParsekDistance));
+        UpdateBattleLog(" +++ JUMP +++");
+        this.gameObject.SetActive(false); // good enough for this situation..
+        return true;
+    }
+
+    public int JumpFuelCalculate(int ParsekDistance)
+    {
+        int FuelCalculation = (this.Tonnage / 10) * ParsekDistance;
+        return FuelCalculation;
+    }
+
+    public bool HasLock()
 	{
 		if (Targetlock != null && this.Targetlock != this && Targetlock.gameObject.activeSelf == true)
 			return true;

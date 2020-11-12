@@ -65,10 +65,13 @@ MonoBehaviour:
   Tonnage: 800
   Hullpoints: 320
   HullpointsOrig: 320
+  Fuel: 252
+  FuelOrig: 252
   HullConfig: Streamlined
   Armour: 4
   Sensors: 0
   SensorRoll: 0
+  MaxSensorRange: 500000
   Stealth: 0
   JumpClass: 3
   Transponders: 0
@@ -83,6 +86,7 @@ MonoBehaviour:
   ShipExplosion: {fileID: 1970377141282846, guid: 0188c3f62e4926b42b87c9d90fa467ed,
     type: 3}
   MyGuns: []
+  MyCritDamages: []
   Enemy: {fileID: 0}
   Targetlock: {fileID: 0}
   Destination: {fileID: 0}

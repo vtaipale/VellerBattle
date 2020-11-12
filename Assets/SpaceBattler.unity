@@ -917,7 +917,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &278427630
 Transform:
   m_ObjectHideFlags: 0
@@ -9536,7 +9536,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1032218955
 Transform:
   m_ObjectHideFlags: 0
@@ -9559,7 +9559,7 @@ Transform:
   - {fileID: 579210218}
   - {fileID: 508913606}
   m_Father: {fileID: 1767146649}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1060191541
 GameObject:
@@ -12284,8 +12284,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1579008592}
-  - {fileID: 5006512735368418180}
   - {fileID: 1032218955}
+  - {fileID: 5006512735368418180}
   m_Father: {fileID: 1962445054}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12312,6 +12312,7 @@ MonoBehaviour:
   Report: 
   CurrentOrder: Move
   CurrentAlarm: Green
+  JumpExit: 0
   InstantMayhem: 1
   Destination: {fileID: 0}
 --- !u!1001 &1808746848
@@ -12527,6 +12528,7 @@ MonoBehaviour:
   Report: 
   CurrentOrder: Engage
   CurrentAlarm: Red
+  JumpExit: 2
   InstantMayhem: 1
   Destination: {fileID: 0}
 --- !u!1 &1820484342
@@ -13066,6 +13068,7 @@ MonoBehaviour:
   Report: 
   CurrentOrder: Move
   CurrentAlarm: Green
+  JumpExit: 0
   InstantMayhem: 0
   Destination: {fileID: 662663203}
 --- !u!4 &1950918741
