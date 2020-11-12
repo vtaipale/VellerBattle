@@ -7,6 +7,7 @@ public class Shipweapon : TravellerBehaviour {
 	public Spaceship MyShip;
 	public int TurretAmount = 1;
 	public int Skill_Gunnery; // invidinual gunners??
+    public bool Damaged = false;
 
 	/// <summary>
 	/// Has this gun been fired this turn?

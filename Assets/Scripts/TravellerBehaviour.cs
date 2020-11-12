@@ -79,6 +79,20 @@ public class TravellerBehaviour : MonoBehaviour {
 	}
 
     /// <summary>
+    /// Roll X three sided dice, return sum.
+    /// </summary>
+    /// <param name="HowMany">X</param>
+    public int d3(int HowMany)
+    {
+        int returnoitava = 0;
+
+        for (int i = HowMany; i >= 1; i--)
+            returnoitava += Mathf.RoundToInt(Random.Range(1f, 3f));
+
+        return returnoitava;
+    }
+
+    /// <summary>
     /// Asks GameFlowController what current round is.
     /// </summary>
     /// <returns>Current Round</returns>

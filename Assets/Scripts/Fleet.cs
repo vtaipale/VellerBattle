@@ -351,7 +351,9 @@ public class Fleet : TravellerBehaviour {
             Report += "++DEFEAT++\n";
         else {
             Report += "++VICTORY++\n";
+            Report += "  FleetCom: " + GetMyFleetCommander() + " of " + Leader.name + "\n";
             Report += "  Spaceships left: " + GetMyCurrentShips().Length + "\n";
+
         }
 
         Report += "  Spaceships originally: " + MyShips.Length + "\n";
@@ -365,7 +367,7 @@ public class Fleet : TravellerBehaviour {
                 if (shippen.gameObject.activeSelf == true) {
 
                     Report += "----- " + shippen.name
-                    + "\n CPT:     " + shippen.CaptainName
+                    + "\n CPT:     " + shippen.GetCommander()
                     + "\n TYPE:    " + shippen.HullType
                     + "\n STATUS:  " + shippen.Status + "\n";
                 }
@@ -382,7 +384,7 @@ public class Fleet : TravellerBehaviour {
                     //shippen.gameObject.SetActive (true);
 
                     Report += "----- " + shippen.name
-                    + "\n CPT:     " + shippen.CaptainName
+                    + "\n CPT:     " + shippen.GetCommander()
                     + "\n TYPE:    " + shippen.HullType
                     + "\n STATUS:  " + shippen.Status + "\n";
 
@@ -404,7 +406,7 @@ public class Fleet : TravellerBehaviour {
     /// <returns><c>true</c>, if leader is OK <c>false</c> if dead and assigns nuboss.</returns>
     public bool LeaderCheck()
     {
-        if (Leader.gameObject.activeSelf) {
+        if (Leader.gameObject.activeSelf && Leader.Alarm != "White") {
             return true;
         }
 

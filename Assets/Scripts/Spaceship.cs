@@ -2,71 +2,82 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The actual things that are important in this game :D
+/// </summary>
 public class Spaceship : SpaceObject {
 
-	public string HullType = "Patrol Cruiser";
+    public string HullType = "Patrol Cruiser";
     public int Tonnage = 400;
-	public int Hullpoints = 160;
-	public int HullpointsOrig = 160;
+    public int Hullpoints = 160;
+    public int HullpointsOrig = 160;
     public string HullConfig = "Streamlined";
-	public int Armour = 4;
-	public int Sensors = 0; 	//standard mil sensors
+    public int Armour = 4;
+    public int Sensors = 0; 	//standard mil sensors
     public int SensorRoll = 0;  //The Standard Sensor Roll for this round.
-	public int Stealth = 0;		//for stealth ships...
-    public int JumpClass = 3;   
-	public bool Transponders = false;
+    public int MaxSensorRange = RangeB_VDistant;
+    public int Stealth = 0;		//for stealth ships...
+    public int JumpClass = 3;
+    public bool Transponders = false;
     public string TransponderMessage = "";
 
     public string Side; //more complex?
-	public string Status = "OK";
-	public string Alarm = "Yellow";
-		/*	White = do not move, surrender
-		 *  Green = standard, no hostiles present
-		 *  Yellow = Ready for action, do not fire first
-		 *  Orange: Lasers OK, Missiles no?
-		 *  Red = Fire at will!
-		 */ 
-	public string Order = "Move";
-		/*	Move = move towards movementTarget, attacking directed by alert status
-		 *  Stop = Do Not Move, attacking directed by alert status
-		 * 	Engage = will move towards Enemy at max speed.
-		 *  (later = Dock)
-		 */
+    public string Status = "OK";
+    public string Alarm = "Yellow";
+    /*	White = do not move, surrender
+     *  Green = standard, no hostiles present
+     *  Yellow = Ready for action, do not fire first
+     *  Orange: Lasers OK, Missiles no?
+     *  Red = Fire at will!
+     */
+    public string Order = "Move";
+    /*	Move = move towards movementTarget, attacking directed by alert status
+     *  Stop = Do Not Move, attacking directed by alert status
+     * 	Engage = will move towards Enemy at max speed.
+     *  (later = Dock)
+     */
 
-	//public Captain = Haddoc
-	public string CaptainName = "Haddock";
+    //public Captain = Haddoc
+    public string CaptainName = "Haddock";
 
-	//public int Skill_Gunnery = 0;
-	public int Skill_Pilot = 0;
-	public int Skill_Electronics = 0;
-	public GameObject ShipExplosion;
-	public Shipweapon[] MyGuns;
+    //public int Skill_Gunnery = 0;
+    public int Skill_Pilot = 0;
+    public int Skill_Electronics = 0;
+    public GameObject ShipExplosion;
+    public Shipweapon[] MyGuns;
+    public List<string> MyCritDamages; 
 
-	public Spaceship Enemy;
-	public Spaceship Targetlock;
-	public Transform Destination;
-	public List<MissileSalvo> IncomingMissiles = new List<MissileSalvo>();
+    public Spaceship Enemy;
+    public Spaceship Targetlock;
+    public Transform Destination;
+    public List<MissileSalvo> IncomingMissiles = new List<MissileSalvo>();
 
-	public string myBattleLog = "";
+    public string myBattleLog = "";
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
 
         if (this.TransponderMessage == "")
             TransponderMessage = this.name;
 
 
-        this.MyGuns = this.gameObject.GetComponentsInChildren<Shipweapon> ();
-		//this.Targetlock = this;
+        this.MyGuns = this.gameObject.GetComponentsInChildren<Shipweapon>();
+        //this.Targetlock = this;
 
-		this.Skill_Pilot = Mathf.RoundToInt (Random.Range (0f, 2f));
-		this.Skill_Electronics = Mathf.RoundToInt (Random.Range (0f, 2f));
+        this.Skill_Pilot = Mathf.RoundToInt(Random.Range(0f, 2f));
+        this.Skill_Electronics = Mathf.RoundToInt(Random.Range(0f, 2f));
 
-		//UpdateBattleLog ("---Captain " + this.CaptainName + "s battlelog for " + this.HullType + " " + this.name);
+        //UpdateBattleLog ("---Captain " + this.CaptainName + "s battlelog for " + this.HullType + " " + this.name);
 
-	}
+        if (this.ShipExplosion == null)
+            Debug.LogError(name + "has no ShipExplosion!");
 
-	/*
+        if (GetComponentInParent<Fleet>() == null)
+            Debug.LogError(name + "has no Fleet!");
+
+    }
+
+    /*
 	void Update ()
 	{
 		if (Enemy != null) {
@@ -76,169 +87,254 @@ public class Spaceship : SpaceObject {
 	} 
 	*/
 
-	public override void GameTurn(int turnNumber)
-	{
+    public override void GameTurn(int turnNumber)
+    {
 
-		if (turnNumber >= 10) {
-			int hours = Mathf.RoundToInt ((turnNumber / 10) - 0.5f);
-			UpdateBattleLog ("\n--Elapsed time: " + hours +" h, " + ((turnNumber * 6) - (hours*60)) + " m, " + d6 (2) + " s");
-		}
-		else
-			UpdateBattleLog ("\n--Elapsed time: " + turnNumber*6 + " m, " + d6 (2) + " s");
-		UpdateBattleLog (" -Location: " + this.transform.position);
+        if (turnNumber >= 10) {
+            int hours = Mathf.RoundToInt((turnNumber / 10) - 0.5f);
+            UpdateBattleLog("\n--Elapsed time: " + hours + " h, " + ((turnNumber * 6) - (hours * 60)) + " m, " + d6(2) + " s");
+        }
+        else
+            UpdateBattleLog("\n--Elapsed time: " + turnNumber * 6 + " m, " + d6(2) + " s");
+        UpdateBattleLog(" -Location: " + this.transform.position);
 
-		//if (this.Hullpoints <= 0 && this.gameObject.activeSelf == true)
-		//this.Die();
+        //if (this.Hullpoints <= 0 && this.gameObject.activeSelf == true)
+        //this.Die();
 
-		//MOVEMENT STEP
+        //MOVEMENT STEP
 
-		//TODO: MOVEMENTLOGIC. Straight Towards enemy, traight to any direction, dogfight, follow friend?
+        //TODO: MOVEMENTLOGIC. Straight Towards enemy, traight to any direction, dogfight, follow friend?
 
-		if (Order == "Engage" && HasEnemy() && Alarm == "Red")
-			Destination = Enemy.transform;
-
-
-		if (!(Alarm == "White" | Order == "Stop")) {
-			if (Destination != null && Order != "Engage" )
-				UpdateBattleLog (" -Destination: " + Destination.transform.position + " Distance: " + this.DistanceTo(Destination));
-			this.MovementLogic ();
-		}
-		//ATTACK STEP
-		if (Alarm == "Red")
-			this.AttackLogic();
-
-		//ACTIONS STEP
-		this.PerformSensorAction ();
+        if (Order == "Engage" && HasEnemy() && Alarm == "Red")
+            Destination = Enemy.transform;
 
 
-	}
+        if (!(Alarm == "White" | Order == "Stop")) {
+            if (Destination != null && Order != "Engage")
+                UpdateBattleLog(" -Destination: " + Destination.transform.position + " Distance: " + this.DistanceTo(Destination) + " KM = " + this.RangeBandToString(Destination));
+            this.MovementLogic();
+        }
+        //ATTACK STEP
+        if (Alarm == "Red")
+            this.AttackLogic();
+
+        //ACTIONS STEP
+        this.PerformSensorAction();
+
+
+    }
 
     //
     private void MovementLogic()
     {
         if (Order == "Stop")
         { }
-        else if (Destination == null ) { 
+        else if (Destination == null) {
             this.MoveForward(this.Thrust / 2); //Default move, merely forward
-            //UpdateBattleLog(" Defaultmoving, howw boring..");
-          
+                                               //UpdateBattleLog(" Defaultmoving, howw boring..");
+
         }
         //else if (Alarm == "Red" && (HasEnemy() && this.DistanceTo(Enemy) < RangeB_Close))
-            //DOGFIGHTING
-		else 
-		{
-			//TODO complain upwards that hey gimme me ssomething to do!
+        //DOGFIGHTING
+        else
+        {
+            //TODO complain upwards that hey gimme me ssomething to do!
 
-			if (this.Move (this.Thrust, Destination.transform.position) == true) {
-				if (this.Order == "Move") {
-					UpdateBattleLog (" Destination reached, coming to full stop!");
-					this.Order = "Stop";
-					this.Destination = null;
-				}
-			}
-		}
-	}
+            if (this.Move(this.Thrust, Destination.transform.position) == true) {
+                if (this.Order == "Move") {
+                    UpdateBattleLog(" Destination reached, coming to full stop!");
+                    this.Order = "Stop";
+                    this.Destination = null;
+                }
+            }
+        }
+    }
 
-	private void AttackLogic ()
-	{
-		if (HasEnemy ()) 
-		{
-			UpdateBattleLog (" -Target: " + Enemy.name + " Distance: " + this.DistanceTo (Enemy));
-		
-			this.Attack (Enemy);
-		}
-		else //Ne enemy needed!
-		{
-			this.SeekNewEnemy ();
-			this.Attack (Enemy);
-		}
-	}
+    private void AttackLogic()
+    {
+        if (HasEnemy())
+        {
+            UpdateBattleLog(" -Target: " + Enemy.name + " Distance: " + this.DistanceTo(Enemy) + " KM = " + this.RangeBandToString(Enemy.transform));
 
-	public void Attack (Spaceship AttackTarget)
-	{
+            this.Attack(Enemy);
+        }
+        else //Ne enemy needed!
+        {
+            this.SeekNewEnemy();
+            this.Attack(Enemy);
+        }
+    }
 
-		if (AttackTarget != null && AttackTarget != this) 
-		{
-			foreach (Shipweapon Gun in MyGuns) {		
-				//Debug.Log (Gun.Attack (Enemy));;
-				UpdateBattleLog (Gun.Attack (AttackTarget));
-			}
-		}
-	}
+    public void Attack(Spaceship AttackTarget)
+    {
 
-	public void Attack ()
-	{
-		this.Attack (Enemy);
-	}
+        if (AttackTarget != null && AttackTarget != this)
+        {
+            foreach (Shipweapon Gun in MyGuns) {
+                //Debug.Log (Gun.Attack (Enemy));;
+                UpdateBattleLog(Gun.Attack(AttackTarget));
+            }
+        }
+    }
 
-	/// <summary>
-	/// Damage the ship HowMuch.
-	/// </summary>
-	/// <param name="HowMuch">Amount of Damage</param>
-	/// <param name="Source">Source of Damage</param>
-	public string Damage (int HowMuch, string Source)
-	{
+    public void Attack()
+    {
+        this.Attack(Enemy);
+    }
 
-		int ActualDamage = Mathf.Max(HowMuch - Armour,0);
+    /// <summary>
+    /// Damage the ship HowMuch.
+    /// </summary>
+    /// <param name="HowMuch">Amount of Damage</param>
+    /// <param name="Source">Source of Damage</param>
+    public string Damage(int HowMuch, string Source, bool IgnoreArmour)
+    {
 
-		if (Source.Contains("missile"))	//brutal check here but good enough for now;
-			ActualDamage = HowMuch;
+        int ActualDamage = Mathf.Max(HowMuch - Armour, 0); //armor removes parts of damage
 
-		this.Hullpoints -= ActualDamage;
+        if (IgnoreArmour == true) 
+            ActualDamage = HowMuch;
 
-		// TODO CRITICAL HITS - now just somthign
+        this.Hullpoints -= ActualDamage;
 
-		if ((Hullpoints < HullpointsOrig / 2) && this.Armour == 4) {
-			this.Armour = 3;
-			Debug.Log (this.name + " CRITICALLY DAMAGED!");
-			UpdateBattleLog (" CRITICALLY DAMAGED!");
+        // TODO CRITICAL HITS - now just somthign
 
-			this.Status = "Critical";
+        if (Hullpoints <= 0) {      //DEADCHECK
 
-			if (Random.Range (0, 10) > 7) {
-				MyGuns [Mathf.RoundToInt (Random.Range (0f, 3f))].Skill_Gunnery -= 1; //wounded crewmember
-				UpdateBattleLog (" Crew hit!");
-			} else if (Random.Range (0, 10) > 7) {
-				MyGuns [Mathf.RoundToInt (Random.Range (0f, 3f))].gameObject.SetActive (false); //disabled gun
-				UpdateBattleLog (" Turret disabled!");
-			} else if (Random.Range (0, 10) > 7) {
-				this.Armour = Mathf.Max (0, this.Armour - 1);
-				UpdateBattleLog (" Armor plates scarred!");
-			}else {
-				this.Hullpoints -= d6 (2);
-				UpdateBattleLog (" Hull rupture!");
-			}
-		}	
-		else if ((Hullpoints < HullpointsOrig / 10)) {
-			//this.Armour = 3;
-			//Debug.Log (this.name + " DANGER DANGER DA DAMAGED!");
-			UpdateBattleLog ("  DANGER DANGER DANGER!");
+            return this.Die("was destroyed by " + Source);
+        }
 
-			this.Status = "DANGER";
+        if (ActualDamage == 0) {
+            UpdateBattleLog(" Received 0 hull damage from " + Source + " - armour held!");
+            return (this.name + " - Armor Deflected all damage!");
+        }
 
-			this.SurrenderCheck ();
-		}	
+        UpdateBattleLog(" Received " + ActualDamage + " hull damage from " + Source + "!");
+        
+        this.CriticalHitCheck(ActualDamage);
 
-		if (Hullpoints <= 0) {		//DEADCHECK
-			
-			return this.Die ("was destroyed by " + Source);
-		}
+        if (Hullpoints > HullpointsOrig * 0.75)
+            this.Status = "Damaged";
+        else if (Hullpoints > HullpointsOrig * 0.5)
+            this.Status = "Severe";
+        else if (Hullpoints > HullpointsOrig * 0.25)
+            this.Status = "Critical";
+        else if (Hullpoints >= HullpointsOrig / 10)
+            this.Status = "Grave";
 
-		if (ActualDamage == 0) {
-			UpdateBattleLog (" Under fire: " + Source + ". Armor held!");
-			return (this.name + " - Armor Deflected all damage!");
-		}
-			
-		UpdateBattleLog (" Under fire from: " + Source + "! Received " + ActualDamage + " hull damage!");
+        if (((Hullpoints < HullpointsOrig / 10)) && (this.Hullpoints>0))
+        {
+            //Debug.Log (this.name + " DANGER DANGER DA DAMAGED!");
+            UpdateBattleLog("  DANGER DANGER DANGER!");
 
-		this.ChangeAlarm ("Red");
+            this.Status = "DANGER";
 
-		AngerEngagingSwitchCheck (Source);
+            this.SurrenderCheck();
+        }
 
-		return (this.name + " - " + ActualDamage + " hull damage!");
+        this.ChangeAlarm("Red");
+
+        AngerEngagingSwitchCheck(Source);
+
+        return (this.name + " - " + ActualDamage + " hull damage!");
 
 
-	}
+    }
+
+
+    public string Damage(int HowMuch, string Source)
+    {
+        return this.Damage(HowMuch, Source, false);
+    }
+
+    /// <summary>
+    /// Handles Critical Hits
+    /// </summary>
+    /// <returns>true, if critical damage inflicted.</returns>
+    public bool CriticalHitCheck(int DamageIncurred)
+    {
+        int PreDamageHP = this.Hullpoints + DamageIncurred;
+
+        int PostDamageHP = this.Hullpoints;
+
+        int CritCheck = Mathf.RoundToInt(PreDamageHP / (HullpointsOrig/10)) - Mathf.RoundToInt(PostDamageHP / (HullpointsOrig / 10));
+
+        //Debug.Log(this.name + " CritCheck: " + CritCheck);
+
+        //Crits happen if damage takes HPs into ther tenth of original HP.
+
+        if (CritCheck > 0)
+        {
+
+            for (int e = CritCheck; e > 0; e--)
+                this.CriticalDamage();
+
+            return true;
+        }
+
+        return false;
+
+    }
+
+    /// <summary>
+    /// Actual Critical Damage.
+    /// Rather complicated mess.
+    /// </summary>
+    public void CriticalDamage()
+    {
+        int CritRoll = d6(2);
+
+        CriticalDamager auts = new CriticalDamager(this);
+
+        switch (CritRoll)
+        {
+            case 2:
+                //Sensors
+                auts.CritDamage("Sensors");
+                break;
+            case 3:
+                //PowerPlant
+                auts.CritDamage("PowerPlant");
+                break;
+            case 4:
+                //Fuel urgh
+                auts.CritDamage("Fuel");
+                break;
+            case 5:
+                //Weapon
+                auts.CritDamage("Weapon");
+                break;
+            case 6:
+                //Armour
+                auts.CritDamage("Armour");
+                break;
+            case 8:
+                //M-Drive
+                auts.CritDamage("M-Drive");
+                break;
+            case 9:
+                //Cargo
+                auts.CritDamage("Cargo");
+                break;
+            case 10:
+                //J-Drive
+                auts.CritDamage("J-Drive");
+                break;
+            case 11:
+                //Crew
+                auts.CritDamage("Crew");
+                break;
+            case 12:
+                //Computer
+                auts.CritDamage("Computer");
+                break;
+            default: //7
+                //Hull
+                auts.CritDamage("Hull");
+                break;
+        }
+    
+    }
 
 	public bool HasLock()
 	{
@@ -323,7 +419,7 @@ public class Spaceship : SpaceObject {
         if (this.HasLock() && Targetlock.Alarm != "White")  //like to target targetlock, duh
         {
             this.Enemy = Targetlock;
-            UpdateBattleLog(" Targeting " + Enemy.HullType + " " + Enemy.name + " Distance: " + this.DistanceTo(Enemy));
+            UpdateBattleLog(" Targeting " + Enemy.HullType + " " + Enemy.name + " Distance: " + this.DistanceTo(Enemy) + " KM = " + this.RangeBandToString(Enemy.transform));
             return Targetlock;
         }
 
@@ -344,7 +440,7 @@ public class Spaceship : SpaceObject {
         }
         else {
             this.Enemy = NuEnemy;
-            UpdateBattleLog(" Targeting " + Enemy.HullType + " " + Enemy.name + " Distance: " + this.DistanceTo(Enemy));
+            UpdateBattleLog(" Targeting " + Enemy.HullType + " " + Enemy.name + " Distance: " + this.DistanceTo(Enemy) + " KM = " + this.RangeBandToString(Enemy.transform));
         }
 
         return this.Enemy;
@@ -367,7 +463,7 @@ public class Spaceship : SpaceObject {
 			this.Destination = Target.transform;
 			this.Order = "Engage";
 			//Debug.Log (this.name + " ENGAGING " + question.name);
-			UpdateBattleLog (" ENGAGING " + Target.HullType + " " + Target.name + " Distance: " + this.DistanceTo(Target));
+			UpdateBattleLog (" ENGAGING " + Target.HullType + " " + Target.name + " Distance: " + this.DistanceTo(Target) + " KM = " + this.RangeBandToString(Target.transform));
 		}
 		else if (Alarm != "Red")
 			UpdateBattleLog (" Cannot Engage" + Target.name + ": Alarm not Red!");
@@ -432,6 +528,13 @@ public class Spaceship : SpaceObject {
 
 
 	}
+
+    public override bool IsVisible(SpaceObject Objecty)
+    {
+        bool LineCasty = ((Physics.Linecast(this.transform.position, Objecty.transform.position) == false) && (this.DistanceTo(Objecty) < this.MaxSensorRange));
+        //Debug.Log("Linecast from " + this.name + " to " + Objecty + ": " + LineCasty);
+        return LineCasty;
+    }
 
     /// <summary>
     /// Ship is scanned by another ship/fleet
@@ -619,10 +722,15 @@ public class Spaceship : SpaceObject {
 		 
 	}
 
+    public Commander GetCommander()
+    {
+        return this.GetComponentInChildren<Commander>(); // every ship should have a commander.
+    }
+
 	public void SurrenderCheck()
 	{
 		if (Alarm != "White") {
-			int AreCrewCowards = d6 (2) + Mathf.Max (Skill_Pilot, Skill_Electronics); //Veterancy Helps
+			int AreCrewCowards = d6 (2) - Mathf.Max (Skill_Pilot, Skill_Electronics) - Mathf.Max(GetCommander().Skill_Blade,GetCommander().Skill_Leadership); //Veterancy Helps
 
 			if (AreCrewCowards > 8) {
 				//Allgood
@@ -632,7 +740,7 @@ public class Spaceship : SpaceObject {
 				this.Surrender ();
 			}
 		} else {
-			UpdateBattleLog (" Aaargh!!");
+			UpdateBattleLog (" Aaargh!!"); //are getting shot at after surrender!
 		}
 	}
 
@@ -661,9 +769,9 @@ public class Spaceship : SpaceObject {
 		{
 			if (PlzDontShoot.Enemy == this) 
 			{
-				PlzDontShoot.UpdateBattleLog (" " + PlzDontShoot.Enemy + " surrendered!");
+				PlzDontShoot.UpdateBattleLog (" " + PlzDontShoot.Enemy.name + " surrendered!");
 
-				int MoralityCheck = d6(2);
+				int MoralityCheck = d6(2) + GetCommander().Skill_Leadership;
 				if (MoralityCheck >= 8)
 					PlzDontShoot.SeekNewEnemy();
 				else

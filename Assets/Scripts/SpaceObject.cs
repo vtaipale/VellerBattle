@@ -42,19 +42,19 @@ public class SpaceObject : TravellerBehaviour {
 
         if (this.transform.position == Target.position)
             return "Adjacent";
-        else if (DistanceMath < RangeB_Close)
+        else if (DistanceMath <= RangeB_Close)
             return "Close";
-        else if (DistanceMath < RangeB_Short)
+        else if (DistanceMath <= RangeB_Short)
             return "Short";
-        else if (DistanceMath < RangeB_Medium)
+        else if (DistanceMath <= RangeB_Medium)
             return "Medium";
-        else if (DistanceMath < RangeB_Long)
+        else if (DistanceMath <= RangeB_Long)
             return "Long";
-        else if (DistanceMath < RangeB_VLong)
+        else if (DistanceMath <= RangeB_VLong)
             return "Very Long";
-        else if (DistanceMath < RangeB_Distant)
+        else if (DistanceMath <= RangeB_Distant)
             return "Distant";
-        else if (DistanceMath < RangeB_VDistant)
+        else if (DistanceMath <= RangeB_VDistant)
             return "Very Distant";
 
         return "Far";
@@ -96,9 +96,9 @@ public class SpaceObject : TravellerBehaviour {
     /// </summary>
     /// <param name="Objecty"></param>
     /// <returns></returns>
-    public bool IsVisible(SpaceObject Objecty)
+    public virtual bool IsVisible(SpaceObject Objecty)
     {
-        bool LineCasty = ((Physics.Linecast(this.transform.position, Objecty.transform.position) == false) && (this.DistanceTo(Objecty) < RangeB_Distant));
+        bool LineCasty = ((Physics.Linecast(this.transform.position, Objecty.transform.position) == false) && (this.DistanceTo(Objecty) < RangeB_VDistant));
         //Debug.Log("Linecast from " + this.name + " to " + Objecty + ": " + LineCasty);
         return LineCasty;
     }

@@ -71,7 +71,7 @@ public class MissileSalvo : SpaceObject {
 		else
 			this.name = this.Type + " salvo from " + this.source.name;
 
-		roundsToTarget = (this.DistanceTo(Enemy) / Thrust) +1;
+		roundsToTarget = (this.DistanceTo(Enemy) / Thrust*130) +1;
 
 //		if (Random.Range (0, 100) < 95) {	//Yeah no
 //			Destroy (GetComponentInChildren<UI_Symbol> ().transform.parent.gameObject);
@@ -118,14 +118,14 @@ public class MissileSalvo : SpaceObject {
 			//MISSED! (can attack again next turn?
 		}
 		else if (finalEffect == 0 | AmountOfMissiles == 1) {	//straight damage is done if Effect is 0
-			int Damage = d6 (DamageDice);
+			int Damage = Mathf.Max((d6 (DamageDice) - Target.Armour),0);
 
 			if (source.gameObject.activeSelf) {	//report back to homeship, if it is alive!
 					source.UpdateBattleLog (" " + this.Type + " hit " + Target.name + " for " + Damage + " Damage!");
 			}
 			Target.IncomingMissiles.Remove (this);
 
-			Target.Damage(Damage,this.name);
+			Target.Damage(Damage,this.name,true);
 			//Debug.Log (this.name + " hit " + Target);
 
 		}
@@ -134,14 +134,14 @@ public class MissileSalvo : SpaceObject {
 			if (finalEffect > AmountOfMissiles)
 				finalEffect = AmountOfMissiles;
 
-			int Damage = ( d6(DamageDice) - Target.Armour) * finalEffect;
+			int Damage = Mathf.Max((( d6(DamageDice) - Target.Armour) * finalEffect),0);
 
 			if (source.gameObject.activeSelf) {//report back to homeship, if it is alive!
 					source.UpdateBattleLog (" " + this.Type + " salvo hit " + Target.name + " for " + Damage + " Damage!");
 			}
 			Target.IncomingMissiles.Remove (this);
 
-			Target.Damage(Damage, this.name);
+			Target.Damage(Damage, this.name,true);
 			//Debug.Log (this.name + " hit " + Target +" for " + Damage + " Damage!");
 
 
