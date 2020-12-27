@@ -318,6 +318,7 @@ MonoBehaviour:
   Alarm: Yellow
   Order: Move
   CaptainName: Hirvinen
+  Crew: 6
   Skill_Pilot: 0
   Skill_Electronics: 0
   ShipExplosion: {fileID: 1423144587608864, guid: fb8ce593efce8874c80f6bf219bf0400,

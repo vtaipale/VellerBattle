@@ -43,6 +43,7 @@ public class Spaceship : SpaceObject {
 
     //public Captain = Haddoc
     public string CaptainName = "Haddock";
+    public int Crew = 9; //total amount of Crewmembers
 
     //public int Skill_Gunnery = 0;
     public int Skill_Pilot = 0;

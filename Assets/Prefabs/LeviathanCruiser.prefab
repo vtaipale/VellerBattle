@@ -899,6 +899,7 @@ MonoBehaviour:
   Alarm: Yellow
   Order: Move
   CaptainName: Haddock
+  Crew: 33
   Skill_Pilot: 0
   Skill_Electronics: 0
   ShipExplosion: {fileID: 388773448962040560, guid: 12dd8c52ec160584eb985ec6daa5bc90,
