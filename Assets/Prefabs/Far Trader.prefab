@@ -304,11 +304,13 @@ MonoBehaviour:
   FuelOrig: 41
   HullConfig: Streamlined
   Armour: 0
-  Sensors: 0
+  ComputerRating: 5
+  Sensors: -2
   SensorRoll: 0
   MaxSensorRange: 500000
   Stealth: 0
   JumpClass: 3
+  Handling: 0
   Transponders: 1
   TransponderMessage: 
   Side: Neutral

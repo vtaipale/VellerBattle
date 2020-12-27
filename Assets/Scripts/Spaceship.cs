@@ -15,11 +15,13 @@ public class Spaceship : SpaceObject {
     public int FuelOrig = 124;
     public string HullConfig = "Streamlined";
     public int Armour = 4;
+    public int ComputerRating = 15;
     public int Sensors = 0; 	//standard mil sensors
     public int SensorRoll = 0;  //The Standard Sensor Roll for this round.
     public int MaxSensorRange = RangeB_VDistant;
     public int Stealth = 0;		//for stealth ships...
     public int JumpClass = 3;
+    public int Handling = 0;
     public bool Transponders = false;
     public string TransponderMessage = "";
 

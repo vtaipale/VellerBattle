@@ -58,11 +58,13 @@ MonoBehaviour:
   FuelOrig: 63
   HullConfig: Close Structure
   Armour: 5
+  ComputerRating: 20
   Sensors: 1
   SensorRoll: 0
   MaxSensorRange: 500000
   Stealth: 0
   JumpClass: 3
+  Handling: 0
   Transponders: 0
   TransponderMessage: 
   Side: IMPERIAL
