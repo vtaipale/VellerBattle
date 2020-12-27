@@ -22,7 +22,7 @@ public class CriticalDamager : TravellerBehaviour
     /// <param name="NuSeverity">Severity to add</param>
     private void CritDamage(string DamageType, string damagetext, int NuSeverity)
     {
-        int CurrentSeverity = GetCurrentSeverity(DamageType);
+        int CurrentSeverity = ShipToDamage.GetCurrentCritSeverity(DamageType);
 
         Debug.Log(ShipToDamage.name + " taking " + DamageType + " " + (CurrentSeverity + 1) + " crit!");
 
@@ -51,6 +51,7 @@ public class CriticalDamager : TravellerBehaviour
                     this.Crit_Sensors(NuSeverity);
                     break;
                 case "PowerPlant":
+                    this.Crit_PPlant(NuSeverity);
                     break;
                 case "Fuel":
                     this.Crit_Fuel(NuSeverity);
@@ -65,14 +66,17 @@ public class CriticalDamager : TravellerBehaviour
                     this.Crit_Hull(NuSeverity, damagetext);
                     break;
                 case "M-Drive":
+                    this.Crit_MDrive(NuSeverity);
                     break;
                 case "Cargo":
                     break;
                 case "J-Drive":
+                    this.Crit_JDrive(NuSeverity);
                     break;
                 case "Crew":
                     break;
                 case "Computer":
+                    this.Crit_Computer(NuSeverity);
                     break;
                 default:
                     Debug.LogError("UNDEFINED DAMAGE TYPE");
@@ -171,7 +175,7 @@ public class CriticalDamager : TravellerBehaviour
                 CritDamage("Hull", "fuel tank breach");
                 break;
             case 6:
-                CritDamage("Hull", "fuel tank breach",d6(1));
+                CritDamage("Hull", "major fuel tank breach",d6(1));
                 break;
             default:
                 Debug.LogError("UNDEFINED SEVERITY");
@@ -237,7 +241,7 @@ public class CriticalDamager : TravellerBehaviour
         Destroy(ToBoom.gameObject); //urgh this can lead to troubles..
     }
 
-        public void Crit_Armour(int Severity)
+    public void Crit_Armour(int Severity)
     {
         bool DoesShipHaveArmour = (ShipToDamage.Armour > 0);
 
@@ -285,17 +289,163 @@ public class CriticalDamager : TravellerBehaviour
         }
     }
 
-    public int GetCurrentSeverity(string DamageType)
+    public void Crit_MDrive(int Severity)
     {
-        int ToReturn = 0;
-
-        foreach (string damagy in ShipToDamage.MyCritDamages)
+        switch (Severity)
         {
-            if (damagy.Contains(DamageType))
-                ToReturn++;
+            case 1:
+                ShipToDamage.UpdateBattleLog(" M-Drive damaged!");
+                ShipToDamage.Handling += -1;
+                break;
+            case 2:
+                ShipToDamage.UpdateBattleLog(" M-Drive futher damaged!");
+                ShipToDamage.Handling += -1;
+                CritToThrust(1);
+                break;
+            case 3:
+                ShipToDamage.UpdateBattleLog(" M-Drive severely damaged!");
+                ShipToDamage.Handling += -1;
+                CritToThrust(1);
+                break;
+            case 4:
+                ShipToDamage.UpdateBattleLog(" M-Drive heavily damaged!");
+                ShipToDamage.Handling += -1;
+                CritToThrust(1);
+                break;
+            case 5:
+                ShipToDamage.UpdateBattleLog(" M-Drive critically damaged: No Thrust!");
+                ShipToDamage.Thrust = 0;
+                break;
+            case 6:
+                ShipToDamage.UpdateBattleLog(" M-Drive critically damaged: No Thrust!");
+                ShipToDamage.Thrust = 0;
+                CritDamage("Hull", "M-Drive critical");
+                break;
+            default:
+                Debug.LogError("UNDEFINED SEVERITY");
+                break;
         }
+    }
 
-        return ToReturn;
+    private void CritToThrust(int Amount)
+    {
+        if (ShipToDamage.Thrust > 0)
+        {
+            ShipToDamage.Thrust = Mathf.Max(0, (ShipToDamage.Thrust - Amount));
+            ShipToDamage.UpdateBattleLog(" Thrust reduced! Now " + ShipToDamage.Thrust + "!");
+        }
+    }
+
+    public void Crit_PPlant(int Severity) //todo pover calculations
+    {
+        switch (Severity)
+        {
+            case 1:
+                ShipToDamage.UpdateBattleLog(" Power Plant damaged!");
+                //Power 90%
+                CritToThrust(1);
+                break;
+            case 2:
+                ShipToDamage.UpdateBattleLog(" Power Plant severely damaged!");
+                //Power 80%
+                CritToThrust(1);
+                break;
+            case 3:
+                ShipToDamage.UpdateBattleLog(" Power Plant heavily damaged!");
+                //Power 50%
+                CritToThrust(1);
+                break;
+            case 4:
+                ShipToDamage.UpdateBattleLog(" Power Plant critically damaged: No Power or Thrust!");
+                //Power 0%
+                ShipToDamage.Thrust = 0;
+                ShipToDamage.Surrender();
+                break;
+            case 5:
+                ShipToDamage.Thrust = 0;
+                CritDamage("Hull", "Power Plant critical");
+                break;
+            case 6:
+                ShipToDamage.Thrust = 0;
+                CritDamage("Hull", "Major Power Plant critical", d6(1));
+                break;
+            default:
+                Debug.LogError("UNDEFINED SEVERITY");
+                break;
+        }
+    }
+
+    public void Crit_JDrive(int Severity)
+    {
+        switch (Severity)
+        {
+            case 1:
+                //This should be handled in actual JUMPCHECK
+                break;
+            case 2:
+                ShipToDamage.UpdateBattleLog(" Jump Drive is disabled!");
+                ShipToDamage.JumpClass = -1;
+                break;
+            case 3:
+                ShipToDamage.UpdateBattleLog(" Jump Drive is destroyed!");
+                ShipToDamage.JumpClass = -2;
+                break;
+            case 4:
+                CritDamage("Hull", "Jump Drive rupture");
+                break;
+            case 5:
+                CritDamage("Hull", "Jump Drive rupture");
+                break;
+            case 6:
+                CritDamage("Hull", "Jump Drive rupture");
+                break;
+            default:
+                Debug.LogError("UNDEFINED SEVERITY");
+                break;
+        }
+    }
+
+    public void Crit_Computer(int Severity)
+    {
+        switch (Severity)
+        {
+            case 1:
+                //again, this should be handled in actual checks. IF computerseverity > 0
+                ShipToDamage.UpdateBattleLog(" Computer damaged!");
+                break;
+            case 2:
+                ShipToDamage.UpdateBattleLog(" Computer futher damaged!");
+                CritToComputerRating(1);
+                break;
+            case 3:
+                ShipToDamage.UpdateBattleLog(" Computer severely damaged!");
+                CritToComputerRating(1);
+                break;
+            case 4:
+                ShipToDamage.UpdateBattleLog(" Computer heavily damaged!");
+                CritToComputerRating(1);
+                break;
+            case 5:
+                ShipToDamage.UpdateBattleLog(" Computer disabled!");
+                ShipToDamage.ComputerRating = -1;
+                ShipToDamage.Surrender(); // no computer = no use to fight on.
+                break;
+            case 6:
+                ShipToDamage.UpdateBattleLog(" Computer destroyed!");
+                ShipToDamage.ComputerRating = -2;
+                break;
+            default:
+                Debug.LogError("UNDEFINED SEVERITY");
+                break;
+        }
+    }
+    private void CritToComputerRating(int Amount)
+    {
+        if (ShipToDamage.ComputerRating > 0)
+        {
+            ShipToDamage.ComputerRating = Mathf.Max(0, (ShipToDamage.ComputerRating - Amount));
+            ShipToDamage.UpdateBattleLog(" Computer Rating reduced! Now " + ShipToDamage.ComputerRating + "!");
+        }
     }
 
 

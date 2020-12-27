@@ -297,6 +297,20 @@ public class Spaceship : SpaceObject {
 
     }
 
+
+    public int GetCurrentCritSeverity(string DamageType)
+    {
+        int ToReturn = 0;
+
+        foreach (string damagy in this.MyCritDamages)
+        {
+            if (damagy.Contains(DamageType))
+                ToReturn++;
+        }
+
+        return ToReturn;
+    }
+
     /// <summary>
     /// Actual Critical Damage.
     /// Rather complicated mess.
