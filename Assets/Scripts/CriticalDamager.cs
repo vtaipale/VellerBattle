@@ -24,7 +24,7 @@ public class CriticalDamager : TravellerBehaviour
     {
         int CurrentSeverity = ShipToDamage.GetCurrentCritSeverity(DamageType);
 
-        Debug.Log(ShipToDamage.name + " taking " + DamageType + " " + (CurrentSeverity + 1) + " crit!");
+        //Debug.Log(ShipToDamage.name + " taking " + DamageType + " " + (CurrentSeverity + 1) + " crit!");
 
         if (CurrentSeverity >= 6)
         {
@@ -74,6 +74,7 @@ public class CriticalDamager : TravellerBehaviour
                     this.Crit_JDrive(NuSeverity);
                     break;
                 case "Crew":
+                    this.Crit_Crew(NuSeverity);
                     break;
                 case "Computer":
                     this.Crit_Computer(NuSeverity);
@@ -445,6 +446,74 @@ public class CriticalDamager : TravellerBehaviour
         {
             ShipToDamage.ComputerRating = Mathf.Max(0, (ShipToDamage.ComputerRating - Amount));
             ShipToDamage.UpdateBattleLog(" Computer Rating reduced! Now " + ShipToDamage.ComputerRating + "!");
+        }
+    }
+    public void Crit_Crew(int Severity)
+    {
+        switch (Severity)
+        {
+            case 1:
+                bool HitToCaptain = (Mathf.RoundToInt(Random.Range(1, ShipToDamage.Crew)) == 1);
+
+                if (HitToCaptain == true)
+                {
+                    ShipToDamage.GetCommander().Damage(d6(1));
+                }
+                else
+                {
+                    ShipToDamage.DamageCrew(1);
+                }
+                break;
+            case 2:
+                ShipToDamage.UpdateBattleLog(" Life Support damaged!");
+                break;
+            case 3:
+
+                int Casualties = d6(1);
+                int CreDamage = d6(2);
+
+                bool SecondHitToCaptain = (Mathf.RoundToInt(Random.Range(1, ShipToDamage.Crew)) <= Casualties);
+
+                if (SecondHitToCaptain == true && ShipToDamage.GetCommander().IsAlive())
+                {
+                    ShipToDamage.GetCommander().Damage(CreDamage);
+
+                    if (Casualties > 1)
+                    {
+                        if (ShipToDamage.Crew > Casualties)
+                            Casualties = ShipToDamage.Crew;
+
+                        ShipToDamage.DamageCrew(Casualties-1);
+                    }
+                }
+                else
+                {
+                    ShipToDamage.DamageCrew(Casualties);
+                }
+                break;
+            case 4:
+                ShipToDamage.UpdateBattleLog(" Life Support seriously damaged!");
+                break;
+            case 5:
+                int BigCreDamage = d6(3);
+
+                if (ShipToDamage.GetCommander().IsAlive())
+                {
+                    ShipToDamage.GetCommander().Damage(BigCreDamage);
+                    ShipToDamage.DamageCrew((ShipToDamage.Crew / 2)-1);
+                }
+                else
+                {
+                    ShipToDamage.DamageCrew(ShipToDamage.Crew/2);
+                }
+                break;
+            case 6:
+                ShipToDamage.UpdateBattleLog(" Life support failed!");
+                ///check if voidsuits. If false = KILL EVERYONE
+                break;
+            default:
+                Debug.LogError("UNDEFINED SEVERITY");
+                break;
         }
     }
 

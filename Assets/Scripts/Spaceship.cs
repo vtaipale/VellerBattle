@@ -103,6 +103,9 @@ public class Spaceship : SpaceObject {
             UpdateBattleLog("\n--Elapsed time: " + turnNumber * 6 + " m, " + d6(2) + " s");
         UpdateBattleLog(" -Location: " + this.transform.position);
 
+        if (this.Crew <= 0)
+            UpdateBattleLog(" No Crew left...");
+
         if (GetComponents<FuelLeak>() != null)
         {
             foreach (FuelLeak leaky in GetComponents<FuelLeak>())
@@ -821,6 +824,28 @@ public class Spaceship : SpaceObject {
 		 
 	}
 
+    public void DamageCrew (int amount)
+    {
+        if (Crew < amount)
+            amount = Crew; //all are dying
+
+        this.Crew = Mathf.Max(0, Crew - amount);
+
+        if (Crew > 0 && amount > 0)
+            this.UpdateBattleLog(" Lost " + amount + " Crew!");
+        
+        if (Crew <= 0)
+        {
+            this.UpdateBattleLog(" NO CREW LEFT TO OPERATE SHIP");
+            this.Surrender();
+        }
+
+        else if (amount > (Crew / 2))
+            this.SurrenderCheck();
+
+    }
+
+
     public Commander GetCommander()
     {
         return this.GetComponentInChildren<Commander>(); // every ship should have a commander.
@@ -889,7 +914,10 @@ public class Spaceship : SpaceObject {
 
 		this.Status = how;
 
-		Debug.Log (this.name + " " + how);
+        if (Random.Range(1f, 10f) > 5f)   //chance for the commander to go down with the ship.
+            this.GetCommander().Damage(100);
+
+        Debug.Log (this.name + " " + how);
 		UpdateBattleLog ("....Log ends");
 
 //		foreach (Spaceship toNote in FindObjectsOfType<Spaceship>()) 

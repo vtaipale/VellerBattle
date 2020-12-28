@@ -17,22 +17,36 @@ public class Commander : TravellerBehaviour {
 	public int Skill_Leadership = 0;
 	public int Skill_Tactics = 0;
 	public int Morale = 7;
-		//add others if nessessry
+    //add other skills if nessessry
 
-	public int INT = 7;
+    public int STR = 7;
+    public int DEX = 7;
+    public int END = 7;
+
+    public int HitPoints = 21;
+
+    public int INT = 7;
 	public int EDU = 7;
 	public int SOC = 7;
 
+    public string Status = "";
+
 	// Use this for initialization
 	public override string ToString() {
-		return (this.GetRank() + " " + this.FirstName + " " + this.LastName);
+		return (this.GetRank() + " " + this.FirstName + " " + this.LastName + Status);
 	}
 
 	public void CreateChar()
 	{
-		//assumption that name comes from ship/fleet
-		
-		this.INT = d6 (2);
+        //assumption that name comes from ship/fleet
+
+        this.STR = d6(2);
+        this.DEX = d6(2);
+        this.END = d6(2);
+
+        this.HitPoints = STR + DEX + END;
+
+        this.INT = d6 (2);
 		this.EDU = d6 (2);
 		this.SOC = d6 (2);
 
@@ -134,12 +148,53 @@ public class Commander : TravellerBehaviour {
 		return "Admiral-of-Admirals";	//A-o-A
 		
 	}
-	
+    /// <summary>
+    /// Deals damage to the Commander.
+    /// </summary>
+    /// <param name="amount"></param>
+    /// <returns>Alive if Commander survives the hit. False if dead already OR after the attack</returns>
+    public bool Damage(int amount)
+    {
+
+        if (this.IsAlive() == false)
+            return false;
+
+        //Debug.Log("Commander " + this.ToString() + " taking " + amount + " damage!");
+
+        HitPoints = Mathf.Max(0, HitPoints - amount);
+
+        if (HitPoints > 0)
+        {
+            GetMyShip().UpdateBattleLog(" " + this.ToString() + " wounded!");
+
+            this.Status = " - WIA";
+            return true;
+        }
+
+        GetMyShip().UpdateBattleLog(" " + this.ToString() + " died!");
+
+        this.Status = " - KIA";
+
+        GetMyShip().Crew = Mathf.Max(0, GetMyShip().Crew - 1);
+
+        Skill_Blade = 0;
+        Skill_Leadership = 0;
+        Skill_Tactics = 0;
+
+        return false;
+    }
+
 	public Spaceship GetMyShip()
 	{
 		return GetComponent<Spaceship>();
 	}
-	
+
+    public bool IsAlive()
+    {
+        return !this.Status.Equals(" - KIA");
+    }
+
+
 	public string GetStats()
 	{
 		return ("" + INT + EDU + SOC + "-" + Skill_Blade + Skill_Leadership + Skill_Tactics);
